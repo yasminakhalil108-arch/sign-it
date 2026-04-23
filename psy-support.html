@@ -1,0 +1,1116 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes" />
+<title>Sign It - الصحة النفسية 🧠</title>
+<style>
+* {box-sizing: border-box; margin: 0; padding: 0;}
+body {font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; direction: rtl; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); min-height: 100vh; color: #333;}
+header {background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 20px; text-align: center; box-shadow: 0 4px 15px rgba(0,0,0,0.2); position: relative;}
+header h1 {font-size: 2em; margin-bottom: 10px;}
+header p {font-size: 1em; opacity: 0.9;}
+
+/* زر القائمة للهاتف */
+.menu-toggle {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  background: rgba(255,255,255,0.2);
+  border: none;
+  color: white;
+  font-size: 1.8rem;
+  width: 45px;
+  height: 45px;
+  border-radius: 50%;
+  cursor: pointer;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  backdrop-filter: blur(5px);
+  transition: background 0.3s;
+}
+.menu-toggle:hover {
+  background: rgba(255,255,255,0.3);
+}
+
+/* القائمة الجانبية (تظهر كـ off-canvas على الموبايل) */
+.sidebar {
+  width: 280px;
+  background: white;
+  padding: 20px;
+  min-height: 100vh;
+  box-shadow: 2px 0 15px rgba(0,0,0,0.1);
+  transition: transform 0.3s ease;
+  position: sticky;
+  top: 0;
+  align-self: flex-start;
+}
+.sidebar h3 {color: #667eea; margin-bottom: 15px; font-size: 1.3em;}
+.sidebar button {
+  display: block;
+  width: 100%;
+  margin: 12px 0;
+  padding: 12px 15px;
+  border: none;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  cursor: pointer;
+  border-radius: 10px;
+  font-size: 1em;
+  transition: all 0.3s;
+  font-weight: 600;
+  text-align: center;
+}
+.sidebar button:hover {transform: translateX(-5px); box-shadow: 0 5px 15px rgba(102, 126, 234, 0.5);}
+
+/* زر إغلاق القائمة على الموبايل */
+.close-sidebar {
+  display: none;
+  background: none;
+  border: none;
+  color: #667eea;
+  font-size: 1.8rem;
+  cursor: pointer;
+  margin-bottom: 15px;
+  text-align: left;
+  width: 100%;
+  padding: 5px;
+}
+
+.container {display: flex; max-width: 1400px; margin: 0 auto;}
+
+.content {flex: 1; padding: 30px; overflow-y: auto;}
+.card {background: white; padding: 30px; border-radius: 20px; margin-bottom: 20px; box-shadow: 0 8px 25px rgba(0,0,0,0.1); animation: slideIn 0.4s ease;}
+@keyframes slideIn {from {opacity: 0; transform: translateY(20px);} to {opacity: 1; transform: translateY(0);}}
+
+button.primary {background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 14px 30px; border: none; border-radius: 10px; cursor: pointer; font-size: 1.05em; font-weight: 600; width: 100%; transition: all 0.3s; margin-top: 15px;}
+button.primary:hover {transform: scale(1.02); box-shadow: 0 8px 20px rgba(102, 126, 234, 0.4);}
+
+button.disorder-btn {background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 15px; border: none; border-radius: 12px; cursor: pointer; margin: 8px; font-size: 1em; font-weight: 600; transition: all 0.3s; display: inline-block;}
+button.disorder-btn:hover {transform: scale(1.05); box-shadow: 0 8px 20px rgba(102, 126, 234, 0.4);}
+
+input, select {width: 100%; padding: 12px; margin: 8px 0; border: 2px solid #e0e0e0; border-radius: 8px; font-size: 1em; font-family: inherit; transition: border-color 0.3s;}
+input:focus, select:focus {outline: none; border-color: #667eea;}
+
+.symptom-list, .disorder-grid {display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 15px; margin: 15px 0;}
+.symptom-item, .disorder-card {background: #f8f9fa; padding: 15px; border-radius: 12px; border: 2px solid #e0e0e0; cursor: pointer; transition: all 0.3s;}
+.symptom-item:hover, .disorder-card:hover {background: #667eea; color: white; border-color: #667eea; transform: translateY(-5px);}
+.symptom-item.selected, .disorder-card.selected {background: #667eea; color: white; border-color: #667eea;}
+
+.checkbox {margin-right: 10px;}
+.rating-scale {display: flex; gap: 10px; margin: 15px 0; align-items: center; flex-wrap: wrap;}
+.rating-btn {padding: 10px 15px; border: 2px solid #ddd; background: white; border-radius: 8px; cursor: pointer; transition: all 0.3s; font-weight: 600;}
+.rating-btn:hover {border-color: #667eea; color: #667eea;}
+.rating-btn.selected {background: #667eea; color: white; border-color: #667eea;}
+
+.result-box {background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 30px; border-radius: 15px; text-align: center; margin: 20px 0;}
+.result-box h2 {font-size: 2em; margin-bottom: 15px;}
+.result-box p {font-size: 1.1em; margin: 10px 0;}
+
+.disorder-details {background: #f8f9fa; padding: 20px; border-radius: 12px; margin: 15px 0; border-right: 5px solid #667eea;}
+.disorder-details h3 {color: #667eea; margin-top: 15px; margin-bottom: 10px; font-size: 1.3em;}
+.disorder-details ul {margin-right: 20px; margin: 10px 0;}
+.disorder-details li {margin: 8px 0; line-height: 1.8;}
+
+.back-btn {background: #999; color: white; padding: 10px 20px; border: none; border-radius: 8px; cursor: pointer; margin-bottom: 15px; font-weight: 600;}
+.back-btn:hover {background: #666;}
+
+h1, h2, h3 {color: #667eea;}
+
+/* ========== استجابة للهواتف ========== */
+@media (max-width: 768px) {
+  .menu-toggle {
+    display: flex;
+  }
+  
+  .container {
+    position: relative;
+  }
+  
+  .sidebar {
+    position: fixed;
+    top: 0;
+    right: -280px;
+    z-index: 1000;
+    height: 100vh;
+    overflow-y: auto;
+    transition: right 0.3s ease;
+    box-shadow: 0 0 20px rgba(0,0,0,0.3);
+  }
+  
+  .sidebar.open {
+    right: 0;
+  }
+  
+  .close-sidebar {
+    display: block;
+  }
+  
+  .content {
+    padding: 20px 15px;
+    width: 100%;
+  }
+  
+  header h1 {
+    font-size: 1.5em;
+  }
+  
+  header p {
+    font-size: 0.85em;
+  }
+  
+  .disorder-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .symptom-list {
+    grid-template-columns: 1fr;
+  }
+  
+  .rating-scale {
+    gap: 5px;
+  }
+  
+  .rating-btn {
+    padding: 8px 12px;
+    font-size: 0.85em;
+  }
+  
+  .card {
+    padding: 20px;
+  }
+  
+  .result-box h2 {
+    font-size: 1.5em;
+  }
+  
+  .disorder-details h3 {
+    font-size: 1.1em;
+  }
+}
+</style>
+</head>
+<body>
+
+<header>
+<button class="menu-toggle" id="menuToggle" aria-label="فتح القائمة">☰</button>
+<h1>🧠 صفحة الصحة النفسية</h1>
+<p>اكتشف حالتك النفسية وتعرف على الاضطرابات</p>
+</header>
+
+<div class="container">
+
+<div class="sidebar" id="sidebar">
+<button class="close-sidebar" id="closeSidebarBtn">✕ إغلاق</button>
+<h3>📱 القائمة</h3>
+<button onclick="showMentalHealthHome(); closeSidebarOnMobile();">🏠 الرئيسية</button>
+<button onclick="showDisorders(); closeSidebarOnMobile();">📚 الاضطرابات</button>
+<button onclick="showSymptomDiagnosis(); closeSidebarOnMobile();">🔍 تشخيص الأعراض</button>
+<button onclick="showAbout(); closeSidebarOnMobile();">ℹ️ معلومات</button>
+</div>
+
+<div class="content" id="content"></div>
+
+</div>
+
+<script>
+
+// إغلاق القائمة على الموبايل بعد الضغط على زر
+function closeSidebarOnMobile() {
+  if (window.innerWidth <= 768) {
+    document.getElementById('sidebar').classList.remove('open');
+  }
+}
+
+// فتح وإغلاق القائمة
+document.addEventListener('DOMContentLoaded', function() {
+  const menuToggle = document.getElementById('menuToggle');
+  const sidebar = document.getElementById('sidebar');
+  const closeSidebar = document.getElementById('closeSidebarBtn');
+  
+  if (menuToggle) {
+    menuToggle.addEventListener('click', function() {
+      sidebar.classList.toggle('open');
+    });
+  }
+  
+  if (closeSidebar) {
+    closeSidebar.addEventListener('click', function() {
+      sidebar.classList.remove('open');
+    });
+  }
+  
+  // إغلاق القائمة عند النقر خارجها على الموبايل
+  document.addEventListener('click', function(event) {
+    if (window.innerWidth <= 768) {
+      const isClickInsideSidebar = sidebar.contains(event.target);
+      const isClickOnToggle = menuToggle && menuToggle.contains(event.target);
+      
+      if (!isClickInsideSidebar && !isClickOnToggle && sidebar.classList.contains('open')) {
+        sidebar.classList.remove('open');
+      }
+    }
+  });
+});
+
+// البيانات الأساسية
+const disorders = {
+    insecurityPro: {
+      name: 'فقدان الشعور بالأمان النفسي 🛡️',
+      def: 'شعور مستمر بالخوف والقلق من الأذى أو فقدان الأمان الداخلي.',
+      symptoms: [
+        'الشعور بعدم الأمان',
+        'الخوف من المستقبل',
+        'توقع الأسوأ دائماً',
+        'القلق عند التواجد بمفردك',
+        'تجنب المواقف بسبب الخوف',
+        'صعوبة في الشعور بالراحة',
+        'الحاجة المستمرة للحماية'
+      ],
+      causes: [
+        'تجارب صادمة',
+        'عدم الاستقرار',
+        'الأحداث الخطيرة',
+        'نقص الدعم العائلي'
+      ],
+      prevention: [
+        'الدعم الاجتماعي',
+        'العلاج النفسي',
+        'تعزيز الثقة بالنفس',
+        'تطوير مهارات المواجهة'
+      ]
+    },
+    emotionalImbalancePro: {
+      name: 'عدم الاتزان الانفعالي 💥',
+      def: 'تقلبات شديدة وسريعة في المشاعر وصعوبة التحكم في الانفعالات.',
+      symptoms: [
+        'تقلبات مزاجية سريعة',
+        'الغضب أو الحزن المفاجئ',
+        'الاندفاعية في التصرفات',
+        'صعوبة التهدئة بعد الانفعال',
+        'تأثر شديد بكلام الآخرين',
+        'عدم استقرار المشاعر'
+      ],
+      causes: [
+        'الضغوط العاطفية',
+        'الصدمات',
+        'عدم التوازن الكيميائي',
+        'المشاكل الصحية'
+      ],
+      prevention: [
+        'العلاج النفسي',
+        'الدعم الاجتماعي',
+        'تقنيات المواجهة',
+        'إدارة الضغط'
+      ]
+    },
+  depression: {
+    name: 'الاكتئاب 😔',
+    def: 'شعور مستمر بالحزن واليأس وفقدان الاهتمام بالأشياء',
+    symptoms: ['حزن مستمر', 'فقدان الاهتمام', 'اضطرابات النوم', 'التعب المستمر', 'صعوبة التركيز'],
+    causes: ['عوامل وراثية', 'أحداث مؤلمة', 'الضغوط النفسية', 'عدم التوازن الكيميائي'],
+    prevention: ['ممارسة الرياضة', 'النوم المنتظم', 'التحدث مع الآخرين', 'طلب المساعدة من مختص']
+  },
+  anxiety: {
+    name: 'القلق 😰',
+    def: 'شعور بالخوف والتوتر المستمر والقلق من المستقبل',
+    symptoms: ['توتر وقلق', 'سرعة ضربات القلب', 'صعوبة التنفس', 'الأرق', 'الإفراط في التفكير'],
+    causes: ['الضغوط اليومية', 'الخوف من المجهول', 'المشاكل الصحية', 'الأحداث الصادمة'],
+    prevention: ['تمارين الاسترخاء', 'اليقظة الذهنية', 'تقليل الكافيين', 'طلب الدعم']
+  },
+  hyperactivity: {
+    name: 'فرط الحركة 🚀',
+    def: 'اضطراب يؤثر على الانتباه والتركيز والسلوك',
+    symptoms: ['عدم التركيز', 'الاندفاعية', 'فرط الحركة', 'صعوبة المتابعة', 'عدم التنظيم'],
+    causes: ['العوامل الوراثية', 'تأثيرات أثناء الحمل', 'عدم النضج الدماغي', 'المشاكل الصحية'],
+    prevention: ['جدول روتيني', 'تقليل المشتتات', 'ممارسة الرياضة', 'التدريب السلوكي']
+  },
+  aggressivebehavior: {
+    name: 'السلوكيات العدوانية 😠',
+    def: 'التصرفات العنيفة أو المؤذية تجاه الآخرين أو النفس',
+    symptoms: ['الغضب المتكرر', 'الضربات والعنف', 'الكلام الجارح', 'تدمير الممتلكات', 'الانفجار الغاضب'],
+    causes: ['الإحباط والضغوط', 'الصدمات النفسية', 'الغيرة والحسد', 'نقص المهارات الاجتماعية'],
+    prevention: ['تعلم إدارة الغضب', 'تمارين الاسترخاء', 'العلاج السلوكي', 'دعم الأسرة']
+  },
+  isolation: {
+    name: 'الانسحاب الاجتماعي 🌧️',
+    def: 'الانسحاب من التفاعلات الاجتماعية والشعور بالوحدة',
+    symptoms: ['الشعور بالوحدة', 'تجنب التجمعات', 'نقص الثقة بالنفس', 'الاكتئاب', 'الخوف من الحكم'],
+    causes: ['الخجل الاجتماعي', 'الأسباب الاقتصادية', 'المشاكل الصحية', 'الأحكام المسبقة'],
+    prevention: ['اللقاءات التدريجية', 'تطوير المهارات الاجتماعية', 'البحث عن مجتمع داعم', 'العلاج']
+  },
+  sleepEatingDisorders: {
+    name: 'اضطرابات النوم والأكل 🍽️😴',
+    def: 'اضطرابات في أنماط النوم وعادات الأكل والتغذية',
+    symptoms: ['الأرق أو النوم المفرط', 'فقدان الشهية', 'الإفراط في الأكل', 'القلق أثناء النوم', 'الإرهاق'],
+    causes: ['الضغوط النفسية', 'عدم الاستقرار العاطفي', 'المشاكل الصحية', 'الروتين غير المنتظم'],
+    prevention: ['جدول نوم منتظم', 'تغذية صحية', 'تقليل القلق', 'ممارسة الرياضة']
+  },
+  inferiority: {
+    name: 'الشعور بالنقص 😞',
+    def: 'الشعور المستمر بأن الذات أقل من الآخرين',
+    symptoms: ['نقص الثقة بالنفس', 'تجنب التنافس', 'الشعور بالعدم القيمة', 'الخجل الشديد', 'الخوف من الفشل'],
+    causes: ['المقارنة المستمرة', 'النقد المتكرر', 'الفشل السابق', 'البيئة السلبية'],
+    prevention: ['تقبل الذات', 'تحديد نقاط القوة', 'تجنب المقارنات', 'طلب الدعم النفسي']
+  },
+  attention: {
+    name: 'تشتت الانتباه 🤯',
+    def: 'صعوبة التركيز والانتباه على المهمات',
+    symptoms: ['عدم التركيز', 'سهولة الانحراف', 'نسيان ما يقال', 'الأخطاء المتكررة', 'عدم إنهاء المهام'],
+    causes: ['الضغوط النفسية', 'قلة النوم', 'الإجهاد', 'مشاكل صحية'],
+    prevention: ['تقسيم المهام', 'تقليل المشتتات', 'أخذ فترات راحة', 'النوم الكافي']
+  },
+  insecurity: {
+    name: 'فقدان الشعور بالأمان 😨',
+    def: 'شعور مستمر بالخوف والقلق من الأذى',
+    symptoms: ['الخوف المستمر', 'القلق من المستقبل', 'الحذر الزائد', 'الأرق', 'الحاجة للطمأنة'],
+    causes: ['تجارب صادمة', 'عدم الاستقرار', 'الأحداث الخطيرة', 'نقص الدعم العائلي'],
+    prevention: ['الشعور بالأمان', 'الدعم الاجتماعي', 'العلاج النفسي', 'كسب الثقة']
+  },
+  emotionalImbalance: {
+    name: 'عدم الاتزان الانفعالي 🎭',
+    def: 'تقلبات مستمرة وشديدة في المشاعر والحالة المزاجية',
+    symptoms: ['تقلبات مزاجية سريعة', 'الغضب المفاجئ', 'الحزن الشديد', 'القلق المفرط', 'صعوبة التحكم بالعواطف'],
+    causes: ['عدم التوازن الكيميائي', 'الضغوط العاطفية', 'الصدمات', 'المشاكل الصحية'],
+    prevention: ['العلاج النفسي', 'تقنيات المواجهة', 'الدعم الاجتماعي', 'إدارة الضغط']
+  }
+};
+
+// المقاييس التفصيلية
+const assessmentScales = {
+    insecurityPro: {
+      name: 'مقياس فقدان الشعور بالأمان النفسي 🛡️',
+      description: 'اختبار احترافي من 15 سؤالاً لقياس مدى شعورك بعدم الأمان النفسي.',
+      scale: '0 = أبداً | 1 = نادراً | 2 = أحياناً | 3 = غالباً | 4 = دائماً',
+      maxScore: 60,
+      questions: [
+        'أشعر أنني غير آمن في معظم الأوقات.',
+        'أخاف من حدوث أشياء سيئة بدون سبب واضح.',
+        'أشعر بالتوتر حتى في الأماكن المألوفة.',
+        'أجد صعوبة في الثقة بالآخرين.',
+        'أشعر أن العالم مكان غير آمن.',
+        'أتوقع الأسوأ دائماً.',
+        'أشعر أنني بحاجة لحماية مستمرة.',
+        'أقلق من المستقبل بشكل مفرط.',
+        'أشعر بعدم الاستقرار في حياتي.',
+        'أخاف من فقدان الأشخاص القريبين مني.',
+        'أشعر بالقلق عند التواجد بمفردي.',
+        'أتجنب مواقف بسبب شعوري بعدم الأمان.',
+        'أشعر أنني مهدد حتى بدون سبب واضح.',
+        'أواجه صعوبة في الشعور بالراحة.',
+        'أشعر بأنني غير مطمئن معظم الوقت.'
+      ],
+      interpretation: {
+        '0-15': 'أمان نفسي جيد 👍',
+        '16-30': 'قلق بسيط ⚠️',
+        '31-45': 'فقدان متوسط للأمان 😐',
+        '46-60': 'فقدان شديد للأمان 🚨'
+      }
+    },
+    emotionalImbalancePro: {
+      name: 'مقياس عدم الاتزان الانفعالي 💥',
+      description: 'اختبار احترافي من 15 سؤالاً لقياس مدى الاتزان الانفعالي لديك.',
+      scale: '0 = أبداً | 1 = نادراً | 2 = أحياناً | 3 = غالباً | 4 = دائماً',
+      maxScore: 60,
+      questions: [
+        'تتغير حالتي المزاجية بسرعة.',
+        'أغضب بسهولة من أشياء بسيطة.',
+        'أجد صعوبة في التحكم في مشاعري.',
+        'أشعر بالتوتر بشكل مفاجئ.',
+        'أبكي أو أنفعل بدون سبب واضح.',
+        'أندم على ردود أفعالي بعد حدوثها.',
+        'أشعر أن مشاعري خارجة عن السيطرة.',
+        'أتفاعل بشكل مبالغ فيه مع المواقف.',
+        'أشعر بالإحباط بسرعة.',
+        'أجد صعوبة في التهدئة بعد الانفعال.',
+        'أتقلب بين الفرح والحزن بسرعة.',
+        'أواجه صعوبة في التفكير بهدوء أثناء الغضب.',
+        'أشعر باندفاع في تصرفاتي.',
+        'أتأثر كثيراً بكلام الآخرين.',
+        'أشعر بعدم استقرار في مشاعري.'
+      ],
+      interpretation: {
+        '0-15': 'اتزان انفعالي جيد 👍',
+        '16-30': 'عدم اتزان بسيط ⚠️',
+        '31-45': 'عدم اتزان متوسط 😐',
+        '46-60': 'عدم اتزان شديد 🚨'
+      }
+    },
+  anxiety: {
+    name: 'مقياس القلق 😰',
+    description: 'يساعك على تقييم مستوى القلق الذي تشعر به',
+    scale: '0 = أبدًا | 1 = قليلًا | 2 = غالبًا | 3 = دائمًا',
+    maxScore: 45,
+    questions: [
+      'أشعر بالتوتر بدون سبب واضح',
+      'أعاني من التفكير الزائد',
+      'أخاف من المستقبل',
+      'أشعر بضيق في التنفس أحيانًا',
+      'أشعر بعدم الراحة في التجمعات',
+      'أعاني من صعوبة في الاسترخاء',
+      'أشعر بأن شيئًا سيئًا سيحدث',
+      'أعاني من خفقان في القلب',
+      'أشعر بالتوتر عند التحدث مع الآخرين',
+      'أفكر في أسوأ الاحتمالات دائمًا',
+      'أشعر بعدم الأمان',
+      'أتوتر من المواقف البسيطة',
+      'أعاني من صداع بسبب القلق',
+      'أشعر بارتباك مفاجئ',
+      'يصعب عليّ التحكم في أفكاري'
+    ],
+    interpretation: { '0-15': 'طبيعي', '16-30': 'متوسط', '31-45': 'مرتفع' }
+  },
+  depression: {
+    name: 'مقياس الاكتئاب 😔',
+    description: 'يساعك على تقييم مستوى الاكتئاب الذي تشعر به',
+    scale: '0 = أبدًا | 1 = قليلًا | 2 = غالبًا | 3 = دائمًا',
+    maxScore: 45,
+    questions: [
+      'أشعر بالحزن معظم الوقت',
+      'فقدت الاهتمام بالأشياء التي كنت أحبها',
+      'أشعر بالإرهاق دائمًا',
+      'أعاني من صعوبة في التركيز',
+      'أشعر باليأس',
+      'لدي أفكار سلبية عن نفسي',
+      'أشعر أن حياتي بلا معنى',
+      'أفضل العزلة عن الآخرين',
+      'أشعر بعدم الرغبة في القيام بأي شيء',
+      'أبكي بدون سبب واضح',
+      'أشعر بالفراغ الداخلي',
+      'أفكر في الفشل دائمًا',
+      'أشعر أنني عبء على الآخرين',
+      'لا أشعر بالسعادة حتى في المواقف الجيدة',
+      'أفتقد الحماس للحياة'
+    ],
+    interpretation: { '0-15': 'طبيعي', '16-30': 'متوسط', '31-45': 'مرتفع' }
+  },
+  aggressivebehavior: {
+    name: 'مقياس السلوك العدواني 😡',
+    description: 'يساعك على تقييم مستوى الغضب والعدوانية',
+    scale: '0 = أبدًا | 1 = قليلًا | 2 = غالبًا | 3 = دائمًا',
+    maxScore: 45,
+    questions: [
+      'أغضب بسرعة',
+      'أصرخ عند الانفعال',
+      'أتصرف بعنف أحيانًا',
+      'أندم بعد الغضب',
+      'أجد صعوبة في التحكم في انفعالاتي',
+      'أشعر برغبة في كسر الأشياء',
+      'أؤذي الآخرين بالكلام',
+      'أشعر بتوتر دائم',
+      'أنفعل على أشياء بسيطة',
+      'أتصرف باندفاع',
+      'أواجه صعوبة في تهدئة نفسي',
+      'أستخدم أسلوب حاد في الكلام',
+      'أشعر بالاستفزاز بسهولة',
+      'أتصرف بعدوانية دون تفكير',
+      'أندفع في ردود أفعالي'
+    ],
+    interpretation: { '0-15': 'طبيعي', '16-30': 'متوسط', '31-45': 'مرتفع' }
+  },
+  attention: {
+    name: 'مقياس تشتت الانتباه 🧠',
+    description: 'يساعك على تقييم مستوى تشتت الانتباه',
+    scale: '0 = أبدًا | 1 = قليلًا | 2 = غالبًا | 3 = دائمًا',
+    maxScore: 45,
+    questions: [
+      'أجد صعوبة في التركيز',
+      'أنسى الأشياء بسرعة',
+      'أشتت بسهولة',
+      'لا أنهي المهام',
+      'أفقد الاهتمام بسرعة',
+      'أواجه صعوبة في التنظيم',
+      'أرتكب أخطاء بسبب عدم التركيز',
+      'أشعر بالملل بسرعة',
+      'أتنقل بين المهام بدون إنهائها',
+      'أواجه صعوبة في متابعة الشرح',
+      'أحتاج وقت طويل للفهم',
+      'أنسى المواعيد',
+      'أواجه صعوبة في ترتيب أفكاري',
+      'أتجنب المهام التي تحتاج تركيز',
+      'أشعر أن ذهني مشتت دائمًا'
+    ],
+    interpretation: { '0-15': 'طبيعي', '16-30': 'متوسط', '31-45': 'مرتفع' }
+  },
+  isolation: {
+    name: 'مقياس العزلة الاجتماعية 😶',
+    description: 'يساعك على تقييم مستوى العزلة الاجتماعية',
+    scale: '0 = أبدًا | 1 = قليلًا | 2 = غالبًا | 3 = دائمًا',
+    maxScore: 45,
+    questions: [
+      'أفضل الجلوس بمفردي',
+      'أتجنب اللقاءات الاجتماعية',
+      'أشعر بعدم الراحة مع الناس',
+      'لا أحب التحدث مع الآخرين',
+      'أبتعد عن الأصدقاء',
+      'أشعر بالوحدة',
+      'لا أشارك في الأنشطة',
+      'أفضل العزلة دائمًا',
+      'أشعر بالخجل في التجمعات',
+      'أتجنب التعرف على أشخاص جدد',
+      'لا أحب الخروج كثيرًا',
+      'أجد صعوبة في تكوين صداقات',
+      'أفضل التواصل عبر الإنترنت',
+      'أتجنب المناسبات الاجتماعية',
+      'أشعر أنني غير مندمج مع الآخرين'
+    ],
+    interpretation: { '0-15': 'طبيعي', '16-30': 'متوسط', '31-45': 'مرتفع' }
+  },
+  inferiority: {
+    name: 'مقياس الشعور بالنقص 💔',
+    description: 'يساعك على تقييم مستوى الشعور بالنقص',
+    scale: '0 = أبدًا | 1 = قليلًا | 2 = غالبًا | 3 = دائمًا',
+    maxScore: 45,
+    questions: [
+      'أقارن نفسي بالآخرين بشكل مستمر',
+      'أشعر أنني غير كافٍ مهما حاولت',
+      'أخاف من تقييم الآخرين لي',
+      'ألوم نفسي على الأخطاء البسيطة',
+      'أتجنب المواقف الاجتماعية خوفًا من الفشل',
+      'أشعر بالخجل من نفسي أو شكلي',
+      'أحتاج إلى تأكيد الآخرين لأشعر بقيمتي',
+      'النقد يؤثر عليّ بشكل كبير',
+      'أشعر أن نجاح الآخرين أكبر من نجاحي',
+      'أشعر بالقلق عند التعامل مع الناس',
+      'أشعر بإرهاق بسبب التفكير الزائد',
+      'أعتقد أن الآخرين يحكمون عليّ',
+      'أتردد في اتخاذ القرارات',
+      'أشعر أنني لا أستحق النجاح',
+      'أشعر بعدم الثقة في نفسي'
+    ],
+    interpretation: { '0-15': 'طبيعي', '16-30': 'متوسط', '31-45': 'مرتفع' }
+  },
+  sleepEatingDisorders: {
+    name: 'مقياس اضطراب النوم والشهية 😴',
+    description: 'يساعك على تقييم اضطرابات النوم والأكل',
+    scale: 'أبدًا = 1 | أحيانًا = 2 | غالبًا = 3 | دائمًا = 4',
+    maxScore: 60,
+    questions: [
+      'أواجه صعوبة في النوم',
+      'أستيقظ أثناء النوم',
+      'أشعر بالتعب بعد النوم',
+      'أعاني من أرق',
+      'أنام أقل من الطبيعي',
+      'أنام أكثر من الطبيعي',
+      'أستخدم الهاتف قبل النوم',
+      'أشعر بالنعاس نهارًا',
+      'شهيتي ضعيفة',
+      'أفقد الرغبة في الأكل',
+      'أتناول الطعام بكثرة',
+      'آكل بدون جوع',
+      'يتغير وزني بشكل ملحوظ',
+      'آكل بسبب التوتر',
+      'نومي وأكلي غير منتظم'
+    ],
+    interpretation: { '15-30': 'طبيعي', '31-45': 'بسيط', '46-60': 'متوسط', '61-75': 'شديد' }
+  }
+};
+
+let currentAssessment = null;
+let assessmentAnswers = {};
+
+const symptoms = [
+  'حزن مستمر',
+  'قلق وتوتر',
+  'اضطرابات النوم',
+  'ضعف التركيز',
+  'عزلة اجتماعية',
+  'فقدان الاهتمام',
+  'التعب المستمر',
+  'سرعة ضربات القلب',
+  'أفكار وسواسية',
+  'سلوكيات قهرية',
+  'صعوبة التحكم بالاندفاع',
+  'فرط الحركة',
+  'الخوف الشديد',
+  'مشاكل في الذاكرة',
+  'نقص الثقة بالنفس'
+];
+
+let selectedSymptoms = [];
+let symptomRatings = {};
+
+// الصفحة الرئيسية
+function showMentalHealthHome() {
+  document.getElementById('content').innerHTML = `
+    <div class='card'>
+      <h1>🧠 مرحباً بك في صفحة الصحة النفسية</h1>
+      <p style="font-size:1.1em; line-height:1.8; margin:20px 0; color:#666;">
+        هذه الصفحة تساعدك على فهم حالتك النفسية من خلال استكشاف الاضطرابات المختلفة أو إجراء تشخيص بناءً على الأعراض التي تشعر بها.
+      </p>
+    </div>
+    
+    <div class='card'>
+      <h2>🎯 ماذا تود أن تفعل؟</h2>
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-top: 20px;">
+        <button class='primary' onclick="showDisorders()" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); font-size: 1.1em; padding: 20px;">
+          📚 <br> استكشف الاضطرابات النفسية
+        </button>
+        <button class='primary' onclick="showSymptomDiagnosis()" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); font-size: 1.1em; padding: 20px;">
+          🔍 <br> تشخيص من الأعراض
+        </button>
+      </div>
+    </div>
+  `;
+}
+
+// عرض الاضطرابات
+function showDisorders() {
+  let html = `
+    <div class='card'>
+      <h2>📚 الاضطرابات النفسية المشهورة</h2>
+      <p style="color:#666; margin:15px 0;">اختر اضطراباً لمعرفة التفاصيل والنصائح:</p>
+      <div class='disorder-grid'>
+  `;
+  
+  for (let key in disorders) {
+    if (key === 'insecurityPro' || key === 'emotionalImbalancePro') continue;
+    html += `<button class='disorder-btn' onclick="showDisorderDetails('${key}')">${disorders[key].name}</button>`;
+  }
+  html += `<button class='disorder-btn' style="background:linear-gradient(135deg,#7C3AED,#2563EB);color:#fff;" onclick="showDisorderDetails('insecurityPro')">🛡️ فقدان الأمان النفسي</button>`;
+  html += `<button class='disorder-btn' style="background:linear-gradient(135deg,#F59E0B,#EF4444);color:#fff;" onclick="showDisorderDetails('emotionalImbalancePro')">💥 عدم الاتزان الانفعالي</button>`;
+  
+  html += `</div></div>`;
+  document.getElementById('content').innerHTML = html;
+}
+
+// تفاصيل الاضطراب
+function showDisorderDetails(key) {
+  let d = disorders[key];
+  let html = `
+    <button class='back-btn' onclick="showDisorders()">← رجوع</button>
+    <div class='card'>
+      <h2>${d.name}</h2>
+      
+      <div class='disorder-details'>
+        <h3>📌 التعريف</h3>
+        <p>${d.def}</p>
+      </div>
+      
+      <div class='disorder-details'>
+        <h3>⚠️ الأعراض</h3>
+        <ul>
+          ${d.symptoms.map(s => `<li>• ${s}</li>`).join('')}
+        </ul>
+      </div>
+      
+      <div class='disorder-details'>
+        <h3>🧬 الأسباب</h3>
+        <ul>
+          ${d.causes.map(c => `<li>• ${c}</li>`).join('')}
+        </ul>
+      </div>
+      
+      <div class='disorder-details'>
+        <h3>🛡️ طرق الوقاية والعلاج</h3>
+        <ul>
+          ${d.prevention.map(p => `<li>✓ ${p}</li>`).join('')}
+        </ul>
+      </div>
+      
+      <button class='primary' onclick="showDisorderAssessment('${key}')" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); margin-top:20px;">
+        📊 انتقل للمقياس
+      </button>
+      
+      <p style="background:#fff3cd; padding:15px; border-radius:10px; margin-top:20px; color:#856404;">
+        <strong>⚠️ هام:</strong> هذه المعلومات لأغراض تعليمية فقط. في حالة الشك، يرجى استشارة متخصص نفسي.
+      </p>
+    </div>
+  `;
+  document.getElementById('content').innerHTML = html;
+}
+
+// صفحة المقياس الخاصة بالاضطراب
+function showDisorderAssessment(key) {
+  const assessmentMap = {
+    anxiety: 'anxiety',
+    depression: 'depression',
+    aggressivebehavior: 'aggressivebehavior',
+    hyperactivity: 'attention',
+    isolation: 'isolation',
+    inferiority: 'inferiority',
+    sleepEatingDisorders: 'sleepEatingDisorders',
+    attention: 'attention'
+  };
+  
+  let assessmentKey = assessmentMap[key] || key;
+  let scale = assessmentScales[assessmentKey];
+  
+  if (!scale) {
+    alert('المقياس غير متوفر حاليًا');
+    return;
+  }
+  
+  currentAssessment = assessmentKey;
+  assessmentAnswers = {};
+  
+  let html = `
+    <button class='back-btn' onclick="showDisorderDetails('${key}')">← رجوع</button>
+    <div class='card'>
+      <h1>📊 ${scale.name}</h1>
+      <p style="color:#666; font-size:1.05em; margin:15px 0;">${scale.description}</p>
+      
+      <div style="background:linear-gradient(135deg, #667eea 0%, #764ba2 100%); color:white; padding:20px; border-radius:12px; margin:20px 0;">
+        <h3>📝 تعليمات المقياس</h3>
+        <p style="margin:10px 0;"><strong>نطاق الإجابات:</strong> ${scale.scale}</p>
+        <ul style="margin-right:20px; margin-top:10px;">
+          <li>اقرأ كل عبارة بعناية</li>
+          <li>اختر الإجابة التي تعكس حالتك الحالية</li>
+          <li>كن صادقًا مع نفسك</li>
+          <li>في النهاية ستحصل على النتيجة والتفسير</li>
+        </ul>
+      </div>
+      
+      <div style="background:#f8f9fa; padding:20px; border-radius:12px; margin-bottom:20px;">
+        <h3 style="color:#667eea;">📋 الأسئلة (${scale.questions.length} سؤال)</h3>
+        <div id="questions-container">
+  `;
+  
+  scale.questions.forEach((question, index) => {
+    let buttons = '';
+    let maxVal = scale.name.includes('النوم') ? 4 : 3;
+    let startVal = scale.name.includes('النوم') ? 1 : 0;
+    
+    for (let i = startVal; i <= maxVal; i++) {
+      buttons += `<button class='rating-btn' onclick="answerQuestion(${index}, ${i})" id="q${index}-a${i}">${i}</button>`;
+    }
+    
+    html += `
+      <div style="background:white; padding:15px; border-radius:10px; margin:12px 0; border-right:4px solid #667eea;">
+        <p style="font-weight:600; margin-bottom:10px;">${index + 1}. ${question}</p>
+        <div class='rating-scale' style="justify-content:flex-start;">
+          ${buttons}
+        </div>
+        <small id='answer-${index}' style="color:#999; display:block; margin-top:5px;">لم تختر بعد</small>
+      </div>
+    `;
+  });
+  
+  html += `
+        </div>
+      </div>
+      
+      <button class='primary' onclick="submitAssessment('${key}')" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); font-size:1.1em; padding:15px;">
+        ✅ عرض النتائج
+      </button>
+    </div>
+  `;
+  
+  document.getElementById('content').innerHTML = html;
+}
+
+// الإجابة على السؤال
+function answerQuestion(questionIndex, answer) {
+  assessmentAnswers[questionIndex] = answer;
+  
+  let scale = assessmentScales[currentAssessment];
+  let maxVal = scale.name.includes('النوم') ? 4 : 3;
+  let startVal = scale.name.includes('النوم') ? 1 : 0;
+  
+  for (let i = startVal; i <= maxVal; i++) {
+    let btn = document.getElementById(`q${questionIndex}-a${i}`);
+    if (btn) {
+      if (i === answer) {
+        btn.classList.add('selected');
+      } else {
+        btn.classList.remove('selected');
+      }
+    }
+  }
+  
+  let answerText = document.getElementById(`answer-${questionIndex}`);
+  if (answerText) {
+    answerText.innerText = `✓ اخترت: ${answer}`;
+  }
+}
+
+// تقديم المقياس وحساب النتيجة
+function submitAssessment(disorderKey) {
+  let scale = assessmentScales[currentAssessment];
+  
+  if (Object.keys(assessmentAnswers).length < scale.questions.length) {
+    alert('يرجى الإجابة على جميع الأسئلة قبل المتابعة');
+    return;
+  }
+  
+  let totalScore = Object.values(assessmentAnswers).reduce((a, b) => parseInt(a) + parseInt(b), 0);
+  
+  let interpretation = 'غير محدد';
+  
+  if (scale.name.includes('النوم')) {
+    if (totalScore <= 30) interpretation = 'طبيعي';
+    else if (totalScore <= 45) interpretation = 'بسيط';
+    else if (totalScore <= 60) interpretation = 'متوسط';
+    else interpretation = 'شديد';
+  } else {
+    if (totalScore <= 15) interpretation = 'طبيعي';
+    else if (totalScore <= 30) interpretation = 'متوسط';
+    else interpretation = 'مرتفع';
+  }
+  
+  showAssessmentResult(disorderKey, scale, totalScore, interpretation);
+}
+
+// عرض نتيجة المقياس
+function showAssessmentResult(disorderKey, scale, totalScore, interpretation) {
+  let resultColor = '#28a745';
+  let resultIcon = '✅';
+  let recommendation = '';
+  
+  if (interpretation === 'مرتفع' || interpretation === 'شديد') {
+    resultColor = '#dc3545';
+    resultIcon = '🚨';
+    recommendation = 'يُنصح بشدة باستشارة متخصص نفسي في أقرب وقت';
+  } else if (interpretation === 'متوسط') {
+    resultColor = '#fd7e14';
+    resultIcon = '⚠️';
+    recommendation = 'قد تستفيد من طلب الدعم والاستشارة النفسية';
+  } else if (interpretation === 'بسيط') {
+    resultColor = '#ffc107';
+    resultIcon = '⚠️';
+    recommendation = 'يمكنك تطبيق بعض تقنيات المساعدة الذاتية';
+  } else {
+    resultColor = '#28a745';
+    resultIcon = '✅';
+    recommendation = 'حالتك تبدو جيدة، استمر في الحفاظ على صحتك النفسية';
+  }
+  
+  let disorder = disorders[disorderKey];
+  let html = `
+    <button class='back-btn' onclick="showDisorderAssessment('${disorderKey}')">← العودة للمقياس</button>
+    
+    <div class='result-box' style="background: linear-gradient(135deg, ${resultColor} 0%, rgba(0,0,0,0.1) 100%);">
+      <h2>${resultIcon} ${interpretation.toUpperCase()}</h2>
+      <p style="font-size:1.3em; margin:15px 0;"><strong>نتيجتك: ${totalScore} / ${scale.maxScore}</strong></p>
+      <p style="font-size:1.05em;">${recommendation}</p>
+    </div>
+    
+    <div class='card'>
+      <h2>📊 تفاصيل النتيجة</h2>
+      
+      <div style="background:#e8f4f8; padding:20px; border-radius:12px; margin-bottom:20px; border-right:5px solid #2196F3;">
+        <h3 style="color:#1976D2;">📌 ملخص المقياس</h3>
+        <p><strong>المقياس:</strong> ${scale.name}</p>
+        <p><strong>عدد الأسئلة:</strong> ${scale.questions.length}</p>
+        <p><strong>إجمالي الدرجة:</strong> ${totalScore} من ${scale.maxScore}</p>
+        <p><strong>النسبة المئوية:</strong> ${Math.round((totalScore / scale.maxScore) * 100)}%</p>
+        <p><strong>المستوى:</strong> <span style="background:#667eea; color:white; padding:5px 10px; border-radius:5px;">${interpretation}</span></p>
+      </div>
+      
+      <div style="background:#fff3cd; padding:20px; border-radius:12px; margin-bottom:20px; border-right:5px solid #ffc107;">
+        <h3 style="color:#856404;">💡 الخطوات الموصى بها:</h3>
+        <ol style="margin-right:20px;">
+          <li>تقبل النتيجة بصدر رحب</li>
+          <li>${recommendation}</li>
+          <li>تحدث مع أشخاص موثوقين عن شعورك</li>
+          <li>ابدأ بتطبيق تقنيات المساعدة الذاتية تدريجياً</li>
+          ${interpretation === 'مرتفع' || interpretation === 'شديد' ? '<li>لا تتأخر في البحث عن مساعدة متخصصة</li>' : ''}
+        </ol>
+      </div>
+      
+      <div style="background:#f8f9fa; padding:20px; border-radius:12px;">
+        <h3 style="color:#667eea;">🛡️ نصائح للتحسن:</h3>
+        <ul style="margin-right:20px; line-height:1.8;">
+          ${disorder.prevention.map(p => `<li>✓ ${p}</li>`).join('')}
+        </ul>
+      </div>
+    </div>
+    
+    <div style="background:linear-gradient(135deg, #667eea 0%, #764ba2 100%); color:white; padding:20px; border-radius:12px; margin-top:20px;">
+      <h3>⚖️ إخلاء المسؤولية المهم</h3>
+      <p style="margin:10px 0;">هذا المقياس تعليمي فقط وليس تشخيصاً رسمياً. إذا كنت تشعر بقلق صحي أو نفسي، يرجى استشارة متخصص مرخص.</p>
+    </div>
+    
+    <div style="text-align:center; margin-top:20px;">
+      <button class='primary' onclick="showDisorderDetails('${disorderKey}')" style="margin-bottom:10px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+        📚 العودة للمعلومات
+      </button>
+    </div>
+  `;
+  
+  document.getElementById('content').innerHTML = html;
+}
+
+// تشخيص من الأعراض
+function showSymptomDiagnosis() {
+  selectedSymptoms = [];
+  let html = `
+    <div class='card'>
+      <h2>🔍 تشخيص الحالة من الأعراض</h2>
+      <p style="color:#666; margin:15px 0;">اختر الأعراض التي تشعر بها:</p>
+      <div class='symptom-list'>
+  `;
+  
+  symptoms.forEach(s => {
+    html += `<div class='symptom-item' onclick="toggleSymptom(this, '${s}')">${s}</div>`;
+  });
+  
+  html += `</div>
+  <button class='primary' onclick="showSymptomRating()" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);">
+    ➡️ ابدأ التقييم
+  </button>`;
+  document.getElementById('content').innerHTML = html;
+}
+
+// اختيار الأعراض
+function toggleSymptom(el, symptom) {
+  el.classList.toggle('selected');
+  if (el.classList.contains('selected')) {
+    selectedSymptoms.push(symptom);
+  } else {
+    selectedSymptoms = selectedSymptoms.filter(s => s !== symptom);
+  }
+}
+
+// صفحة التقييم
+function showSymptomRating() {
+  if (selectedSymptoms.length === 0) {
+    alert('اختر عرضاً واحداً على الأقل لمتابعة التقييم');
+    return;
+  }
+  
+  symptomRatings = {};
+  let html = `
+    <button class='back-btn' onclick="showSymptomDiagnosis()">← رجوع</button>
+    <div class='card'>
+      <h2>📊 قيّم شدة كل عرض</h2>
+      <p style="color:#666; margin:15px 0;">قيّم من 1 (خفيف) إلى 5 (شديد جداً):</p>
+  `;
+  
+  selectedSymptoms.forEach(s => {
+    html += `
+      <div style="background:#f8f9fa; padding:15px; border-radius:10px; margin:15px 0;">
+        <p style="font-weight:600; margin-bottom:10px;">${s}</p>
+        <div class='rating-scale'>
+          ${[1,2,3,4,5].map(i => `<button class='rating-btn' onclick="rateSymptom('${s}', ${i})">${i}</button>`).join('')}
+        </div>
+        <small id='rating-${s}' style="color:#999;">لم تختر</small>
+      </div>
+    `;
+  });
+  
+  html += `
+    <button class='primary' onclick="showDiagnosisResult()" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+      📋 عرض النتيجة
+    </button>
+  `;
+  document.getElementById('content').innerHTML = html;
+}
+
+// تقييم العرض
+function rateSymptom(symptom, rating) {
+  symptomRatings[symptom] = rating;
+  document.getElementById(`rating-${symptom}`).innerText = `✓ درجة: ${rating} / 5`;
+  let btns = document.querySelectorAll(`[onclick*="rateSymptom('${symptom}',"]`);
+  btns.forEach(btn => btn.classList.remove('selected'));
+  event.target.classList.add('selected');
+}
+
+// نتيجة التشخيص
+function showDiagnosisResult() {
+  let totalRating = Object.values(symptomRatings).reduce((a, b) => a + b, 0);
+  let avgRating = (totalRating / selectedSymptoms.length).toFixed(1);
+  
+  let diagnosis = '';
+  let color = '';
+  
+  if (avgRating < 2) {
+    diagnosis = '✅ حالتك جيدة نسبياً';
+    color = '#28a745';
+  } else if (avgRating < 3) {
+    diagnosis = '⚠️ قد تحتاج إلى بعض الانتباه';
+    color = '#ffc107';
+  } else if (avgRating < 4) {
+    diagnosis = '🔴 تحتاج إلى متابعة طبية';
+    color = '#fd7e14';
+  } else {
+    diagnosis = '🚨 يجب استشارة متخصص فوراً';
+    color = '#dc3545';
+  }
+  
+  let matchedDisorder = '';
+  for (let key in disorders) {
+    let disorderSymptoms = disorders[key].symptoms;
+    let matches = selectedSymptoms.filter(s => disorderSymptoms.includes(s)).length;
+    if (matches > 0) {
+      matchedDisorder = key;
+      break;
+    }
+  }
+  
+  let html = `
+    <button class='back-btn' onclick="showSymptomRating()">← رجوع</button>
+    <div class='result-box' style="background: linear-gradient(135deg, ${color} 0%, rgba(0,0,0,0.1) 100%);">
+      <h2>${diagnosis}</h2>
+      <p>متوسط الشدة: <strong>${avgRating} / 5</strong></p>
+    </div>
+    
+    <div class='card'>
+      <h3>📋 ملخص التقييم</h3>
+      <p><strong>الأعراض المختارة:</strong></p>
+      <ul>
+        ${selectedSymptoms.map(s => `<li>• ${s} (${symptomRatings[s]}/5)</li>`).join('')}
+      </ul>
+  `;
+  
+  if (matchedDisorder) {
+    html += `
+    <div style="background:#e7f3ff; padding:20px; border-radius:10px; margin-top:20px;">
+      <p style="color:#004085;"><strong>💡 قد تكون بحاجة إلى معرفة أكثر عن:</strong></p>
+      <button class='primary' onclick="showDisorderDetails('${matchedDisorder}')" style="margin-top:10px;">
+        اعرف المزيد عن ${disorders[matchedDisorder].name}
+      </button>
+    </div>
+    `;
+  }
+  
+  html += `
+  <p style="background:#fff3cd; padding:15px; border-radius:10px; margin-top:20px; color:#856404;">
+    <strong>⚠️ هام:</strong> هذا التشخيص بسيط وتعليمي فقط. استشر متخصصاً نفسياً للحصول على تشخيص دقيق.
+  </p>
+  </div>`;
+  document.getElementById('content').innerHTML = html;
+}
+
+// معلومات عن الصفحة
+function showAbout() {
+  document.getElementById('content').innerHTML = `
+    <div class='card'>
+      <h2>ℹ️ معلومات عن الصفحة</h2>
+      <p style="font-size:1.05em; line-height:1.8;">
+        هذه الصفحة جزء من مشروع <strong>Sign It</strong> - منصة شاملة لدعم الأطفال الصم.
+      </p>
+      
+      <div class='disorder-details'>
+        <h3>🎯 الهدف</h3>
+        <p>توفير معلومات تثقيفية عن الصحة النفسية وتساعد المستخدمين على فهم حالاتهم بشكل أفضل.</p>
+      </div>
+      
+      <div class='disorder-details'>
+        <h3>✨ المميزات</h3>
+        <ul>
+          <li>• استكشاف الاضطرابات النفسية الشهيرة</li>
+          <li>• تقييم بسيط للأعراض</li>
+          <li>• معلومات عن الأسباب والوقاية</li>
+          <li>• تصميم سهل الاستخدام</li>
+        </ul>
+      </div>
+      
+      <div class='disorder-details'>
+        <h3>⚖️ إخلاء المسؤولية</h3>
+        <p>المعلومات المقدمة في هذه الصفحة لأغراض تعليمية وتثقيفية فقط، وليست بديلاً عن استشارة متخصص نفسي.</p>
+      </div>
+    </div>
+  `;
+}
+
+// عند تحميل الصفحة
+window.onload = function() {
+  showMentalHealthHome();
+};
+
+</script>
+
+</body>
+</html>

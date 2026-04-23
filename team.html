@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>من نحن - Sign It</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="about-style.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  
+  <style>
+    .team-section {
+      padding: 4rem 5%;
+      background: var(--light-grey);
+    }
+
+    .team-header {
+      text-align: center;
+      margin-bottom: 3rem;
+    }
+
+    .team-header h1 {
+      font-size: 2.5rem;
+      color: var(--primary);
+      margin-bottom: 1rem;
+    }
+
+    .team-header p {
+      font-size: 1.1rem;
+      color: var(--text-muted);
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    .mission-statement {
+      background: var(--white);
+      padding: 3rem;
+      border-radius: 15px;
+      box-shadow: var(--shadow-md);
+      margin: 3rem auto;
+      max-width: 900px;
+      text-align: center;
+    }
+
+    .mission-statement h2 {
+      color: var(--primary);
+      font-size: 1.8rem;
+      margin-bottom: 1rem;
+    }
+
+    .mission-statement p {
+      font-size: 1.05rem;
+      line-height: 1.8;
+      color: var(--text-dark);
+    }
+
+    .mission-statement ul {
+      list-style: none;
+      padding: 0;
+      margin-top: 2rem;
+      text-align: right;
+    }
+
+    .mission-statement li {
+      margin: 1rem 0;
+      font-size: 1rem;
+      color: var(--text-muted);
+      padding-right: 2rem;
+      position: relative;
+    }
+
+    .mission-statement li:before {
+      content: "✓";
+      position: absolute;
+      right: 0;
+      color: var(--success);
+      font-weight: bold;
+      font-size: 1.3rem;
+    }
+
+    .team-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 2rem;
+      margin-top: 3rem;
+    }
+
+    .team-member {
+      background: var(--white);
+      border-radius: 15px;
+      padding: 2rem;
+      text-align: center;
+      box-shadow: var(--shadow-md);
+      transition: all 0.3s ease;
+    }
+
+    .team-member:hover {
+      transform: translateY(-10px);
+      box-shadow: var(--shadow-lg);
+    }
+
+    .member-avatar {
+      width: 120px;
+      height: 120px;
+      margin: 0 auto 1rem;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--white);
+      font-size: 2rem;
+      box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3);
+    }
+
+    .team-member h3 {
+      color: var(--text-dark);
+      font-size: 1.3rem;
+      margin: 0.5rem 0;
+    }
+
+    .team-member .role {
+      color: var(--primary);
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+    }
+
+    .vision-section {
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      color: var(--white);
+      padding: 3rem 5%;
+      text-align: center;
+      margin-top: 3rem;
+      border-radius: 20px;
+    }
+
+    .vision-section h2 {
+      font-size: 2rem;
+      margin-bottom: 1rem;
+    }
+
+    .vision-section p {
+      font-size: 1.1rem;
+      max-width: 800px;
+      margin: 0 auto;
+      line-height: 1.8;
+    }
+
+    .values-section {
+      padding: 3rem 5%;
+      background: var(--light-grey);
+    }
+
+    .values-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 2rem;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .value-card {
+      background: var(--white);
+      padding: 2rem;
+      border-radius: 15px;
+      box-shadow: var(--shadow-md);
+      text-align: center;
+    }
+
+    .value-icon {
+      font-size: 3rem;
+      margin-bottom: 1rem;
+    }
+
+    .value-card h3 {
+      color: var(--primary);
+      margin: 1rem 0;
+    }
+
+    .value-card p {
+      color: var(--text-muted);
+      line-height: 1.6;
+    }
+  </style>
+</head>
+<body class="landing-body">
+  <header class="landing-header">
+    <div class="brand">
+      <span class="brand-icon"><i class="fas fa-hands"></i></span>
+      <span class="brand-text">Sign It</span>
+    </div>
+
+    <div class="header-actions">
+      <nav class="main-nav">
+        <a class="nav-link" href="index.html">الرئيسية</a>
+        <a class="nav-link active" href="team.html">من نحن</a>
+        <a class="nav-link" href="about.html">عن المشروع</a>
+        <a class="nav-link" href="learning-lab.html">الدروس</a>
+        <a class="nav-link" href="dictionary.html">القاموس</a>
+        <a class="nav-link" href="test-system.html">اختبار</a>
+        <a class="nav-link" href="psy-support.html">الصحة النفسية</a>
+        <a class="nav-link" href="ai-assistant.html"><i class="fas fa-robot"></i> AI</a>
+      </nav>
+      <button id="langToggle" class="lang-btn" onclick="toggleLanguage(event)" aria-label="تبديل اللغة">English</button>
+    </div>
+  </header>
+
+  <main class="landing-main">
+    <!-- Hero Section -->
+    <section class="team-section">
+      <div class="team-header">
+        <h1><i class="fas fa-people-group"></i> من نحن</h1>
+        <p>فريق من الطلاب المتخصصين في تطوير حلول تكنولوجية تساعد ذوي الاحتياجات الخاصة</p>
+      </div>
+
+      <!-- Mission Statement -->
+      <div class="mission-statement">
+        <h2>🎯 مهمتنا</h2>
+        <p>
+          نحن فريق طلاب من الفرقة الثالثة بقسم إعداد معلم الحاسب الآلي لذوي الاحتياجات الخاصة بكلية التربية النوعية - جامعة بنها، 
+          ولدينا رؤية طموحة لدعم فئات المجتمع والتواصل معهم بشكل أفضل.
+        </p>
+        <p style="margin-top: 1rem; font-weight: 600; color: var(--primary);">
+          <i class="fas fa-lightbulb"></i> فكرتنا:
+        </p>
+        <p>
+          بدأت الفكرة برغبتنا في مساعدة الصم وضعاف السمع على التواصل مع الآخرين بسهولة من خلال تطبيق يعلم لغة الإشارة 
+          بطريقة تفاعلية وممتعة. ولكن طموحنا يتسع ليشمل جميع فئات ذوي الاحتياجات الخاصة.
+        </p>
+
+        <ul>
+          <li>تعليم لغة الإشارة بطريقة تفاعلية وسهلة</li>
+          <li>جسر التواصل بين الصم والعالم الناطق</li>
+          <li>دعم جميع ذوي الاحتياجات الخاصة</li>
+          <li>تحسين الدمج الاجتماعي والتواصلي</li>
+        </ul>
+      </div>
+
+      <!-- Vision Section -->
+      <section class="vision-section">
+        <h2><i class="fas fa-eye"></i> رؤيتنا</h2>
+        <p>
+          عالم يتمتع بتواصل سلس وفعال بين جميع فئات المجتمع، حيث تصبح لغة الإشارة جزءاً من ثقافتنا اليومية. 
+          ونسعى لتطوير تطبيقنا ليشمل جميع الخدمات والأدوات التي تساعد ذوي الاحتياجات الخاصة على الاندماج الكامل في المجتمع.
+        </p>
+      </section>
+    </section>
+
+    <!-- Values Section -->
+    <section class="values-section">
+      <h2 style="text-align: center; color: var(--primary); font-size: 2rem; margin-bottom: 2rem;">
+        <i class="fas fa-heart"></i> قيمنا الأساسية
+      </h2>
+      <div class="values-grid">
+        <div class="value-card">
+          <div class="value-icon">♿</div>
+          <h3>التضمين</h3>
+          <p>نؤمن بأن الجميع لهم الحق في التعليم والتواصل الفعال</p>
+        </div>
+        <div class="value-card">
+          <div class="value-icon">🤝</div>
+          <h3>التعاون</h3>
+          <p>نعمل معاً كفريق واحد لتحقيق هدفنا المشترك</p>
+        </div>
+        <div class="value-card">
+          <div class="value-icon">💡</div>
+          <h3>الابتكار</h3>
+          <p>نستمر في تحسين وتطوير حلولنا باستمرار</p>
+        </div>
+        <div class="value-card">
+          <div class="value-icon">❤️</div>
+          <h3>العطف</h3>
+          <p>ندرك احتياجات ذوي الاحتياجات الخاصة ونعمل لتحسين حياتهم</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Team Members -->
+    <section class="team-section">
+      <h2 style="text-align: center; color: var(--primary); font-size: 2rem; margin-bottom: 2rem;">
+        <i class="fas fa-star"></i> أعضاء الفريق
+      </h2>
+      <div class="team-grid">
+        <div class="team-member">
+          <div class="member-avatar">ي</div>
+          <h3>ياسمين محمود</h3>
+          <p class="role">عضو الفريق</p>
+          <p style="color: var(--text-muted); font-size: 0.9rem;">الفرقة الثالثة - قسم إعداد معلم حاسب</p>
+        </div>
+
+        <div class="team-member">
+          <div class="member-avatar">ر</div>
+          <h3>روان وجدي</h3>
+          <p class="role">عضو الفريق</p>
+          <p style="color: var(--text-muted); font-size: 0.9rem;">الفرقة الثالثة - قسم إعداد معلم حاسب</p>
+        </div>
+
+        <div class="team-member">
+          <div class="member-avatar">ن</div>
+          <h3>نسمة صابر</h3>
+          <p class="role">عضو الفريق</p>
+          <p style="color: var(--text-muted); font-size: 0.9rem;">الفرقة الثالثة - قسم إعداد معلم حاسب</p>
+        </div>
+
+        <div class="team-member">
+          <div class="member-avatar">ف</div>
+          <h3>فاطمة يوسف</h3>
+          <p class="role">عضو الفريق</p>
+          <p style="color: var(--text-muted); font-size: 0.9rem;">الفرقة الثالثة - قسم إعداد معلم حاسب</p>
+        </div>
+
+        <div class="team-member">
+          <div class="member-avatar">ن</div>
+          <h3>نوران أحمد</h3>
+          <p class="role">عضو الفريق</p>
+          <p style="color: var(--text-muted); font-size: 0.9rem;">الفرقة الثالثة - قسم إعداد معلم حاسب</p>
+        </div>
+ <div class="team-member">
+          <div class="member-avatar">ن</div>
+          <h3>ايه صبري </h3>
+          <p class="role">عضو الفريق</p>
+          <p style="color: var(--text-muted); font-size: 0.9rem;">الفرقة الثالثة - قسم إعداد معلم حاسب</p>
+        </div>
+
+        <div class="team-member">
+          <div class="member-avatar">م</div>
+          <h3>ملك أيمن</h3>
+          <p class="role">عضو الفريق</p>
+          <p style="color: var(--text-muted); font-size: 0.9rem;">الفرقة الثالثة - قسم إعداد معلم حاسب</p>
+        </div>
+
+        <div class="team-member">
+          <div class="member-avatar">أ</div>
+          <h3>أحمد وائل</h3>
+          <p class="role">عضو الفريق</p>
+          <p style="color: var(--text-muted); font-size: 0.9rem;">الفرقة الثالثة - قسم إعداد معلم حاسب</p>
+        </div>
+
+        <div class="team-member">
+          <div class="member-avatar">أ</div>
+          <h3>أحمد محمد سعيد</h3>
+          <p class="role">عضو الفريق</p>
+          <p style="color: var(--text-muted); font-size: 0.9rem;">الفرقة الثالثة - قسم إعداد معلم حاسب</p>
+        </div>
+
+        <div class="team-member">
+          <div class="member-avatar">أ</div>
+          <h3>أحمد محمد لطفي</h3>
+          <p class="role">عضو الفريق</p>
+          <p style="color: var(--text-muted); font-size: 0.9rem;">الفرقة الثالثة - قسم إعداد معلم حاسب</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- University Info -->
+    <section class="mission-statement" style="background: linear-gradient(135deg, #f0f9ff, #ecfdf5); margin-top: 3rem;">
+      <h2><i class="fas fa-university"></i> تفاصيل الجامعة والقسم</h2>
+      <div style="text-align: right;">
+        <p><strong>الجامعة:</strong> جامعة بنها</p>
+        <p><strong>الكلية:</strong> كلية التربية النوعية</p>
+        <p><strong>القسم:</strong> قسم إعداد معلم حاسب الآلي لذوي الاحتياجات الخاصة</p>
+        <p><strong>المرحلة:</strong> الفرقة الثالثة</p>
+        <p style="margin-top: 1rem; font-style: italic; color: var(--primary);">
+          ⭐ تم تطوير هذا المشروع كجزء من مشروع التخرج لفريقنا الطموح
+        </p>
+      </div>
+    </section>
+  </main>
+
+  <footer style="background: var(--text-dark); color: var(--white); padding: 2rem; text-align: center;">
+    <p>&copy; 2024 Sign It | جميع الحقوق محفوظة | فريق من طلاب كلية التربية النوعية</p>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>نظام الاختبارات - Sign It</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+
+  <style>
+    .quiz-container {
+      max-width: 900px;
+      margin: 2rem auto;
+      padding: 2rem;
+    }
+
+    .quiz-card {
+      background: white;
+      padding: 2rem;
+      border-radius: 15px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+      margin-bottom: 2rem;
+    }
+
+    .quiz-question {
+      font-size: 1.2rem;
+      font-weight: 600;
+      color: var(--primary);
+      margin-bottom: 1.5rem;
+    }
+
+    .quiz-options {
+      display: grid;
+      gap: 1rem;
+    }
+
+    .option {
+      padding: 1rem;
+      border: 2px solid var(--border);
+      border-radius: 10px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .option:hover {
+      border-color: var(--primary);
+      background: var(--bg-gradient-1);
+    }
+
+    .option.selected {
+      background: var(--primary);
+      color: white;
+      border-color: var(--primary);
+    }
+
+    .option input[type="radio"] {
+      margin-left: 1rem;
+    }
+
+    .quiz-button {
+      padding: 1rem 2rem;
+      font-size: 1rem;
+      border: none;
+      border-radius: 10px;
+      background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+      color: white;
+      cursor: pointer;
+      font-weight: 600;
+      transition: all 0.3s ease;
+      margin-top: 1.5rem;
+    }
+
+    .quiz-button:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 20px rgba(37, 99, 235, 0.3);
+    }
+
+    .results-section {
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      color: white;
+      padding: 2rem;
+      border-radius: 15px;
+      text-align: center;
+    }
+
+    .score-display {
+      font-size: 3rem;
+      font-weight: 900;
+      margin: 1rem 0;
+    }
+  </style>
+</head>
+<body class="landing-body">
+  <header class="landing-header">
+    <div class="brand">
+      <span class="brand-icon"><i class="fas fa-hands"></i></span>
+      <span class="brand-text">Sign It</span>
+    </div>
+
+    <div class="header-actions">
+      <nav class="main-nav">
+        <a class="nav-link" href="index.html">الرئيسية</a>
+        <a class="nav-link" href="team.html">من نحن</a>
+        <a class="nav-link" href="about.html">عن المشروع</a>
+        <a class="nav-link" href="learning-lab.html">الدروس</a>
+        <a class="nav-link" href="dictionary.html">القاموس</a>
+        <a class="nav-link active" href="test-system.html">اختبار</a>
+        <a class="nav-link" href="psy-support.html">الصحة النفسية</a>
+        <a class="nav-link" href="ai-assistant.html"><i class="fas fa-robot"></i> AI</a>
+      </nav>
+      <button id="langToggle" class="lang-btn" onclick="toggleLanguage(event)" aria-label="تبديل اللغة">English</button>
+    </div>
+  </header>
+
+  <main class="landing-main">
+    <section class="quiz-container">
+      <h1 style="text-align: center; color: var(--primary); margin-bottom: 2rem;">
+        <i class="fas fa-clipboard-check"></i> نظام الاختبارات الشامل
+      </h1>
+
+      <div class="quiz-card">
+        <h2 style="color: var(--primary); margin-bottom: 1.5rem;">مرحباً بك في نظام الاختبارات</h2>
+        <p style="font-size: 1.1rem; color: var(--text-muted); line-height: 1.8; margin-bottom: 2rem;">
+          يمكنك اختبار معلوماتك في لغة الإشارة من خلال مجموعة من الأسئلة الشاملة التي تغطي جميع المستويات.
+          اختر المستوى الذي تريد الاختبار فيه وابدأ الآن!
+        </p>
+
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1.5rem;">
+          <div style="background: linear-gradient(135deg, #2563EB, #1D4ED8); color: white; padding: 1.5rem; border-radius: 12px; text-align: center;">
+            <i class="fas fa-book" style="font-size: 2rem; margin-bottom: 1rem;"></i>
+            <h3>المستوى 1</h3>
+            <p style="opacity: 0.9;">الحروف والأساسيات</p>
+            <button class="quiz-button" style="background: rgba(255,255,255,0.2); margin-top: 1rem; border: 2px solid white;">ابدأ الاختبار</button>
+          </div>
+
+          <div style="background: linear-gradient(135deg, #7C3AED, #6D28D9); color: white; padding: 1.5rem; border-radius: 12px; text-align: center;">
+            <i class="fas fa-calculator" style="font-size: 2rem; margin-bottom: 1rem;"></i>
+            <h3>المستوى 2</h3>
+            <p style="opacity: 0.9;">الأرقام والعمليات</p>
+            <button class="quiz-button" style="background: rgba(255,255,255,0.2); margin-top: 1rem; border: 2px solid white;">ابدأ الاختبار</button>
+          </div>
+
+          <div style="background: linear-gradient(135deg, #F59E0B, #D97706); color: white; padding: 1.5rem; border-radius: 12px; text-align: center;">
+            <i class="fas fa-star" style="font-size: 2rem; margin-bottom: 1rem;"></i>
+            <h3>المستوى 3</h3>
+            <p style="opacity: 0.9;">مستوى متقدم</p>
+            <button class="quiz-button" style="background: rgba(255,255,255,0.2); margin-top: 1rem; border: 2px solid white;">ابدأ الاختبار</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- نموذج اختبار تجريبي -->
+      <div class="quiz-card" id="sample-quiz" style="display: none;">
+        <div class="quiz-question">
+          <i class="fas fa-question-circle"></i> السؤال 1: كم عدد الحروف في الأبجدية العربية؟
+        </div>
+        <div class="quiz-options">
+          <label class="option">
+            <input type="radio" name="q1" value="a"> أ) 20 حرف
+          </label>
+          <label class="option">
+            <input type="radio" name="q1" value="b"> ب) 28 حرف
+          </label>
+          <label class="option">
+            <input type="radio" name="q1" value="c"> ج) 30 حرف
+          </label>
+          <label class="option">
+            <input type="radio" name="q1" value="d"> د) 25 حرف
+          </label>
+        </div>
+      </div>
+
+      <div style="background: linear-gradient(135deg, #f0f9ff, #ecfdf5); padding: 2rem; border-radius: 15px; margin-top: 2rem; text-align: center;">
+        <h3 style="color: var(--primary); margin-bottom: 1rem;">📊 إحصائياتك</h3>
+        <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem;">
+          <div>
+            <p style="color: var(--text-muted);">الاختبارات المكتملة</p>
+            <p style="font-size: 1.5rem; font-weight: 900; color: var(--primary);">0</p>
+          </div>
+          <div>
+            <p style="color: var(--text-muted);">متوسط النتيجة</p>
+            <p style="font-size: 1.5rem; font-weight: 900; color: var(--primary);">0%</p>
+          </div>
+          <div>
+            <p style="color: var(--text-muted);">أفضل نتيجة</p>
+            <p style="font-size: 1.5rem; font-weight: 900; color: var(--primary);">0%</p>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-content">
+      <p>&copy; 2024 Sign It - Learn Sign Language | جميع الحقوق محفوظة</p>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>

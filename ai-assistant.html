@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>المساعد الذكي - ساين إت</title>
+  <style>
+    /* General Styles */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      line-height: 1.6;
+      color: #333;
+    }
+
+    /* Landing Page Styles */
+    .landing-body {
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+      background: #ffffff;
+    }
+
+    /* Header Styles */
+    .landing-header {
+      background: linear-gradient(135deg, #f5f3ff 0%, #ffffff 100%);
+      padding: 20px 40px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+      border-bottom: 1px solid #e0e0e8;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 24px;
+      font-weight: bold;
+      color: #5e35b1;
+    }
+
+    .brand-dot {
+      width: 12px;
+      height: 12px;
+      background: linear-gradient(135deg, #5e35b1 0%, #3949ab 100%);
+      border-radius: 50%;
+    }
+
+    .brand-text {
+      background: linear-gradient(135deg, #5e35b1 0%, #3949ab 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    /* Header Actions */
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 40px;
+    }
+
+    .main-nav {
+      display: flex;
+      gap: 30px;
+    }
+
+    .nav-link {
+      text-decoration: none;
+      color: #333;
+      font-weight: 500;
+      font-size: 15px;
+      transition: all 0.3s;
+      position: relative;
+    }
+
+    .nav-link::after {
+      content: '';
+      position: absolute;
+      width: 0;
+      height: 2px;
+      bottom: -5px;
+      background: linear-gradient(135deg, #5e35b1 0%, #3949ab 100%);
+      transition: width 0.3s;
+    }
+
+    .nav-link:hover::after {
+      width: 100%;
+    }
+
+    .lang-btn {
+      padding: 10px 20px;
+      background: linear-gradient(135deg, #5e35b1 0%, #3949ab 100%);
+      color: white;
+      border: none;
+      border-radius: 20px;
+      cursor: pointer;
+      font-weight: 600;
+      transition: all 0.3s;
+    }
+
+    .lang-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(94, 53, 177, 0.3);
+    }
+
+    /* AI Assistant Main */
+    .ai-assistant-main {
+      min-height: 100vh;
+      padding: 40px 20px;
+      background: linear-gradient(135deg, #f5f3ff 0%, #ffffff 100%);
+      flex-grow: 1;
+    }
+
+    .assistant-container {
+      max-width: 1000px;
+      margin: 0 auto;
+      background: white;
+      border-radius: 15px;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.1);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      height: 90vh;
+      max-height: 700px;
+    }
+
+    .assistant-header {
+      background: linear-gradient(135deg, #5e35b1 0%, #3949ab 100%);
+      color: white;
+      padding: 30px;
+      text-align: center;
+    }
+
+    .assistant-header h1 {
+      margin: 0 0 10px 0;
+      font-size: 28px;
+      font-weight: bold;
+    }
+
+    .assistant-header p {
+      margin: 0;
+      opacity: 0.9;
+      font-size: 16px;
+    }
+
+    /* Chatbase Container */
+    .chatbase-wrapper {
+      flex: 1;
+      overflow: hidden;
+      background: #f8f7fa;
+      position: relative;
+    }
+
+    .chatbase-wrapper iframe {
+      width: 100%;
+      height: 100%;
+      border: none;
+      background: white;
+    }
+
+    /* Footer Styles */
+    .landing-footer {
+      background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+      color: white;
+      padding: 40px;
+      margin-top: auto;
+    }
+
+    .footer-content {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 30px;
+      margin-bottom: 30px;
+    }
+
+    .footer-section h4 {
+      margin-bottom: 15px;
+      font-size: 16px;
+      color: #5e35b1;
+    }
+
+    .footer-section ul {
+      list-style: none;
+    }
+
+    .footer-section ul li {
+      margin-bottom: 10px;
+    }
+
+    .footer-section a {
+      color: #b3b3b3;
+      text-decoration: none;
+      transition: all 0.3s;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .footer-section a:hover {
+      color: #5e35b1;
+      padding-right: 5px;
+    }
+
+    .footer-bottom {
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+      padding-top: 20px;
+      text-align: center;
+      color: #b3b3b3;
+      font-size: 14px;
+    }
+
+    /* Responsive Design */
+    @media (max-width: 768px) {
+      .landing-header {
+        flex-direction: column;
+        gap: 20px;
+        padding: 15px 20px;
+      }
+
+      .header-actions {
+        flex-direction: column;
+        gap: 15px;
+        width: 100%;
+      }
+
+      .main-nav {
+        flex-direction: column;
+        gap: 10px;
+        width: 100%;
+      }
+
+      .nav-link {
+        padding: 8px 0;
+      }
+
+      .assistant-container {
+        max-height: none;
+        height: auto;
+        min-height: 80vh;
+      }
+
+      .assistant-header {
+        padding: 20px;
+      }
+
+      .assistant-header h1 {
+        font-size: 24px;
+      }
+
+      .footer-content {
+        grid-template-columns: 1fr;
+        gap: 20px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .landing-header {
+        padding: 10px 15px;
+      }
+
+      .brand {
+        font-size: 20px;
+      }
+
+      .main-nav {
+        display: none;
+      }
+
+      .assistant-header h1 {
+        font-size: 20px;
+      }
+
+      .assistant-header p {
+        font-size: 14px;
+      }
+    }
+  </style>
+</head>
+<body class="landing-body">
+  <header class="landing-header">
+    <div class="brand">
+      <span class="brand-dot"></span>
+      <span class="brand-text" data-i18n="landingBrand">ساين إت</span>
+    </div>
+
+    <div class="header-actions">
+      <nav class="main-nav">
+        <a class="nav-link" href="index.html" data-i18n="landingNavHome">الرئيسية</a>
+        <a class="nav-link" href="learning-lab.html" data-i18n="landingNavLessons">الدروس</a>
+        <a class="nav-link" href="ai-dictionary.html" data-i18n="landingNavDictionary">القاموس</a>
+        <a class="nav-link" href="iq-test.html" data-i18n="landingNavQuiz">اختبار</a>
+        <a class="nav-link" href="psychological-support.html" data-i18n="landingNavPsych">الصحة النفسية</a>
+        <a class="nav-link" href="knowledge-hub.html" data-i18n="landingNavAssessments">التقييمات</a>
+      </nav>
+      <button id="langToggle" class="lang-btn" aria-label="تبديل اللغة">English</button>
+    </div>
+  </header>
+
+  <main class="ai-assistant-main">
+    <div class="assistant-container">
+      <div class="assistant-header">
+        <h1>🤖 المساعد الذكي</h1>
+        <p>أسأل أي سؤال عن موقع ساين إت وسأساعدك</p>
+      </div>
+
+      <div class="chatbase-wrapper">
+        <iframe 
+          src="https://chatbase.co/chatbot-iframe/41qfAmm_LuIhzoNDIoJCv"
+          title="المساعد الذكي - ساين إت"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+          allowfullscreen
+          loading="lazy"
+        ></iframe>
+      </div>
+    </div>
+  </main>
+
+  <footer class="landing-footer">
+    <div class="footer-content">
+      <div class="footer-section">
+        <h4>معلومات</h4>
+        <ul>
+          <li><a href="about.html">نبذة عننا</a></li>
+          <li><a href="ai-assistant.html">🤖 المساعد الذكي</a></li>
+        </ul>
+      </div>
+      <div class="footer-section">
+        <h4>الأقسام</h4>
+        <ul>
+          <li><a href="learning-lab.html">الدروس</a></li>
+          <li><a href="ai-dictionary.html">القاموس</a></li>
+          <li><a href="iq-test.html">الاخ��بارات</a></li>
+        </ul>
+      </div>
+      <div class="footer-section">
+        <h4>الدعم</h4>
+        <ul>
+          <li><a href="psychological-support.html">الصحة النفسية</a></li>
+          <li><a href="knowledge-hub.html">التقييمات</a></li>
+        </ul>
+      </div>
+      <div class="footer-section">
+        <h4>تابعنا</h4>
+        <ul>
+          <li><a href="#">Facebook</a></li>
+          <li><a href="#">Twitter</a></li>
+          <li><a href="#">Instagram</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>&copy; 2026 ساين إت - تعليم لغة الإشارة. جميع الحقوق محفوظة.</p>
+    </div>
+  </footer>
+</body>
+</html>

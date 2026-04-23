@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Chat Widget</title>
+
+  <style>
+    /* ===== ROOT ===== */
+    :root {
+      --primary: #6366F1;
+      --secondary: #8B5CF6;
+      --white: #FFFFFF;
+      --shadow-lg: 0 10px 15px rgba(0,0,0,0.2);
+      --shadow-xl: 0 20px 25px rgba(0,0,0,0.25);
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: Arial, sans-serif;
+    }
+
+    body {
+      min-height: 100vh;
+      background: #f5f7ff;
+    }
+
+    /* ===== زر الشات (أسفل الشمال 100%) ===== */
+    .chatbot-toggle {
+      position: fixed !important;
+      bottom: 20px !important;
+      left: 20px !important;
+      right: auto !important;
+
+      width: 60px;
+      height: 60px;
+
+      border: none;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      color: white;
+      font-size: 24px;
+
+      cursor: pointer;
+      box-shadow: var(--shadow-lg);
+      z-index: 99999;
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      transition: 0.3s;
+    }
+
+    .chatbot-toggle:hover {
+      transform: scale(1.1);
+    }
+
+    /* ===== نافذة الشات ===== */
+    .chatbot-window {
+      position: fixed;
+      bottom: 90px;
+      left: 20px;
+      right: auto;
+
+      width: 360px;
+      height: 500px;
+
+      background: white;
+      border-radius: 16px;
+      box-shadow: var(--shadow-xl);
+
+      display: flex;
+      flex-direction: column;
+
+      opacity: 0;
+      transform: translateY(20px);
+      pointer-events: none;
+
+      transition: 0.3s ease;
+      overflow: hidden;
+      z-index: 99999;
+    }
+
+    .chatbot-window.open {
+      opacity: 1;
+      transform: translateY(0);
+      pointer-events: auto;
+    }
+
+    /* ===== HEADER ===== */
+    .chatbot-header {
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      color: white;
+
+      padding: 12px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .chatbot-title {
+      font-size: 16px;
+      font-weight: bold;
+    }
+
+    .chatbot-close {
+      border: none;
+      background: transparent;
+      color: white;
+      font-size: 18px;
+      cursor: pointer;
+    }
+
+    /* ===== CHAT BODY ===== */
+    .chat-body {
+      flex: 1;
+    }
+
+    iframe {
+      width: 100%;
+      height: 100%;
+      border: none;
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- زر الشات -->
+  <button class="chatbot-toggle" onclick="openChat()">💬</button>
+
+  <!-- نافذة الشات -->
+  <div id="chatPopup" class="chatbot-window">
+
+    <div class="chatbot-header">
+      <div class="chatbot-title">Live Chat</div>
+      <button class="chatbot-close" onclick="closeChat()">✖</button>
+    </div>
+
+    <div class="chat-body">
+      <iframe src="chat.html"></iframe>
+    </div>
+
+  </div>
+
+  <!-- JS -->
+  <script>
+    function openChat() {
+      document.getElementById("chatPopup").classList.add("open");
+    }
+
+    function closeChat() {
+      document.getElementById("chatPopup").classList.remove("open");
+    }
+  </script>
+
+</body>
+
+</html>

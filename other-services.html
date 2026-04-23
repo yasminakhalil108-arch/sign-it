@@ -1,0 +1,892 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>الدليل الشامل لذوي الهمم - خدمات وموارد</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Cairo', Arial, sans-serif;
+      background: linear-gradient(135deg, #f0f9ff 0%, #e0e7ff 100%);
+      color: #1e293b;
+      line-height: 1.6;
+    }
+
+    .smart-header {
+      background: linear-gradient(45deg, #7C3AED, #2563EB);
+      color: white;
+      padding: 32px 10px 18px 10px;
+      text-align: center;
+      border-radius: 0 0 32px 32px;
+      box-shadow: 0 4px 24px rgba(124, 60, 237, 0.08);
+      margin-bottom: 2rem;
+    }
+
+    .smart-header h1 {
+      font-size: 2.2rem;
+      font-weight: 900;
+      letter-spacing: 1px;
+      margin: 0 0 0.5rem 0;
+    }
+
+    .smart-header p {
+      font-size: 1.1rem;
+      opacity: 0.95;
+      margin: 0;
+    }
+
+    main {
+      padding: 3rem 5%;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .filter-section {
+      text-align: center;
+      margin-bottom: 30px;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 10px;
+    }
+
+    .filter-btn {
+      padding: 12px 22px;
+      border: none;
+      border-radius: 50px;
+      cursor: pointer;
+      background: linear-gradient(135deg, #7C3AED, #2563EB);
+      color: white;
+      font-size: 1rem;
+      font-weight: bold;
+      box-shadow: 0 2px 8px rgba(124, 60, 237, 0.2);
+      transition: all 0.3s ease;
+    }
+
+    .filter-btn:hover,
+    .filter-btn.active {
+      background: linear-gradient(135deg, #2563EB, #7C3AED);
+      transform: scale(1.08);
+      box-shadow: 0 4px 16px rgba(37, 99, 235, 0.3);
+    }
+
+    .cards-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 1.5rem;
+      margin-bottom: 2.5rem;
+    }
+
+    .card {
+      background: white;
+      padding: 22px 18px;
+      border-radius: 18px;
+      box-shadow: 0 5px 18px rgba(124, 60, 237, 0.09);
+      transition: all 0.3s ease;
+      border: 1.5px solid #ede9fe;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      right: 0;
+      width: 4px;
+      height: 100%;
+      background: linear-gradient(135deg, #7C3AED, #2563EB);
+    }
+
+    .card:hover {
+      box-shadow: 0 10px 32px rgba(37, 99, 235, 0.15);
+      transform: translateY(-6px) scale(1.02);
+      border-color: #a5b4fc;
+    }
+
+    .card h3 {
+      color: #2563EB;
+      font-size: 1.25rem;
+      margin: 0 0 0.8rem 0;
+      font-weight: bold;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .card p {
+      color: #666;
+      margin: 0 0 1rem 0;
+      font-size: 1rem;
+      line-height: 1.6;
+    }
+
+    .card-links {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      margin-top: 12px;
+    }
+
+    .card a {
+      color: #7C3AED;
+      font-weight: 600;
+      text-decoration: none;
+      transition: all 0.3s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .card a:hover {
+      color: #2563EB;
+      text-decoration: underline;
+    }
+
+    .map-container {
+      width: 100%;
+      height: 220px;
+      border-radius: 12px;
+      margin-top: 12px;
+      border: none;
+      box-shadow: 0 2px 8px rgba(37, 99, 235, 0.1);
+      overflow: hidden;
+    }
+
+    .info-section {
+      background: white;
+      border-radius: 18px;
+      box-shadow: 0 4px 18px rgba(124, 60, 237, 0.07);
+      padding: 2.5rem;
+      margin-bottom: 2rem;
+    }
+
+    .info-section h2 {
+      color: #2563EB;
+      font-size: 1.5rem;
+      margin-bottom: 1.5rem;
+      border-bottom: 3px solid #7C3AED;
+      padding-bottom: 0.8rem;
+    }
+
+    .collapse-item {
+      margin-bottom: 1.5rem;
+    }
+
+    .collapse-summary {
+      font-weight: bold;
+      color: #7C3AED;
+      font-size: 1.1rem;
+      cursor: pointer;
+      padding: 12px;
+      background: #f8f7ff;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      transition: all 0.3s ease;
+    }
+
+    .collapse-summary:hover {
+      background: #f0e7ff;
+      transform: translateX(-4px);
+    }
+
+    .collapse-content {
+      padding: 12px 0 12px 20px;
+      margin-top: 8px;
+      border-right: 3px solid #7C3AED;
+    }
+
+    .collapse-content ul {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+    }
+
+    .collapse-content li {
+      margin: 12px 0;
+      padding: 12px;
+      background: #f8f7ff;
+      border-radius: 8px;
+      transition: all 0.3s ease;
+    }
+
+    .collapse-content li:hover {
+      background: #f0e7ff;
+      transform: translateX(-4px);
+    }
+
+    .collapse-content strong {
+      color: #2563EB;
+    }
+
+    .collapse-content a {
+      color: #7C3AED;
+      font-weight: 600;
+      text-decoration: none;
+    }
+
+    .collapse-content a:hover {
+      text-decoration: underline;
+      color: #2563EB;
+    }
+
+    .phone-number {
+      background: #2563EB;
+      color: white;
+      padding: 4px 8px;
+      border-radius: 4px;
+      font-weight: bold;
+      font-family: 'Courier New', monospace;
+    }
+
+    .emergency-box {
+      background: linear-gradient(135deg, #ef4444, #dc2626);
+      color: white;
+      padding: 20px;
+      border-radius: 12px;
+      margin-top: 20px;
+    }
+
+    .emergency-box h3 {
+      color: white;
+      margin-bottom: 10px;
+    }
+
+    .table-responsive {
+      overflow-x: auto;
+      margin: 20px 0;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      background: white;
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    table th {
+      background: linear-gradient(135deg, #7C3AED, #2563EB);
+      color: white;
+      padding: 15px;
+      text-align: right;
+      font-weight: bold;
+    }
+
+    table td {
+      padding: 12px 15px;
+      border-bottom: 1px solid #e5e7eb;
+    }
+
+    table tr:hover {
+      background: #f9f5ff;
+    }
+
+    table tr:last-child td {
+      border-bottom: none;
+    }
+
+    .badge {
+      display: inline-block;
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-size: 0.85rem;
+      font-weight: bold;
+      margin: 4px 2px;
+    }
+
+    .badge-hearing {
+      background: #dbeafe;
+      color: #0c4a6e;
+    }
+
+    .badge-mobility {
+      background: #fecdd3;
+      color: #831843;
+    }
+
+    .badge-visual {
+      background: #fef3c7;
+      color: #78350f;
+    }
+
+    .badge-autism {
+      background: #d8d5fe;
+      color: #3730a3;
+    }
+
+    .badge-mental {
+      background: #c7d2fe;
+      color: #312e81;
+    }
+
+    .icon {
+      font-size: 1.3rem;
+    }
+
+    @media (max-width: 768px) {
+      .smart-header h1 {
+        font-size: 1.8rem;
+      }
+
+      main {
+        padding: 1.5rem 3%;
+      }
+
+      .info-section {
+        padding: 1.5rem;
+      }
+
+      .cards-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .filter-section {
+        flex-direction: column;
+      }
+
+      .filter-btn {
+        width: 100%;
+      }
+
+      table {
+        font-size: 0.9rem;
+      }
+
+      table th,
+      table td {
+        padding: 10px;
+      }
+    }
+
+    .quick-contact {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 15px;
+      margin: 20px 0;
+    }
+
+    .contact-box {
+      background: linear-gradient(135deg, #7C3AED, #2563EB);
+      color: white;
+      padding: 15px;
+      border-radius: 12px;
+      text-align: center;
+    }
+
+    .contact-box h4 {
+      margin: 0 0 8px 0;
+      font-size: 0.9rem;
+      opacity: 0.9;
+    }
+
+    .contact-box p {
+      margin: 0;
+      font-size: 1.3rem;
+      font-weight: bold;
+      font-family: 'Courier New', monospace;
+    }
+  </style>
+</head>
+<body>
+  <header class="landing-header">
+    <div class="brand">
+      <span class="brand-icon"><i class="fas fa-hands"></i></span>
+      <span class="brand-text">Sign It</span>
+    </div>
+    <nav class="main-nav">
+      <a class="nav-link" href="index.html">🏠 الرئيسية</a>
+      <a class="nav-link active" href="other-services.html">📋 خدمات أخرى</a>
+      <a class="nav-link" href="dictionary.html">📚 القاموس</a>
+    </nav>
+  </header>
+
+  <main>
+    <div class="smart-header">
+      <h1>🌟 الدليل الشامل لذوي الهمم</h1>
+      <p>ابحث عن كل الخدمات والمراكز والدعم بسهولة حسب نوع الإعاقة</p>
+    </div>
+
+    <!-- قسم الفلاتر -->
+    <div class="filter-section">
+      <button class="filter-btn active" onclick="filterData('all')">
+        <i class="fas fa-list"></i> الكل
+      </button>
+      <button class="filter-btn" onclick="filterData('hearing')">
+        <i class="fas fa-ear"></i> سمعية
+      </button>
+      <button class="filter-btn" onclick="filterData('mobility')">
+        <i class="fas fa-wheelchair"></i> حركية
+      </button>
+      <button class="filter-btn" onclick="filterData('visual')">
+        <i class="fas fa-eye"></i> بصرية
+      </button>
+      <button class="filter-btn" onclick="filterData('autism')">
+        <i class="fas fa-puzzle-piece"></i> توحد وتخاطب
+      </button>
+      <button class="filter-btn" onclick="filterData('mental')">
+        <i class="fas fa-brain"></i> صحة نفسية
+      </button>
+    </div>
+
+    <!-- شبكة البطاقات -->
+    <div id="cards" class="cards-grid"></div>
+
+    <!-- معلومات موسعة -->
+    <div class="info-section">
+      <h2><i class="fas fa-info-circle"></i> معلومات موسعة وشاملة</h2>
+
+      <!-- المستشفيات الحكومية -->
+      <div class="collapse-item">
+        <div class="collapse-summary" onclick="toggleCollapse(this)">
+          <i class="fas fa-chevron-down"></i>
+          <i class="fas fa-hospital"></i> مستشفيات الصحة النفسية الحكومية
+        </div>
+        <div class="collapse-content" style="display: none;">
+          <ul>
+            <li>
+              <strong>📍 مستشفى العباسية (القاهرة):</strong><br>
+              مدينة نصر - القاهرة<br>
+              <span class="phone-number">022616255</span><br>
+              <a href="https://maps.google.com/?q=Abbassia+Mental+Health+Hospital" target="_blank">
+                <i class="fas fa-map-marker-alt"></i> شاهد على الخريطة
+              </a>
+            </li>
+            <li>
+              <strong>📍 مستشفى المعمورة (الإسكندرية):</strong><br>
+              منطقة المعمورة البلد<br>
+              <a href="https://maps.google.com/?q=El+Maamoura+Mental+Health+Hospital" target="_blank">
+                <i class="fas fa-map-marker-alt"></i> شاهد على الخريطة
+              </a>
+            </li>
+            <li>
+              <strong>📍 مستشفى حلوان:</strong><br>
+              منطقة بين العزبتين - حلوان<br>
+              <span class="phone-number">0225547368</span><br>
+              <a href="https://maps.google.com/?q=Helwan+Mental+Health+Hospital" target="_blank">
+                <i class="fas fa-map-marker-alt"></i> شاهد على الخريطة
+              </a>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- مراكز التخاطب والتوحد -->
+      <div class="collapse-item">
+        <div class="collapse-summary" onclick="toggleCollapse(this)">
+          <i class="fas fa-chevron-down"></i>
+          <i class="fas fa-comments"></i> مراكز التخاطب والتوحد
+        </div>
+        <div class="collapse-content" style="display: none;">
+          <ul>
+            <li>
+              <strong>📍 مركز "قدرات" (المهندسين):</strong><br>
+              متخصص في التوحد وتأخر الكلام<br>
+              <span class="phone-number">01001144005</span><br>
+              <a href="https://maps.google.com/?q=Kodrat+Center+Mohandessin" target="_blank">
+                <i class="fas fa-map-marker-alt"></i> شاهد على الخريطة
+              </a>
+            </li>
+            <li>
+              <strong>📍 مركز "خطوة" (مصر الجديدة):</strong><br>
+              غرف حسية وتدريب على أجهزة التواصل البديل<br>
+              <span class="phone-number">01222166601</span><br>
+              <a href="https://maps.google.com/?q=Khatwa+Rehabilitation+Center" target="_blank">
+                <i class="fas fa-map-marker-alt"></i> شاهد على الخريطة
+              </a>
+            </li>
+            <li>
+              <strong>📍 مركز "اللوتس" (مدينة نصر):</strong><br>
+              تخاطب وجلسات تدريب متخصصة<br>
+              <span class="phone-number">01011230481</span><br>
+              <a href="https://maps.google.com/?q=Lotus+Center+Nasr+City" target="_blank">
+                <i class="fas fa-map-marker-alt"></i> شاهد على الخريطة
+              </a>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- جدول المحافظات -->
+      <div class="collapse-item">
+        <div class="collapse-summary" onclick="toggleCollapse(this)">
+          <i class="fas fa-chevron-down"></i>
+          <i class="fas fa-map"></i> مراكز الخدمات في المحافظات
+        </div>
+        <div class="collapse-content" style="display: none;">
+          <div class="table-responsive">
+            <table>
+              <thead>
+                <tr>
+                  <th>المحافظة</th>
+                  <th>المدينة</th>
+                  <th>مركز الشباب / المؤسسة</th>
+                  <th>الخدمات</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><strong>الإسماعيلية</strong></td>
+                  <td>الشيخ زايد / القنطرة</td>
+                  <td>مركز شباب الشيخ زايد</td>
+                  <td>تخاطب، تنمية مهارات</td>
+                </tr>
+                <tr>
+                  <td><strong>الغربية</strong></td>
+                  <td>طنطا / كفر الزيات</td>
+                  <td>مركز شباب طنطا</td>
+                  <td>تخاطب، توحد، صعوبات تعلم</td>
+                </tr>
+                <tr>
+                  <td><strong>قنا</strong></td>
+                  <td>مدينة قنا</td>
+                  <td>مركز شباب العمال</td>
+                  <td>تخاطب، تأهيل</td>
+                </tr>
+                <tr>
+                  <td><strong>الدقهلية</strong></td>
+                  <td>ميت غمر / المنصورة</td>
+                  <td>مركز شباب ميت غمر</td>
+                  <td>تخاطب، تنمية مهارات</td>
+                </tr>
+                <tr>
+                  <td><strong>الأقصر</strong></td>
+                  <td>مدينة الأقصر</td>
+                  <td>مركز شباب نجع الخطباء</td>
+                  <td>صحة نفسية، تخاطب</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- الخطوط الساخنة والطوارئ -->
+      <div class="collapse-item">
+        <div class="collapse-summary" onclick="toggleCollapse(this)">
+          <i class="fas fa-chevron-down"></i>
+          <i class="fas fa-phone"></i> الخطوط الساخنة والطوارئ
+        </div>
+        <div class="collapse-content" style="display: none;">
+          <div class="quick-contact">
+            <div class="contact-box">
+              <h4>💬 الصحة النفسية</h4>
+              <p>16328</p>
+            </div>
+            <div class="contact-box">
+              <h4>🆘 الدعم النفسي الطارئ</h4>
+              <p>08008880700</p>
+            </div>
+            <div class="contact-box">
+              <h4>🚑 علاج الإدمان</h4>
+              <p>16023</p>
+            </div>
+            <div class="contact-box">
+              <h4>📋 بطاقة الخدمات</h4>
+              <p>15044</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- التطبيقات والمنصات الرقمية -->
+      <div class="collapse-item">
+        <div class="collapse-summary" onclick="toggleCollapse(this)">
+          <i class="fas fa-chevron-down"></i>
+          <i class="fas fa-mobile-alt"></i> التطبيقات والمنصات الرقمية
+        </div>
+        <div class="collapse-content" style="display: none;">
+          <ul>
+            <li>
+              <strong>📱 Google Live Transcribe:</strong><br>
+              تحويل الكلام إلى نصوص (للصم وضعاف السمع)<br>
+              <a href="https://play.google.com/store/apps/details?id=com.google.audio.hearing.visualization.accessibility.scribe" target="_blank">
+                <i class="fas fa-download"></i> حمل التطبيق
+              </a>
+            </li>
+            <li>
+              <strong>📱 Ava:</strong><br>
+              تطبيق ترجمة فورية (للاستشارات والاجتماعات)<br>
+              <a href="https://www.ava.me/" target="_blank">
+                <i class="fas fa-globe"></i> زر الموقع
+              </a>
+            </li>
+            <li>
+              <strong>📱 Seeing AI:</strong><br>
+              وصف الصور (للمكفوفين)<br>
+              <a href="https://www.microsoft.com/en-us/ai/seeing-ai" target="_blank">
+                <i class="fas fa-globe"></i> زر الموقع
+              </a>
+            </li>
+            <li>
+              <strong>📱 Be My Eyes:</strong><br>
+              مساعدة بصرية من متطوعين<br>
+              <a href="https://www.bemyeyes.com/" target="_blank">
+                <i class="fas fa-globe"></i> زر الموقع
+              </a>
+            </li>
+            <li>
+              <strong>🎓 Proloquo2Go:</strong><br>
+              أداة تواصل بديلة (AAC)<br>
+              <a href="https://www.assistiveware.com/products/proloquo2go" target="_blank">
+                <i class="fas fa-globe"></i> زر الموقع
+              </a>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- نصائح مهمة -->
+      <div class="emergency-box">
+        <h3><i class="fas fa-lightbulb"></i> نصائح مهمة</h3>
+        <ul style="list-style: none; padding: 0; margin: 0;">
+          <li style="background: none; padding: 0; margin: 8px 0;">
+            ✓ دائماً اسأل عن "بطاقة الخدمات المتكاملة" للحصول على خصومات قانونية
+          </li>
+          <li style="background: none; padding: 0; margin: 8px 0;">
+            ✓ استخدم قائمة التقييمات عند الشراء من المتاجر الإلكترونية
+          </li>
+          <li style="background: none; padding: 0; margin: 8px 0;">
+            ✓ تأكد من اعتماد المركز من وزارة الصحة أو نقابة الأطباء
+          </li>
+          <li style="background: none; padding: 0; margin: 8px 0;">
+            ✓ معظم مراكز الشباب توفر جلسات مجانية تحت إشراف متخصصين
+          </li>
+        </ul>
+      </div>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-content">
+      <p>&copy; 2026 Sign It - Learn Sign Language | جميع الحقوق محفوظة</p>
+    </div>
+  </footer>
+
+  <script>
+    const data = [
+      // سمعية
+      {
+        type: "hearing",
+        name: "مركز صدى الشرق",
+        desc: "سماعات طبية وصيانة متخصصة",
+        icon: "🎧",
+        link: "https://www.google.com/search?q=مركز+صدى+الشرق+السيدة+زينب",
+        map: "https://maps.google.com?q=مركز+صدى+الشرق"
+      },
+      {
+        type: "hearing",
+        name: "Audio Med Egypt",
+        desc: "وكيل سماعات طبية فوناك",
+        icon: "🔊",
+        link: "https://www.google.com/search?q=Audio+Med+Egypt",
+        map: "https://maps.google.com?q=Audio+Med+Egypt"
+      },
+      {
+        type: "hearing",
+        name: "مركز الأمل - إمبابة",
+        desc: "تخصص طنين وتفسير كلام",
+        icon: "👂",
+        link: "https://www.google.com/search?q=مركز+الأمل+للسماعات+إمبابة",
+        map: "https://maps.google.com?q=مركز+الأمل+إمبابة"
+      },
+      // حركية
+      {
+        type: "mobility",
+        name: "شارع القصر العيني",
+        desc: "أجهزة طبية وكراسي متحركة",
+        icon: "♿",
+        link: "https://www.google.com/search?q=شارع+القصر+العيني+كراسي+متحركة",
+        map: "https://maps.google.com?q=القصر+العيني+القاهرة"
+      },
+      {
+        type: "mobility",
+        name: "شركة إيجيكت (EGTC) - المعادي",
+        desc: "كراسي متطورة ورافعات",
+        icon: "🦽",
+        link: "https://www.google.com/search?q=EGTC+Medical+Supplies+Egypt",
+        map: "https://maps.google.com?q=EGTC+Medical+Maadi"
+      },
+      {
+        type: "mobility",
+        name: "آدم ميديكال - فيصل",
+        desc: "متخصصين في الكراسي الخفيفة",
+        icon: "🛠️",
+        link: "https://www.google.com/search?q=Adam+Medical+Egypt+Faisal",
+        map: "https://maps.google.com?q=Adam+Medical+Faisal"
+      },
+      // بصرية
+      {
+        type: "visual",
+        name: "جمعية النور والأمل",
+        desc: "تعليم المكفوفين وأدوات برايل",
+        icon: "👁️",
+        link: "https://www.google.com/search?q=جمعية+النور+والأمل+مصر",
+        map: "https://maps.google.com?q=جمعية+النور+والأمل"
+      },
+      {
+        type: "visual",
+        name: "مؤسسة بصيرة - المعادي",
+        desc: "تأهيل وأجهزة مساعدة",
+        icon: "🔍",
+        link: "https://www.google.com/search?q=مؤسسة+بصيرة+المعادي",
+        map: "https://maps.google.com?q=مؤسسة+بصيرة"
+      },
+      {
+        type: "visual",
+        name: "مكتبة طه حسين - الإسكندرية",
+        desc: "أجهزة طباعة وقراءة برايل",
+        icon: "📚",
+        link: "https://www.google.com/search?q=مكتبة+طه+حسين+الإسكندرية",
+        map: "https://maps.google.com?q=مكتبة+طه+حسين"
+      },
+      // توحد وتخاطب
+      {
+        type: "autism",
+        name: "مركز اللوتس - مدينة نصر",
+        desc: "تخاطب وتوحد وجلسات تدريب",
+        icon: "🧩",
+        link: "https://www.google.com/search?q=مركز+اللوتس+للتخاطب+مدينة+نصر",
+        phone: "01011230481"
+      },
+      {
+        type: "autism",
+        name: "مؤسسة التقدم - المعادي",
+        desc: "دعم تكنولوجي وتأهيلي",
+        icon: "💡",
+        link: "https://www.google.com/search?q=The+Advance+Society+Autism+Egypt",
+        phone: "Contact center"
+      },
+      {
+        type: "autism",
+        name: "مركز كيور سنتر - الإسكندرية",
+        desc: "تخاطب وصعوبات تعلم",
+        icon: "🎯",
+        link: "https://www.google.com/search?q=Cure+Center+Alexandria+Egypt",
+        phone: "01221956535"
+      },
+      // صحة نفسية
+      {
+        type: "mental",
+        name: "مستشفى العباسية",
+        desc: "صحة نفسية - حكومية",
+        icon: "🏥",
+        link: "https://www.google.com/search?q=مستشفى+العباسية+القاهرة",
+        phone: "022616255"
+      },
+      {
+        type: "mental",
+        name: "مستشفى المعمورة",
+        desc: "صحة نفسية بالإسكندرية",
+        icon: "🏛️",
+        link: "https://www.google.com/search?q=مستشفى+المعمورة+الإسكندرية",
+        phone: "Contact center"
+      },
+      {
+        type: "mental",
+        name: "مستشفى إشراق للطب النفسي",
+        desc: "استشارات ودعم خاص",
+        icon: "💼",
+        link: "https://www.google.com/search?q=مستشفى+إشراق+للطب+النفسي",
+        phone: "01003222228"
+      }
+    ];
+
+    function showData(items) {
+      const container = document.getElementById("cards");
+      container.innerHTML = "";
+
+      if (items.length === 0) {
+        container.innerHTML = `
+          <div style="grid-column: 1/-1; text-align: center; padding: 40px;">
+            <p style="font-size: 1.2rem; color: #666;">لا توجد نتائج لهذا الفلتر</p>
+          </div>
+        `;
+        return;
+      }
+
+      items.forEach((item) => {
+        const badge = getBadge(item.type);
+        const typeIcon = getTypeIcon(item.type);
+        
+        container.innerHTML += `
+          <div class="card">
+            <h3>
+              <span class="icon">${item.icon}</span>
+              ${item.name}
+            </h3>
+            <span class="badge ${badge}">${typeIcon}</span>
+            <p>${item.desc}</p>
+            <div class="card-links">
+              <a href="${item.link}" target="_blank">
+                <i class="fas fa-external-link-alt"></i> التفاصيل
+              </a>
+              ${item.phone ? `<a href="tel:${item.phone.replace(/\D/g, '')}"><i class="fas fa-phone"></i> ${item.phone}</a>` : ''}
+              ${item.map ? `<a href="${item.map}" target="_blank"><i class="fas fa-map-marker-alt"></i> على الخريطة</a>` : ''}
+            </div>
+          </div>
+        `;
+      });
+    }
+
+    function filterData(type) {
+      const buttons = document.querySelectorAll(".filter-btn");
+      buttons.forEach((btn) => btn.classList.remove("active"));
+      event.target.classList.add("active");
+
+      if (type === "all") {
+        showData(data);
+      } else {
+        const filtered = data.filter((item) => item.type === type);
+        showData(filtered);
+      }
+    }
+
+    function getBadge(type) {
+      const badges = {
+        hearing: "badge-hearing",
+        mobility: "badge-mobility",
+        visual: "badge-visual",
+        autism: "badge-autism",
+        mental: "badge-mental"
+      };
+      return badges[type] || "";
+    }
+
+    function getTypeIcon(type) {
+      const icons = {
+        hearing: "🎧 سمعية",
+        mobility: "♿ حركية",
+        visual: "👁️ بصرية",
+        autism: "🧩 توحد",
+        mental: "🧠 صحة نفسية"
+      };
+      return icons[type] || "";
+    }
+
+    function toggleCollapse(element) {
+      const content = element.nextElementSibling;
+      const isOpen = content.style.display !== "none";
+      content.style.display = isOpen ? "none" : "block";
+      element.querySelector(".fa-chevron-down").style.transform = isOpen ? "" : "rotate(180deg)";
+    }
+
+    // عرض البيانات عند التحميل
+    showData(data);
+
+    // تفعيل زر الفلتر الأول
+    document.querySelector(".filter-btn").classList.add("active");
+  </script>
+</body>
+</html>
