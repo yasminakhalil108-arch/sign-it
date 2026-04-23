@@ -1,0 +1,1179 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="معمل التعلم الذكي - منصة تعليمية تفاعلية">
+    <meta name="theme-color" content="#6366F1">
+    <title>معمل التعلم - Learning Lab</title>
+    
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="learning-lab-style.css">
+</head>
+<body class="learning-body">
+    <!-- Header/Navbar -->
+    <header class="navbar">
+        <div class="navbar-container">
+            <a href="index.html" class="navbar-brand">
+                <i class="fas fa-home"></i>
+                <span>الصفحة الرئيسية</span>
+            </a>
+            
+            <div class="progress-overview">
+                <span class="progress-label" id="overall-progress-text">
+                    التقدم الإجمالي: <strong>0%</strong>
+                </span>
+                <div class="mini-progress-bar">
+                    <div id="mini-progress-fill" class="mini-progress-fill"></div>
+                </div>
+            </div>
+
+            <button class="navbar-menu-toggle" id="menuToggle" aria-label="القائمة">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+    </header>
+
+    <main class="container">
+        <!-- Topics Selection View -->
+        <section id="topics-view" class="section active">
+            <div class="section-header">
+                <h1 class="section-title">
+                    <i class="fas fa-graduation-cap"></i>
+                    معمل التعلم الذكي
+                </h1>
+                <p class="section-subtitle">اختر الموضوع وابدأ رحلتك التعليمية</p>
+            </div>
+            <div id="topicsGrid" class="levels-grid"></div>
+        </section>
+
+        <!-- Levels View (المستويات داخل الموضوع) -->
+        <section id="levels-view" class="section hidden">
+            <div class="lesson-header">
+                <button class="btn btn-back" onclick="backToTopics()" aria-label="رجوع">
+                    <i class="fas fa-arrow-left"></i>
+                    <span>رجوع للمواضيع</span>
+                </button>
+                <h2 id="currentTopicName" class="lesson-title"></h2>
+            </div>
+            <div id="levelsContainer" class="levels-grid"></div>
+        </section>
+
+        <!-- Lessons View (الدروس داخل المستوى) -->
+        <section id="lessons-view" class="section hidden">
+            <div class="lesson-header">
+                <button class="btn btn-back" onclick="backToLevels()" aria-label="رجوع">
+                    <i class="fas fa-arrow-left"></i>
+                    <span>رجوع للمستويات</span>
+                </button>
+                <div>
+                    <h2 id="levelInfoTitle" class="lesson-title"></h2>
+                    <span id="levelNumberDisplay" class="lesson-counter"></span>
+                </div>
+            </div>
+
+            <div class="lesson-progress">
+                <div class="progress-bar-large">
+                    <div id="lessons-progress-fill" class="progress-fill"></div>
+                </div>
+                <span id="lessons-progress-text" class="progress-text">0%</span>
+            </div>
+
+            <div id="lessonsList" class="lessons-list"></div>
+
+            <div class="quiz-actions">
+                <button id="takeLevelQuizBtn" class="btn btn-primary" onclick="startLevelQuiz()">
+                    <i class="fas fa-clipboard-list"></i>
+                    <span>🏆 اختبار تحديد المستوى</span>
+                </button>
+            </div>
+        </section>
+
+        <!-- Lesson Display View (عرض الدرس والفيديو) -->
+        <section id="lesson-display-view" class="section hidden">
+            <div class="lesson-header">
+                <button class="btn btn-back" onclick="backToLessonsList()" aria-label="رجوع">
+                    <i class="fas fa-arrow-left"></i>
+                    <span>رجوع للدروس</span>
+                </button>
+                <h3 id="lessonTitleDisplay" class="lesson-title"></h3>
+                
+            </div>
+
+            <div class="lesson-progress">
+                <div class="progress-bar-large">
+                    <div id="single-lesson-progress" class="progress-fill"></div>
+                </div>
+                <span id="single-lesson-counter" class="progress-text">درس فارغ</span>
+            </div>
+
+            <div id="content-area" class="content-box">
+                <div id="lessonVideoPlaceholder" class="video-placeholder">
+                    <i class="fas fa-video"></i>
+                    <h3>📹 مكان الفيديو</h3>
+                    <p>هنا سيتم عرض فيديو الدرس</p>
+                    <p style="margin-top: 10px; font-size:0.9rem;">✏️ الدرس فارغ حاليًا – جاهز لإضافة المحتوى</p>
+                </div>
+            </div>
+
+            <div class="lesson-nav">
+                <button id="prevLessonBtn" class="btn btn-secondary" onclick="navigateLesson(-1)" aria-label="درس سابق">
+                    <i class="fas fa-chevron-right"></i>
+                    <span>الدرس السابق</span>
+                </button>
+                <button id="markCompleteBtn" class="btn btn-primary" onclick="markCurrentLessonComplete()" style="background: #10b981;">
+                    <i class="fas fa-check"></i>
+                    <span>✔️ إنهاء الدرس</span>
+                </button>
+                <button id="nextLessonBtn" class="btn btn-primary" onclick="navigateLesson(1)" aria-label="درس التالي">
+                    <span>الدرس التالي</span>
+                    <i class="fas fa-chevron-left"></i>
+                </button>
+            </div>
+        </section>
+
+        <!-- Level Quiz View -->
+        <section id="level-quiz-view" class="section hidden">
+            <div class="quiz-header">
+                <h2 id="quizLevelNum" class="quiz-title">اختبار تحديد المستوى</h2>
+                <p class="quiz-subtitle">أجب على الأسئلة لاختبار فهمك</p>
+            </div>
+
+            <div id="levelQuizQuestions" class="quiz-container" role="form"></div>
+
+            <div class="quiz-actions">
+                <button class="btn btn-secondary" onclick="cancelQuiz()">
+                    <i class="fas fa-times"></i>
+                    <span>إلغاء</span>
+                </button>
+                <button class="btn btn-primary" onclick="submitLevelQuizFinal()">
+                    <i class="fas fa-check"></i>
+                    <span>إرسال الإجابات</span>
+                </button>
+            </div>
+        </section>
+
+        <!-- Quiz Results View -->
+        <section id="quiz-result-view" class="section hidden">
+            <div class="results-container">
+                <div class="results-header">
+                    <h2 id="result-title" class="results-title">نتيجة الاختبار</h2>
+                    <div class="score-circle">
+                        <span id="resultScorePercent" class="score-percentage">0%</span>
+                    </div>
+                </div>
+
+                <div class="results-content">
+                    <p id="resultMessage" class="results-message"></p>
+                </div>
+
+                <div class="results-actions">
+                    <button class="btn btn-secondary" onclick="retryLevelQuiz()">
+                        <i class="fas fa-redo"></i>
+                        <span>إعادة المحاولة</span>
+                    </button>
+                    <button id="continueAfterQuizBtn" class="btn btn-primary" onclick="afterQuizSuccess()">
+                        <span>المتابعة</span>
+                        <i class="fas fa-arrow-left"></i>
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Topic Complete View -->
+        <section id="topic-complete-view" class="section hidden">
+            <div class="complete-container">
+                <div class="celebration">
+                    <div class="celebration-emoji">🏆🎉</div>
+                    <h1 class="celebration-title">تهانينا!</h1>
+                    <p id="topicCompleteMsg" class="celebration-message">
+                        لقد أكملت جميع مستويات الموضوع بنجاح!
+                    </p>
+                </div>
+
+                <div class="completion-actions">
+                    <button class="btn btn-primary" onclick="backToTopics()">
+                        <i class="fas fa-arrow-right"></i>
+                        <span>العودة إلى المواضيع</span>
+                    </button>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Achievement Toast Notification -->
+    <div id="achievement-toast" class="achievement-toast hidden" role="alert" aria-live="polite">
+        <i class="fas fa-trophy"></i>
+        <span id="toast-message">إنجاز جديد!</span>
+    </div>
+
+    <!-- Scripts -->
+    <script>
+
+        // ===== بيانات الحروف العربية =====
+        const ARABIC_LETTERS_DATA = [
+            { letter: "أ", name: "ألف",    video: "حرف الاف.mp4",          desc: "ارفعي يدكِ وافردي إصبع السبابة للأعلى (مثل رقم 1)." },
+            { letter: "ب", name: "باء",    video: "حرف الباء.mp4",          desc: "كف اليد مفتوح للأمام، والأصابع متلاصقة، مع ثني الإبهام لداخل الكف." },
+            { letter: "ت", name: "تاء",    video: "حرف التاء.mp4",          desc: "ارفعي إصبعين فقط (السبابة والوسطى) للأعلى (لتمثيل النقطتين)." },
+            { letter: "ث", name: "ثاء",    video: "حرف الثاء.mp4",          desc: "ارفعي ثلاثة أصابع (السبابة، الوسطى، والبنصر) للأعلى (لتمثيل الثلاث نقاط)." },
+            { letter: "ج", name: "جيم",    video: "حرف الجيم.mp4",          desc: "اصنعي شكل نصف دائرة بكفك، وضعي الإبهام في منتصفها من الداخل." },
+            { letter: "ح", name: "حاء",    video: "حرف الحاء.mp4",          desc: "نفس شكل الجيم (نصف دائرة) لكن الكف فارغ تماماً من الداخل." },
+            { letter: "خ", name: "خاء",    video: "حرف الخاء.mp4",          desc: "نفس شكل الجيم، وضعي الإبهام فوق ظهر الأصابع (ليمثل النقطة فوق الحرف)." },
+            { letter: "د", name: "دال",    video: "حرف الدال.mp4",          desc: "ثني الأصابع الأربعة مع الإبهام لعمل شكل \"نصف قوس\" يشبه حرف الدال." },
+            { letter: "ذ", name: "ذال",    video: "حرف الذال.mp4",          desc: "نفس شكل الدال مع رفع إصبع السبابة للأعلى قليلاً ليمثل النقطة." },
+            { letter: "ر", name: "راء",    video: "حرف الراء.mp4",          desc: "ضم الأصابع مع تقاطع السبابة والوسطى أو ميلهم للأسفل قليلاً." },
+            { letter: "ز", name: "زين",    video: "حرف الزين.mp4",          desc: "نفس شكل الراء مع رفع إصبع السبابة كأنه نقطة." },
+            { letter: "س", name: "سين",    video: "حرف السين.mp4",          desc: "كف اليد مفتوح تماماً والأصابع الأربعة مفرودة للأعلى (مثل أسنان السين)." },
+            { letter: "ش", name: "شين",    video: "حرف الشين.mp4",          desc: "نفس شكل السين لكن الأصابع متباعدة عن بعضها لتمثيل النقاط الثلاث." },
+            { letter: "ص", name: "صاد",    video: "حرف الصاد.mp4",          desc: "اقبضي يدكِ تماماً وضعي الإبهام فوق الأصابع المنطوية." },
+            { letter: "ض", name: "ضاد",    video: "حرف الضاد.mp4",          desc: "نفس قبضة الصاد مع رفع إصبع السبابة للأعلى ليمثل النقطة." },
+            { letter: "ط", name: "طاء",    video: "حرف الطاء.mp4",          desc: "افردي الأصابع الثلاثة (الوسطى، البنصر، الخنصر) واجمعي الإبهام مع السبابة (مثل شكل حرف الـ P)." },
+            { letter: "ظ", name: "ظاء",    video: "حرف الظاء.mp4",          desc: "نفس شكل الطاء مع رفع إصبع إضافي للنقطة." },
+            { letter: "ع", name: "عين",    video: "حرف العين.mp4",          desc: "افتحي إصبعي السبابة والوسطى على شكل حرف V مائل جانباً." },
+            { letter: "غ", name: "غين",    video: "حرف الغين.mp4",          desc: "نفس شكل العين مع وضع الإبهام فوق السبابة (نقطة)." },
+            { letter: "ف", name: "فاء",    video: "حرف الفاء.mp4",          desc: "تلامس طرف الإبهام مع السبابة لعمل دائرة، وباقي الأصابع مفرودة للأعلى." },
+            { letter: "ق", name: "قاف",    video: "حرف القاف.mp4",          desc: "نفس شكل الفاء مع ثني الأصابع المفرودة قليلاً لتمثيل النقطتين." },
+            { letter: "ك", name: "كاف",    video: "حرف الكاف.mp4",          desc: "كف اليد مفتوح ومثني من عند مفاصل الأصابع بزاوية قائمة." },
+            { letter: "ل", name: "لام",    video: "حرف اللام.mp4",          desc: "افردي الإبهام والسبابة ليشكلا زاوية قائمة (يشبه حرف L)." },
+            { letter: "م", name: "ميم",    video: "حرف الميم.mp4",          desc: "اقبضي يدكِ تماماً ووجهي باطن الكف للأسفل أو للأمام." },
+            { letter: "ن", name: "نون",    video: "حرف النون.mp4",          desc: "ارفعي السبابة فقط مع ثنيها قليلاً للداخل (مثل شكل الوعاء)." },
+            { letter: "هـ", name: "هاء",   video: "حرف الهاء.mp4",          desc: "اجمعي أطراف الأصابع الخمسة ليلتقوا جميعاً في نقطة واحدة." },
+            { letter: "و", name: "واو",    video: "حرف الواو.mp4",          desc: "ضم الأصابع مع ثني الكف بشكل دائري يمثل حرف الواو." },
+            { letter: "ي", name: "ياء",    video: "حرف الياء.mp4",          desc: "مد إصبع الخنصر (الأصغر) فقط لأسفل، مع ضم باقي الأصابع." },
+            { letter: "ة", name: "تاء مربوطة", video: "حرف التاء المربوطه.mp4", desc: "نفس إشارة التاء لكن مع إغلاق الأصابع قليلاً لتمثيل شكل التاء المربوطة." },
+            { letter: "ال", name: "ال التعريف", video: "حرف ال.mp4",              desc: "الإشارة لحرفي الألف واللام معاً بحركة متواصلة." },
+        ];
+
+        // ===== بيانات الأرقام =====
+        const NUMBERS_DATA = [
+            { num: 1,  video: "1.mp4",  desc: "ارفعي إصبع السبابة فقط (باطن الكف مواجهاً لكِ)." },
+            { num: 2,  video: "2.mp4",  desc: "ارفعي السبابة والوسطى (علامة V) (باطن الكف مواجهاً لكِ)." },
+            { num: 3,  video: "3.mp4",  desc: "ارفعي الإبهام والسبابة والوسطى (باطن الكف مواجهاً لكِ)." },
+            { num: 4,  video: "4.mp4",  desc: "ارفعي الأصابع الأربعة (بدون الإبهام) (باطن الكف مواجهاً لكِ)." },
+            { num: 5,  video: "5.mp4",  desc: "ارفعي الأصابع الخمسة جميعاً وكفك مفتوح (باطن الكف مواجهاً لكِ)." },
+            { num: 6,  video: "6.mp4",  desc: "ارفعي أصابعك الخمسة واثني إصبع الخنصر (الأصغر) فقط (باطن الكف للخارج)." },
+            { num: 7,  video: "7.mp4",  desc: "ارفعي أصابعك الخمسة واثني إصبع البنصر فقط (باطن الكف للخارج)." },
+            { num: 8,  video: "8.mp4",  desc: "ارفعي أصابعك الخمسة واثني إصبع الوسطى فقط (باطن الكف للخارج)." },
+            { num: 9,  video: "9.mp4",  desc: "ارفعي أصابعك الخمسة واثني إصبع السبابة فقط (باطن الكف للخارج)." },
+            { num: 10, video: "10.mp4", desc: "ارفعي إصبع الإبهام للأعلى وهزيه يميناً ويساراً قليلاً." },
+            { num: 11, video: "11.mp4", desc: "انطري إصبع السبابة للأعلى مرتين (الكف مواجه لكِ)." },
+            { num: 12, video: "12.mp4", desc: "انطري إصبعي السبابة والوسطى للأعلى مرتين." },
+            { num: 13, video: "13.mp4", desc: "انطري الإبهام والسبابة والوسطى للأعلى مرتين." },
+            { num: 14, video: "14.mp4", desc: "انطري الأصابع الأربعة للأعلى مرتين." },
+            { num: 15, video: "15.mp4", desc: "انطري الأصابع الخمسة (فتحة وقبلة سريعة) مرتين." },
+            { num: 16, video: "16.mp4", desc: "حركة الرقم (6) مع هز اليد هزة خفيفة للخارج." },
+            { num: 17, video: "17.mp4", desc: "حركة الرقم (7) مع هز اليد هزة خفيفة للخارج." },
+            { num: 18, video: "18.mp4", desc: "حركة الرقم (8) مع هز اليد هزة خفيفة للخارج." },
+            { num: 19, video: "19.mp4", desc: "حركة الرقم (9) مع هز اليد هزة خفيفة للخارج." },
+            { num: 20, video: "20.mp4", desc: "ضعي طرف الإبهام والسبابة معاً وافتحيهما وأغلقهما مرتين (مثل منقار الطير)، وباقي الأصابع مطوية." },
+        ];
+
+        // ===== أسئلة اختبارات المستوى للألوان =====
+        const COLOR_LEVEL_QUIZZES = {
+            1: [
+                { text: "أين يوضع إصبع السبابة عند الإشارة للون \"الأحمر\"؟", options: ["على الأنف.", "على الشفة السفلية.", "على الجبهة."], correct: 1 },
+                { text: "ما هي الحركة الصحيحة للون \"الأصفر\"؟", options: ["هز اليد بالقرب من الرأس.", "وضع اليد على العين.", "التصفيق."], correct: 0 },
+                { text: "كيف يتم تمثيل اللون \"الأخضر\"؟", options: ["بلمس الرقبة.", "استخدام حرف \"خ\"", "وضع اليد فوق الرأس."], correct: 1 },
+                { text: "ما هي حركة اللون \"الأبيض\"؟", options: ["سحب الكف المفتوح من الصدر للخارج", "رفع السبابة", "قبضة اليد"], correct: 0 },
+            ],
+            2: [
+                { text: "كيف يتم تمثيل اللون \"الأسود\"؟", options: ["تمرير السبابة فوق الحاجب", "وضع اليد على العين", "هز اليد"], correct: 0 },
+                { text: "ما هي حركة اللون \"البرتقالي\"؟", options: ["فتح وغلق اليد أمام الفم مرتين", "لمس الأنف", "التصفيق"], correct: 0 },
+                { text: "كيف يتم تمثيل اللون \"الأزرق\"؟", options: ["حركة متموجة بسيطة", "رفع السبابة", "قبضة اليد"], correct: 0 },
+                { text: "ما هي حركة اللون \"الأصفر\" مرة أخرى؟", options: ["هز اليد بالقرب من الرأس", "لمس الشفاه", "فتح الكف"], correct: 0 },
+                { text: "كيف يتم تمثيل اللون \"الأخضر\"؟", options: ["بلمس الرقبة.", "استخدام حرف \"خ\"", "وضع اليد فوق الرأس."], correct: 1 },
+            ]
+        };
+
+        // ===== أسئلة الامتحان النهائي للألوان (جميع الأسئلة) =====
+        const COLOR_FINAL_QUESTIONS = [
+            { text: "أين يوضع إصبع السبابة عند الإشارة للون \"الأحمر\"؟", options: ["على الأنف.", "على الشفة السفلية.", "على الجبهة."], correct: 1 },
+            { text: "ما هي الحركة الصحيحة للون \"الأصفر\"؟", options: ["هز اليد بالقرب من الرأس.", "وضع اليد على العين.", "التصفيق."], correct: 0 },
+            { text: "كيف يتم تمثيل اللون \"الأخضر\"؟", options: ["بلمس الرقبة.", "استخدام حرف \"خ\"", "وضع اليد فوق الرأس."], correct: 1 },
+            { text: "ما هي حركة اللون \"الأبيض\"؟", options: ["سحب الكف المفتوح من الصدر للخارج", "رفع السبابة", "قبضة اليد"], correct: 0 },
+            { text: "كيف يتم تمثيل اللون \"الأسود\"؟", options: ["تمرير السبابة فوق الحاجب", "وضع اليد على العين", "هز اليد"], correct: 0 },
+            { text: "ما هي حركة اللون \"البرتقالي\"؟", options: ["فتح وغلق اليد أمام الفم مرتين", "لمس الأنف", "التصفيق"], correct: 0 },
+            { text: "كيف يتم تمثيل اللون \"الأزرق\"؟", options: ["حركة متموجة بسيطة", "رفع السبابة", "قبضة اليد"], correct: 0 },
+            { text: "ما هي حركة اللون \"الأخضر الفاتح\"؟", options: ["إشارة أخضر ثم فتح الكف", "هز الرأس", "لمس الأنف"], correct: 0 },
+            { text: "كيف يتم تمثيل اللون \"الليموني\"؟", options: ["إشارة أخضر وحركة عصر ليمون", "رفع السبابة", "قبضة اليد"], correct: 0 },
+        ];
+
+        // ===== بناء دروس الحروف (كل مستوى 5 حروف) =====
+        function buildLetterLevels() {
+            const levels = [];
+            const lettersPerLevel = 5;
+            const totalGroups = Math.ceil(ARABIC_LETTERS_DATA.length / lettersPerLevel);
+            
+            for (let g = 0; g < totalGroups; g++) {
+                const startIdx = g * lettersPerLevel;
+                const endIdx = Math.min(startIdx + lettersPerLevel, ARABIC_LETTERS_DATA.length);
+                const lessons = [];
+                let lessonId = 0;
+                
+                for (let i = startIdx; i < endIdx; i++) {
+                    const d = ARABIC_LETTERS_DATA[i];
+                    lessons.push({
+                        id: lessonId++,
+                        title: `حرف ${d.letter} (${d.name})`,
+                        video: d.video,
+                        desc: d.desc,
+                        completed: false
+                    });
+                }
+                
+                levels.push({
+                    levelNum: g + 1,
+                    lessons: lessons,
+                    tips: g === 0 ? `<div class="letter-tips-box" style="background:#eef2ff;border-radius:1rem;padding:1rem 1.2rem;margin-bottom:1rem;border:1px solid #818cf8;">
+                        <b>💡 نصائح مهمة:</b><br>
+                        <b>اليد اليمنى:</b> دائماً استخدمي يدكِ اليمنى في الإشارة (إلا إذا كنتِ عسراء).<br>
+                        <b>ثبات اليد:</b> حافظي على ثبات يدكِ أمام صدركِ أو كتفكِ أثناء الإشارة.<br>
+                        <b>السرعة:</b> ابدئي ببطء حتى تحفظي شكل كل حرف، ثم حاولي تهجئة اسمكِ.
+                    </div>` : ''
+                });
+            }
+            return levels;
+        }
+
+        // ===== بناء دروس الأرقام (كل مستوى 5 أرقام) =====
+        function buildNumberLevels() {
+            const levels = [];
+            const numbersPerLevel = 5;
+            const totalGroups = Math.ceil(NUMBERS_DATA.length / numbersPerLevel);
+            
+            for (let g = 0; g < totalGroups; g++) {
+                const startIdx = g * numbersPerLevel;
+                const endIdx = Math.min(startIdx + numbersPerLevel, NUMBERS_DATA.length);
+                const lessons = [];
+                let lessonId = 0;
+                
+                for (let i = startIdx; i < endIdx; i++) {
+                    const d = NUMBERS_DATA[i];
+                    lessons.push({
+                        id: lessonId++,
+                        title: `الرقم ${d.num}`,
+                        video: d.video,
+                        desc: d.desc,
+                        completed: false
+                    });
+                }
+                
+                levels.push({
+                    levelNum: g + 1,
+                    lessons: lessons,
+                    tips: ''
+                });
+            }
+            return levels;
+        }
+
+        const letterLevels = buildLetterLevels();
+        const numberLevels = buildNumberLevels();
+
+        // ===== بيانات الطوارئ (Emergency) =====
+        const EMERGENCY_DATA = [
+            { title: "الشرطة", video: "الشرطه.mp4", desc: "وضع كف اليد فوق الجبهة (بشكل عرضي) وكأنها 'الكاب' الخاص بضابط الشرطة." },
+            { title: "المطافي", video: "المطافي.mp4", desc: "حركة اليد كأنكِ تمسكين 'خرطوم مياه' وتوجهينه للأعلى وللأسفل مع تحريك الجسم قليلاً." },
+            { title: "الإسعاف", video: "اسعاف.mp4", desc: "وضع اليد فوق الرأس مع تدوير السبابة (محاكاة لضوء وصوت السارينة)." },
+            { title: "اتصل بالطبيب", video: "اتصل بالطبيب.mp4", desc: "حركة اليد بشكل الهاتف عند الأذن، ثم وضع إصبعين على معصم اليد الأخرى (كأنكِ تقيسين النبض)." },
+            { title: "توقف", video: "توقف.mp4", desc: "فرد كف اليد للأمام في مواجهة الشخص (إشارة 'قف' العالمية)." },
+            { title: "خطر", video: "خطر.mp4", desc: "هز قبضة اليد أو السبابة مع تعبير وجه حذر جداً، وأحياناً تقاطع اليدين أمام الصدر." },
+            { title: "أين أنا؟", video: "أين أنا؟.mp4", desc: "الإشارة للصدر (أنا) ثم فرد الكفين للأعلى مع هز الكتفين (أين؟)." },
+            { title: "عاوز مساعدة؟", video: "عاوز مساعدة؟.mp4", desc: "وضع كف يد تحت مرفق اليد الأخرى ورفعها للأعلى (كأنك تسند شخصاً)، مع نظرة استفهام." }
+        ];
+
+        // ===== بيانات التحيات والردود (Social) =====
+        const SOCIAL_DATA = [
+            { title: "صباح الخير", video: "صباح الخير.mp4", desc: "لمس الجبهة باليد ثم فتح الكفين للأمام (كأن الشمس تشرق)." },
+            { title: "مساء الخير", video: "مساء الخير.mp4", desc: "وضع اليد أمام الوجه ثم إنزالها لأسفل مع غلق الكف (كأن الدنيا أظلمت)." },
+            { title: "تصبح على خير", video: "تصبح على خير.mp4", desc: "وضع الكفين ملتصقين تحت الخد (وضعية النوم) ثم إشارة 'مساء الخير'." },
+            { title: "عامل إيه؟", video: "عامل إيه؟.mp4", desc: "تحريك الكفين وهما مفتوحان للأعلى بشكل دائري بسيط مع نظرة تساؤل." },
+            { title: "أنا كويس الحمد لله", video: "أنا كويس الحمد لله.mp4", desc: "الإشارة للصدر (أنا)، ثم علامة 'لايك' بالإبهام (كويس)، ثم رفع السبابة للسماء (الحمد لله)." },
+            { title: "مرحباً (أهلاً)", video: "مرحبا .mp4", desc: "تحريك اليد من عند الجبهة للخارج بترحيب، أو فتح الذراعين قليلاً." },
+            { title: "مع السلامة", video: "مع السلامة.mp4", desc: "التلويح باليد يميناً ويساراً (الإشارة المعتادة للوداع)." }
+        ];
+
+        // ===== بيانات الحيوانات (Animals) =====
+        const ANIMALS_DATA = [
+            { title: "دجاجة", video: "دجاجه.mp4", desc: "وضع السبابة والإبهام عند الفم كأنها 'منقار' مع تحريكهما." },
+            { title: "كلب", video: "كلب.mp4", desc: "تقريب الأصابع من بعضها وهز اليد للأسفل (محاكاة لحركة يد الكلب أو نباحه)." },
+            { title: "قطة", video: "قطة.mp4", desc: "تحريك الأصابع بجانب الفم كأنكِ ترسمين 'شارب القطة'." },
+            { title: "حمامة", video: "حمامة.mp4", desc: "تشبيك الإبهامين وتحريك الكفين كأنها أجنحة تطير." },
+            { title: "خنزير", video: "خنزير.mp4", desc: "وضع قبضة اليد عند الأنف وتدويرها بشكل دائري." },
+            { title: "سلحفاة", video: "سلحفاة.mp4", desc: "وضع كف يد فوق ظهر اليد الأخرى مع تحريك الإبهام (كأنه رأس يخرج من القوقعة)." },
+            { title: "ثعبان", video: "ثعبان.mp4", desc: "تحريك اليد بشكل متعرج للأمام مع جعل الأصابع تشبه رأس الثعبان." },
+            { title: "جمل", video: "جمل.mp4", desc: "تحريك قبضة اليد للأمام وللخلف ببطء (محاكاة لمشية الجمل أو سنامه)." },
+            { title: "تمساح", video: "تمساح.mp4", desc: "وضع الكفين فوق بعضهما وفتحهما وإغلاقهما بشكل طولي (محاكاة لفك التمساح الضخم)." },
+            { title: "فيل", video: "فيل.mp4", desc: "مد الذراع من الأنف (محاكاة لخرطوم الفيل) وتحريكها." },
+            { title: "زرافة", video: "زرافة.mp4", desc: "رفع اليد للأعلى بشكل طويل وتمديد الرقبة." },
+            { title: "وحيد القرن", video: "وحيد القرن.mp4", desc: "وضع قبضة اليد على الأنف مع إخراج الإبهام للأعلى (قرن)." }
+        ];
+
+        // ===== بيانات الطعام (Food) - جديدة =====
+        const FOOD_DATA = {
+            level1: [
+                { title: "شبعان", video: "شبعان.mp4", desc: "وضع حافة اليد العرضية تحت الذقن (كأن الطعام وصل للحلق)." },
+                { title: "جعان", video: "جعان.mp4", desc: "تحريك باطن الكف على المعدة بشكل دائري مع تعبير وجه يدل على الاحتياج." },
+                { title: "بطبخ", video: "بطبخ.mp4", desc: "حركة تقليب 'المعلقة' في وعاء وهمي." }
+            ],
+            level2: [
+                { title: "رز", video: "رز.mp4", desc: "حك إصبعين ببعضهما (السبابة والإبهام) بالقرب من الفم (كأنها حبوب صغيرة)." },
+                { title: "مكرونة", video: "مكرونه.mp4", desc: "تحريك اليدين بعيداً عن بعضهما مع لفهما (كأنكِ تسحبين خيوط الإسباجيتي)." }
+            ],
+            level3: [
+                { title: "فراخ", video: "فراخ.mp4", desc: "(نفس إشارة الدجاجة) المنقار عند الفم." },
+                { title: "لحمة", video: "لحمه.mp4", desc: "شد جلد باطن اليد أو منطقة 'بين الإبهام والسبابة' باليد الأخرى." },
+                { title: "سمك", video: "سمك.mp4", desc: "تحريك الكف يميناً ويساراً بشكل متموج (محاكاة لسباحة السمكة)." }
+            ],
+            level4: [
+                { title: "رز", video: "رز.mp4", desc: "حك إصبعين ببعضهما بالقرب من الفم." },
+                { title: "ورق عنب", video: "ورق عنب.mp4", desc: "حركة 'لف' الأصابع فوق بعضها بمهارة، ثم الإشارة للون الأخضر." }
+            ]
+        };
+
+        // ===== بيانات الأماكن (Places) - جديدة =====
+        const PLACES_DATA = {
+            level1: [
+                { title: "المسجد", video: "المسجد.mp4", desc: "وضع اليدين فوق بعضهما بشكل مثلث (كأنه قبة أو مئذنة) مع الإشارة بسبابة اليد اليمنى للسماء." },
+                { title: "الكنيسة", video: "الكنيسه.mp4", desc: "رسم شكل 'الصليب' في الهواء أمام الصدر أو بلمس الجبهة ثم الصدر والكتفين." }
+            ],
+            level2: [
+                { title: "السوق", video: "السوق.mp4", desc: "تحريك اليدين وكأنكِ تدفعين شيئاً أو تتبضعين مع حركة دائرية لليدين تدل على الازدحام." },
+                { title: "السوبر ماركت", video: "السوبر ماركت.mp4", desc: "إشارة 'الشراء' (تحريك الإبهام على الأصابع) ثم حركة دفع 'عربة التسوق' للأمام." }
+            ],
+            level3: [
+                { title: "السجل المدني", video: "السجل المدني.mp4", desc: "إشارة 'الكتابة' على كف اليد، ثم وضع اليد على الجبهة (إشارة حكومي/شرطة) لتدل على جهة رسمية." },
+                { title: "فلسطين حرة", video: "فلسطين حره.mp4", desc: "فلسطين: وضع الكف على الرأس مع لف الأصابع (كأنها الكوفية). حرة: تقاطع المعصمين (كأنهما مقيدان) ثم فتحهما بقوة للخارج (إشارة التحرر)." }
+            ]
+        };
+
+        // ===== بيانات السوشيال ميديا (Social Media) - جديدة =====
+        const SOCIAL_MEDIA_DATA = {
+            level1: [
+                { title: "واتساب", video: "واتساب.mp4", desc: "استخدام الإبهام والخنصر (شكل التليفون) مع تحريك اليد للأمام (إشارة الإرسال)." },
+                { title: "فيسبوك", video: "فيسبوك.mp4", desc: "رسم حرف F باليد، أو وضع الكف أمام الوجه كأنه 'كتاب' يُفتح." },
+                { title: "انستجرام", video: "انستجرام.mp4", desc: "حركة 'التصوير' بالكاميرا، ثم رسم مربع صغير في الهواء." }
+            ],
+            level2: [
+                { title: "انترنت", video: "انترنت.mp4", desc: "تشبيك أصابع اليدين مع تحريكهما بشكل متموج." },
+                { title: "واي فاي", video: "واي فاي.mp4", desc: "رفع اليد للأعلى مع فتح وغلق الأصابع (كأنها تبث إشارات)." }
+            ],
+            level3: [
+                { title: "تليفزيون", video: "تلفزيون.mp4", desc: "رسم مربع كبير في الهواء بالسبابتين، ثم توجيه الأصابع نحو العينين (مشاهدة)." },
+                { title: "راديو", video: "راديو.mp4", desc: "وضع اليد على الأذن مع تحريك الأصابع كأنكِ تضبطين 'تردد' أو مفتاح الصوت." }
+            ],
+            level4: [
+                { title: "رسالة", video: "رساله.mp4", desc: "تحريك السبابة والإبهام من الفم للخارج كأنكِ تسحبين 'ورقة' أو خيطاً." },
+                { title: "هتكلم فيديو", video: "هتكلم فيديو.mp4", desc: "إشارة 'التليفون' التقليدية، متبوعة بوضع الكفين متواجهين وتحريكهما كأنكِ ترى الشخص في شاشة." }
+            ]
+        };
+
+        // ===== اختبارات المستويات للموضوعات الجديدة =====
+        const FOOD_LEVEL_QUIZZES = {
+            1: [
+                { text: "كيف تشير إلى 'جعان'؟", options: ["تحريك باطن الكف على المعدة", "وضع اليد تحت الذقن", "لمس الأنف"], correct: 0 },
+                { text: "ما هي إشارة 'شبعان'؟", options: ["حافة اليد تحت الذقن", "تحريك المعدة", "رفع اليد"], correct: 0 },
+                { text: "كيف تمثل 'بطبخ'؟", options: ["حركة تقليب المعلقة", "هز اليد", "لمس الرأس"], correct: 0 }
+            ],
+            2: [
+                { text: "كيف تشير إلى 'رز'؟", options: ["حك إصبعين بالقرب من الفم", "هز اليد", "لمس الأنف"], correct: 0 },
+                { text: "ما هي إشارة 'مكرونة'؟", options: ["تحريك اليدين بعيداً مع لفهما", "قبضة اليد", "رفع السبابة"], correct: 0 }
+            ],
+            3: [
+                { text: "كيف تمثل 'فراخ'؟", options: ["المنقار عند الفم", "هز اليد", "لمس الرأس"], correct: 0 },
+                { text: "ما هي إشارة 'لحمة'؟", options: ["شد جلد باطن اليد", "هز اليد", "رفع الإبهام"], correct: 0 },
+                { text: "كيف تشير إلى 'سمك'؟", options: ["تحريك الكف بشكل متموج", "قبضة اليد", "لمس العين"], correct: 0 }
+            ],
+            4: [
+                { text: "ما هي إشارة 'ورق عنب'؟", options: ["حركة لف الأصابع ثم الإشارة للأخضر", "هز اليد", "لمس الأنف"], correct: 0 }
+            ]
+        };
+
+        const PLACES_LEVEL_QUIZZES = {
+            1: [
+                { text: "كيف تشير إلى 'المسجد'؟", options: ["يدين مثلث مع سبابة للسماء", "رسم صليب", "هز اليد"], correct: 0 },
+                { text: "ما هي إشارة 'الكنيسة'؟", options: ["رسم الصليب في الهواء", "يدين مثلث", "لمس الرأس"], correct: 0 }
+            ],
+            2: [
+                { text: "كيف تمثل 'السوق'؟", options: ["حركة دائرية دفع", "هز اليد", "رفع السبابة"], correct: 0 },
+                { text: "ما هي إشارة 'السوبر ماركت'؟", options: ["حركة شراء ثم دفع عربة", "لمس الأنف", "هز الرأس"], correct: 0 }
+            ],
+            3: [
+                { text: "كيف تشير إلى 'السجل المدني'؟", options: ["كتابة على الكف ثم يد على الجبهة", "هز اليد", "رفع الإبهام"], correct: 0 },
+                { text: "ما هي إشارة 'فلسطين'؟", options: ["الكف على الرأس مع لف الأصابع", "رسم صليب", "هز اليد"], correct: 0 },
+                { text: "كيف تشير إلى 'حرة'؟", options: ["تقاطع المعصمين ثم فتحهما", "قبضة اليد", "لمس الأنف"], correct: 0 }
+            ]
+        };
+
+        const SOCIAL_MEDIA_LEVEL_QUIZZES = {
+            1: [
+                { text: "كيف تشير إلى 'واتساب'؟", options: ["إبهام وخنصر شكل تليفون وتحريك للأمام", "رسم F", "حركة تصوير"], correct: 0 },
+                { text: "ما هي إشارة 'فيسبوك'؟", options: ["رسم حرف F", "تشبيك الأصابع", "رفع اليد"], correct: 0 },
+                { text: "كيف تمثل 'انستجرام'؟", options: ["حركة تصوير ثم مربع", "هز اليد", "لمس الأنف"], correct: 0 }
+            ],
+            2: [
+                { text: "كيف تشير إلى 'انترنت'؟", options: ["تشبيك الأصابع مع تحريك متموج", "رفع اليد", "قبضة"], correct: 0 },
+                { text: "ما هي إشارة 'واي فاي'؟", options: ["رفع اليد مع فتح وغلق الأصابع", "هز الرأس", "لمس العين"], correct: 0 }
+            ],
+            3: [
+                { text: "كيف تمثل 'تليفزيون'؟", options: ["رسم مربع وتوجيه للعينين", "تشبيك الأصابع", "رفع اليد"], correct: 0 },
+                { text: "ما هي إشارة 'راديو'؟", options: ["يد على الأذن مع تحريك الأصابع", "رسم مربع", "هز اليد"], correct: 0 }
+            ],
+            4: [
+                { text: "كيف تشير إلى 'رسالة'؟", options: ["تحريك السبابة والإبهام من الفم للخارج", "هز اليد", "لمس الأنف"], correct: 0 },
+                { text: "ما هي إشارة 'هتكلم فيديو'؟", options: ["تليفون ثم كفين متواجهين", "رسم مربع", "رفع السبابة"], correct: 0 }
+            ]
+        };
+
+        // اختبار شامل يجمع المستوى 1 و 2 للسوشيال ميديا
+        const SOCIAL_MEDIA_COMBINED_QUIZ = [
+            { text: "كيف تشير إلى 'واتساب'؟", options: ["إبهام وخنصر شكل تليفون وتحريك للأمام", "رسم F", "حركة تصوير"], correct: 0 },
+            { text: "ما هي إشارة 'فيسبوك'؟", options: ["رسم حرف F", "تشبيك الأصابع", "رفع اليد"], correct: 0 },
+            { text: "كيف تمثل 'انستجرام'؟", options: ["حركة تصوير ثم مربع", "هز اليد", "لمس الأنف"], correct: 0 },
+            { text: "كيف تشير إلى 'انترنت'؟", options: ["تشبيك الأصابع مع تحريك متموج", "رفع اليد", "قبضة"], correct: 0 },
+            { text: "ما هي إشارة 'واي فاي'؟", options: ["رفع اليد مع فتح وغلق الأصابع", "هز الرأس", "لمس العين"], correct: 0 }
+        ];
+
+        const TOPICS = [
+            { id: 0, name: "الحروف العربية", icon: "fa-book-open", levels: letterLevels },
+            { id: 1, name: "الأرقام", icon: "fa-calculator", levels: numberLevels },
+            { id: 2, name: "العائلة", icon: "fa-users", levels: [
+                { levelNum: 1, lessons: Array(5).fill().map((_,i) => ({ id: i, title: `أفراد العائلة - جزء ${i+1}`, completed: false })) },
+                { levelNum: 2, lessons: Array(5).fill().map((_,i) => ({ id: i, title: `القرابة والأنساب - درس ${i+1}`, completed: false })) }
+            ] },
+            { id: 3, name: "الألوان", icon: "fa-palette", levels: [
+                    { levelNum: 1, lessons: [
+                        { id: 0, title: "اللون - فيديو", video: "اللون.mp4", completed: false },
+                        { id: 1, title: "الأحمر - فيديو", video: "الاحمر.mp4", completed: false },
+                        { id: 2, title: "الأبيض - فيديو", video: "ابيض.mp4", completed: false },
+                        { id: 3, title: "الأسود - فيديو", video: "اسود.mp4", completed: false },
+                        { id: 4, isQuizLesson: true, title: "🧪 امتحان المستوى 1 (اللون/الأحمر/الأبيض/الأسود)", quizGroup: 0, quizType: "color", completed: false }
+                    ] },
+                    { levelNum: 2, lessons: [
+                        { id: 0, title: "الأخضر - فيديو", video: "اخضر.mp4", completed: false },
+                        { id: 1, title: "الأزرق - فيديو", video: "ازرق.mp4", completed: false },
+                        { id: 2, title: "الأصفر - فيديو", video: "اصفر.mp4", completed: false },
+                        { id: 3, title: "البرتقالي - فيديو", video: "برتقالي.mp4", completed: false },
+                        { id: 4, isQuizLesson: true, title: "🧪 امتحان المستوى 2 (الأخضر/الأزرق/الأصفر/البرتقالي)", quizGroup: 1, quizType: "color", completed: false }
+                    ] },
+                    { levelNum: 3, lessons: [
+                        { id: 0, title: "ليموني - فيديو", video: "ليموني.mp4", completed: false },
+                        { id: 1, title: "أخضر فاتح - فيديو", video: "اخضر فاتح.mp4", completed: false },
+                        { id: 2, title: "أخضر غامق - فيديو", video: "اخضر غامق.mp4", completed: false },
+                        { id: 3, isQuizLesson: true, title: "🧪 امتحان المستوى 3 (ليموني/أخضر فاتح/أخضر غامق)", quizGroup: 2, quizType: "color", completed: false },
+                        { id: 4, title: "🎉 تهانينا! لقد أنهيت جميع دروس الألوان بنجاح!", isCongrats: true, completed: false }
+                    ] }
+                ] },
+            { id: 4, name: "الطعام", icon: "fa-utensils", levels: [
+                { levelNum: 1, lessons: FOOD_DATA.level1.map((item, idx) => ({ id: idx, title: item.title, video: item.video, desc: item.desc, completed: false })) },
+                { levelNum: 2, lessons: FOOD_DATA.level2.map((item, idx) => ({ id: idx+3, title: item.title, video: item.video, desc: item.desc, completed: false })) },
+                { levelNum: 3, lessons: FOOD_DATA.level3.map((item, idx) => ({ id: idx+5, title: item.title, video: item.video, desc: item.desc, completed: false })) },
+                { levelNum: 4, lessons: FOOD_DATA.level4.map((item, idx) => ({ id: idx+8, title: item.title, video: item.video, desc: item.desc, completed: false })) }
+            ] },
+            { id: 5, name: "الحيوانات", icon: "fa-paw", levels: [
+                { levelNum: 1, lessons: ANIMALS_DATA.slice(0,4).map((a, idx) => ({ id: idx, title: a.title, video: a.video, desc: a.desc, completed: false })) },
+                { levelNum: 2, lessons: ANIMALS_DATA.slice(4,8).map((a, idx) => ({ id: idx+4, title: a.title, video: a.video, desc: a.desc, completed: false })) },
+                { levelNum: 3, lessons: ANIMALS_DATA.slice(8,12).map((a, idx) => ({ id: idx+8, title: a.title, video: a.video, desc: a.desc, completed: false })) }
+            ] },
+            { id: 6, name: "أيام الأسبوع", icon: "fa-calendar-week", levels: [
+                { levelNum: 1, lessons: Array(5).fill().map((_,i) => ({ id: i, title: `أيام الأسبوع - درس ${i+1}`, completed: false })) }
+            ] },
+            { id: 7, name: "السوشيال ميديا", icon: "fa-hashtag", levels: [
+                { levelNum: 1, lessons: SOCIAL_MEDIA_DATA.level1.map((item, idx) => ({ id: idx, title: item.title, video: item.video, desc: item.desc, completed: false })) },
+                { levelNum: 2, lessons: SOCIAL_MEDIA_DATA.level2.map((item, idx) => ({ id: idx+3, title: item.title, video: item.video, desc: item.desc, completed: false })) },
+                { levelNum: 3, lessons: SOCIAL_MEDIA_DATA.level3.map((item, idx) => ({ id: idx+5, title: item.title, video: item.video, desc: item.desc, completed: false })) },
+                { levelNum: 4, lessons: SOCIAL_MEDIA_DATA.level4.map((item, idx) => ({ id: idx+7, title: item.title, video: item.video, desc: item.desc, completed: false })) }
+            ] },
+            { id: 8, name: "التحيات والردود", icon: "fa-hand-peace", levels: [
+                { levelNum: 1, lessons: SOCIAL_DATA.slice(0,4).map((s, idx) => ({ id: idx, title: s.title, video: s.video, desc: s.desc, completed: false })) },
+                { levelNum: 2, lessons: SOCIAL_DATA.slice(4,7).map((s, idx) => ({ id: idx+4, title: s.title, video: s.video, desc: s.desc, completed: false })) }
+            ] },
+            { id: 9, name: "الطوارئ والمساعدات", icon: "fa-ambulance", levels: [
+                { levelNum: 1, lessons: EMERGENCY_DATA.slice(0,4).map((e, idx) => ({ id: idx, title: e.title, video: e.video, desc: e.desc, completed: false })) },
+                { levelNum: 2, lessons: EMERGENCY_DATA.slice(4,8).map((e, idx) => ({ id: idx+4, title: e.title, video: e.video, desc: e.desc, completed: false })) }
+            ] },
+            { id: 10, name: "الأماكن", icon: "fa-location-dot", levels: [
+                { levelNum: 1, lessons: PLACES_DATA.level1.map((item, idx) => ({ id: idx, title: item.title, video: item.video, desc: item.desc, completed: false })) },
+                { levelNum: 2, lessons: PLACES_DATA.level2.map((item, idx) => ({ id: idx+2, title: item.title, video: item.video, desc: item.desc, completed: false })) },
+                { levelNum: 3, lessons: PLACES_DATA.level3.map((item, idx) => ({ id: idx+4, title: item.title, video: item.video, desc: item.desc, completed: false })) }
+            ] }
+        ];
+
+        // ===== تخزين الأسئلة المتراكمة =====
+        let accumulatedLetterQuestions = [];
+        let accumulatedNumberQuestions = [];
+
+        function updateAccumulatedQuestions(topicName, levelIndex) {
+            if (topicName === "الحروف العربية") {
+                const groupIndex = levelIndex;
+                if (LETTER_QUIZ_GROUPS && LETTER_QUIZ_GROUPS[groupIndex]) {
+                    LETTER_QUIZ_GROUPS[groupIndex].forEach(q => {
+                        if (!accumulatedLetterQuestions.some(existing => existing.text === q.text)) {
+                            accumulatedLetterQuestions.push(q);
+                        }
+                    });
+                }
+            } else if (topicName === "الأرقام") {
+                const groupIndex = levelIndex;
+                if (NUMBER_QUIZ_GROUPS && NUMBER_QUIZ_GROUPS[groupIndex]) {
+                    NUMBER_QUIZ_GROUPS[groupIndex].forEach(q => {
+                        if (!accumulatedNumberQuestions.some(existing => existing.text === q.text)) {
+                            accumulatedNumberQuestions.push(q);
+                        }
+                    });
+                }
+            }
+        }
+
+        function generateAccumulatedQuiz(topicName) {
+            if (topicName === "الحروف العربية") {
+                if (accumulatedLetterQuestions.length === 0) {
+                    return [{ text: "قم بإكمال المستوى الأول أولاً", options: ["حسناً"], correct: 0 }];
+                }
+                return [...accumulatedLetterQuestions];
+            } else if (topicName === "الأرقام") {
+                if (accumulatedNumberQuestions.length === 0) {
+                    return [{ text: "قم بإكمال المستوى الأول أولاً", options: ["حسناً"], correct: 0 }];
+                }
+                return [...accumulatedNumberQuestions];
+            }
+            return [];
+        }
+
+        const LETTER_QUIZ_GROUPS = [
+            [
+                { text: "كيف تُشيري لحرف الألف؟", options: ["افردي إصبع السبابة للأعلى", "افتحي الكف بالكامل", "ثني الأصابع للداخل"], correct: 0 },
+                { text: "حرف الباء يُمثَّل بـ:", options: ["إصبعين مرفوعين", "كف مفتوح للأمام مع ثني الإبهام", "قبضة مغلقة"], correct: 1 },
+                { text: "حرف التاء يُشار إليه بـ:", options: ["ثلاثة أصابع مرفوعة", "إصبع واحد", "إصبعي السبابة والوسطى مرفوعين"], correct: 2 },
+            ],
+            [
+                { text: "الفرق بين حرف الجيم والحاء هو:", options: ["موضع الإبهام", "عدد الأصابع", "اتجاه الكف"], correct: 0 },
+                { text: "حرف الدال يشبه:", options: ["نصف قوس", "إشارة V", "كف مفتوح"], correct: 0 },
+                { text: "الفرق بين الدال والذال:", options: ["اتجاه الكف", "رفع السبابة قليلاً في الذال", "عدد الأصابع"], correct: 1 },
+            ],
+        ];
+
+        const NUMBER_QUIZ_GROUPS = [
+            [
+                { text: "كيف تُشيري للرقم 1؟", options: ["رفع السبابة فقط", "رفع إصبعين", "فتح الكف كاملاً"], correct: 0 },
+                { text: "الرقم 2 يُمثَّل بـ:", options: ["إصبع واحد", "السبابة والوسطى (V)", "ثلاثة أصابع"], correct: 1 },
+                { text: "الرقم 3 يُشار إليه بـ:", options: ["4 أصابع", "الإبهام والسبابة والوسطى", "الخنصر والبنصر والوسطى"], correct: 1 },
+            ],
+            [
+                { text: "ما الفرق الأساسي في أرقام 6-10 عن 1-5؟", options: ["باطن الكف للخارج وليس لكِ", "رفع أقل أصابع", "استخدام كلتا اليدين"], correct: 0 },
+                { text: "الرقم 6 يُمثَّل بـ:", options: ["ثني الخنصر مع رفع بقية الأصابع", "رفع إصبع واحد", "ثني جميع الأصابع"], correct: 0 },
+                { text: "في الرقم 8، أي إصبع يُثنى؟", options: ["الإبهام", "البنصر", "الوسطى"], correct: 2 },
+            ],
+        ];
+
+        // ===== باقي دوال النظام =====
+        let progress = JSON.parse(localStorage.getItem("multiLevelProgress")) || { topics: {} };
+
+        function initProgressForTopic(topicId) {
+            if(!progress.topics[topicId]) {
+                progress.topics[topicId] = { levelsUnlocked: [1], completedLevels: [], lessonsCompletion: {} };
+            }
+        }
+
+        function saveProgress() { localStorage.setItem("multiLevelProgress", JSON.stringify(progress)); }
+
+        let currentTopicId = null;
+        let currentLevelIndex = null;
+        let currentLessonIdInLevel = 0;
+        let currentQuizQuestions = [];
+        let isFinalColorQuiz = false;
+
+        function getTopic(tid) { return TOPICS.find(t => t.id === tid); }
+        function getLevel(topicId, levelIndex) { return getTopic(topicId).levels[levelIndex]; }
+
+        function renderTopics() {
+            const grid = document.getElementById("topicsGrid");
+            grid.innerHTML = "";
+            TOPICS.forEach(topic => {
+                initProgressForTopic(topic.id);
+                const completedLevelsCount = progress.topics[topic.id].completedLevels.length;
+                const totalLevels = topic.levels.length;
+                const card = document.createElement("div");
+                card.className = "level-card";
+                card.innerHTML = `
+                    <div class="level-header">
+                        <h2 class="level-title"><i class="${topic.icon}"></i> ${topic.name}</h2>
+                        <span class="level-badge">${completedLevelsCount}/${totalLevels}</span>
+                    </div>
+                    <p>${totalLevels} مستوى</p>
+                `;
+                card.onclick = () => openTopicLevels(topic.id);
+                grid.appendChild(card);
+            });
+            updateOverallProgressBar();
+        }
+
+        function openTopicLevels(topicId) {
+            currentTopicId = topicId;
+            initProgressForTopic(topicId);
+            const topic = getTopic(topicId);
+            document.getElementById("currentTopicName").innerHTML = `<i class="${topic.icon}"></i> ${topic.name}`;
+            const levelsContainer = document.getElementById("levelsContainer");
+            levelsContainer.innerHTML = "";
+            const unlockedLevels = progress.topics[topicId].levelsUnlocked;
+            topic.levels.forEach((lvl, idx) => {
+                const isUnlocked = unlockedLevels.includes(lvl.levelNum);
+                const isCompleted = progress.topics[topicId].completedLevels.includes(lvl.levelNum);
+                const card = document.createElement("div");
+                card.className = "level-card";
+                card.style.opacity = isUnlocked ? "1" : "0.6";
+                card.style.cursor = isUnlocked ? "pointer" : "not-allowed";
+                card.innerHTML = `
+                    <div class="level-header">
+                        <h3 class="level-title">المستوى ${lvl.levelNum}</h3>
+                        <span class="level-badge">${isCompleted ? "✔️" : `${countCompletedLessonsInLevel(topicId, idx)}/${lvl.lessons.length}`}</span>
+                    </div>
+                    <p>📘 ${lvl.lessons.length} دروس</p>
+                `;
+                if(isUnlocked) {
+                    card.onclick = () => openLevelLessons(topicId, idx);
+                }
+                levelsContainer.appendChild(card);
+            });
+            document.getElementById("topics-view").classList.add("hidden");
+            document.getElementById("levels-view").classList.remove("hidden");
+        }
+
+        function countCompletedLessonsInLevel(topicId, levelIndex) {
+            const level = getLevel(topicId, levelIndex);
+            let count = 0;
+            for(let i=0; i<level.lessons.length; i++) {
+                if(progress.topics[topicId]?.lessonsCompletion[`${levelIndex}_${i}`]) count++;
+            }
+            return count;
+        }
+
+        function openLevelLessons(topicId, levelIndex) {
+            currentTopicId = topicId;
+            currentLevelIndex = levelIndex;
+            const level = getLevel(topicId, levelIndex);
+            const topic = getTopic(topicId);
+            document.getElementById("levelInfoTitle").innerHTML = topic.name;
+            document.getElementById("levelNumberDisplay").innerHTML = `المستوى ${level.levelNum}`;
+            const container = document.getElementById("lessonsList");
+            container.innerHTML = "";
+
+            if (level.tips) {
+                container.innerHTML = level.tips;
+            }
+
+            for(let i=0; i<level.lessons.length; i++) {
+                const lesson = level.lessons[i];
+                const isCompleted = progress.topics[topicId].lessonsCompletion[`${levelIndex}_${i}`] || false;
+                const li = document.createElement("div");
+                li.className = "lesson-item";
+                li.innerHTML = `
+                    <span><i class="fas fa-play-circle"></i> ${lesson.title}</span>
+                    <span class="lesson-status ${isCompleted ? 'completed' : ''}">
+                        ${isCompleted ? '<i class="fas fa-check-circle"></i>' : '<i class="far fa-circle"></i>'}
+                    </span>
+                `;
+                li.style.cursor = "pointer";
+                li.onclick = () => openLesson(topicId, levelIndex, i);
+                container.appendChild(li);
+            }
+
+            const quizBtn = document.getElementById("takeLevelQuizBtn");
+            if (topicId === 0 || topicId === 1) {
+                quizBtn.style.display = "flex";
+                const allCompleted = level.lessons.every((_, idx) => progress.topics[topicId].lessonsCompletion[`${levelIndex}_${idx}`]);
+                quizBtn.disabled = !allCompleted;
+                quizBtn.style.opacity = allCompleted ? "1" : "0.5";
+                quizBtn.innerHTML = '<i class="fas fa-clipboard-list"></i> 🏆 اختبار تحديد المستوى';
+            } else if (topicId === 3) {
+                quizBtn.style.display = "flex";
+                const allCompleted = level.lessons.every((_, idx) => progress.topics[topicId].lessonsCompletion[`${levelIndex}_${idx}`]);
+                quizBtn.disabled = !allCompleted;
+                quizBtn.style.opacity = allCompleted ? "1" : "0.5";
+                quizBtn.innerHTML = '<i class="fas fa-palette"></i> 🎨 اختبار المستوى';
+            } else if (topicId === 4 || topicId === 5 || topicId === 7 || topicId === 8 || topicId === 9 || topicId === 10) {
+                quizBtn.style.display = "flex";
+                const allCompleted = level.lessons.every((_, idx) => progress.topics[topicId].lessonsCompletion[`${levelIndex}_${idx}`]);
+                // اختبار شامل للمستوى 2 في السوشيال ميديا (يجمع 1 و 2)
+                if (topicId === 7 && levelIndex === 1) {
+                    quizBtn.disabled = false;
+                    quizBtn.style.opacity = "1";
+                } else {
+                    quizBtn.disabled = !allCompleted;
+                    quizBtn.style.opacity = allCompleted ? "1" : "0.5";
+                }
+                quizBtn.innerHTML = '<i class="fas fa-clipboard-list"></i> 🏆 اختبار المستوى';
+            } else {
+                quizBtn.style.display = "none";
+            }
+            
+            document.getElementById("levels-view").classList.add("hidden");
+            document.getElementById("lessons-view").classList.remove("hidden");
+            updateLessonsProgress(topicId, levelIndex);
+        }
+
+        function updateLessonsProgress(topicId, levelIndex) {
+            const level = getLevel(topicId, levelIndex);
+            const completed = countCompletedLessonsInLevel(topicId, levelIndex);
+            const percent = Math.floor((completed/level.lessons.length)*100);
+            document.getElementById("lessons-progress-fill").style.width = `${percent}%`;
+            document.getElementById("lessons-progress-text").textContent = `${percent}%`;
+        }
+
+        function openLesson(topicId, levelIndex, lessonId) {
+            currentLessonIdInLevel = lessonId;
+            const level = getLevel(topicId, levelIndex);
+            const lesson = level.lessons[lessonId];
+
+            document.getElementById("lessonTitleDisplay").innerHTML = `${lesson.title}`;
+            const container = document.getElementById("lessonVideoPlaceholder");
+
+            let videoHtml = '';
+            const videoSrc = lesson.video;
+            
+            const topic = getTopic(topicId);
+            let muteAlways = false;
+            if (topic && (
+                topic.name === "الألوان" ||
+                topic.name === "الحيوانات"
+            )) {
+                muteAlways = true;
+            }
+
+            if(videoSrc) {
+                videoHtml = `
+                    <video id="lessonVideo" width="100%" height="320" controls style="border-radius: 1rem; background: #000;" ${muteAlways ? 'muted' : ''}>
+                        <source src="${videoSrc}" type="video/mp4">
+                        المتصفح لا يدعم تشغيل الفيديو.
+                    </video>
+                    <h3>📹 فيديو الدرس: ${lesson.title}</h3>
+                `;
+            } else {
+                videoHtml = `
+                    <i class="fas fa-video"></i>
+                    <h3>📹 فيديو الدرس: ${lesson.title}</h3>
+                    <p style="margin-top: 1rem;">🚀 هذا الدرس فارغ حاليًا</p>
+                `;
+            }
+
+            let descText = lesson.desc || '';
+            let desc = descText ? `<div class='lesson-desc' style='margin:1rem 0; background:#eef2ff; border-radius:0.8rem; padding:0.9rem;'>📝 ${descText}</div>` : '';
+
+            let replayBtn = `<button id='replayBtn' class='btn btn-secondary' style='margin-bottom:10px;'>إعادة تشغيل الفيديو</button>`;
+            container.innerHTML = replayBtn + videoHtml + desc;
+
+            const nextBtn = document.getElementById("nextLessonBtn");
+            if(nextBtn) nextBtn.disabled = true;
+
+            setTimeout(() => {
+                const video = document.getElementById("lessonVideo");
+                if(video) {
+                    if (muteAlways) {
+                        video.muted = true;
+                        video.volume = 0;
+                    }
+                    video.currentTime = 0;
+                    video.onended = () => { if(nextBtn) nextBtn.disabled = false; };
+                    if(nextBtn) nextBtn.disabled = !video.ended;
+                }
+                const replay = document.getElementById('replayBtn');
+                if(replay && video) {
+                    replay.onclick = () => { video.currentTime = 0; video.play(); };
+                }
+            }, 300);
+
+            document.getElementById("lessons-view").classList.add("hidden");
+            document.getElementById("lesson-display-view").classList.remove("hidden");
+            document.getElementById("prevLessonBtn").disabled = (lessonId === 0);
+            document.getElementById("nextLessonBtn").disabled = (lessonId === level.lessons.length-1);
+        }
+
+        function markCurrentLessonComplete() {
+            const topicId = currentTopicId;
+            const levelIndex = currentLevelIndex;
+            const lessonId = currentLessonIdInLevel;
+            const key = `${levelIndex}_${lessonId}`;
+            if(!progress.topics[topicId].lessonsCompletion[key]) {
+                progress.topics[topicId].lessonsCompletion[key] = true;
+                saveProgress();
+                alert(`✔️ تم إكمال الدرس`);
+                
+                const level = getLevel(topicId, levelIndex);
+                const allCompleted = level.lessons.every((_, idx) => progress.topics[topicId].lessonsCompletion[`${levelIndex}_${idx}`]);
+                
+                if (allCompleted) {
+                    const topic = getTopic(topicId);
+                    if (topicId === 0 || topicId === 1) {
+                        updateAccumulatedQuestions(topic.name, levelIndex);
+                    }
+                    
+                    const currentLevelNum = level.levelNum;
+                    if(!progress.topics[topicId].completedLevels.includes(currentLevelNum)) {
+                        progress.topics[topicId].completedLevels.push(currentLevelNum);
+                        const nextLevelNum = currentLevelNum + 1;
+                        const nextLevelExists = topic.levels.some(lvl => lvl.levelNum === nextLevelNum);
+                        if(nextLevelExists && !progress.topics[topicId].levelsUnlocked.includes(nextLevelNum)) {
+                            progress.topics[topicId].levelsUnlocked.push(nextLevelNum);
+                        }
+                        saveProgress();
+                        
+                        if (topicId === 3 && progress.topics[topicId].completedLevels.length === topic.levels.length) {
+                            setTimeout(() => {
+                                alert("🎉 تهانينا! لقد أكملت جميع مستويات الألوان. الامتحان النهائي جاهز!");
+                                isFinalColorQuiz = true;
+                                currentQuizQuestions = [...COLOR_FINAL_QUESTIONS];
+                                document.getElementById("quizLevelNum").innerHTML = `🎨 الامتحان النهائي - الألوان`;
+                                const container = document.getElementById("levelQuizQuestions");
+                                container.innerHTML = "";
+                                currentQuizQuestions.forEach((q, idx) => {
+                                    const div = document.createElement("div");
+                                    div.className = "quiz-question";
+                                    div.innerHTML = `<p><strong>${idx+1}. ${q.text}</strong></p>`;
+                                    q.options.forEach((opt, optIdx) => {
+                                        div.innerHTML += `<label class="quiz-option"><input type="radio" name="q${idx}" value="${optIdx}"> ${opt}</label>`;
+                                    });
+                                    container.appendChild(div);
+                                });
+                                document.getElementById("lessons-view").classList.add("hidden");
+                                document.getElementById("level-quiz-view").classList.remove("hidden");
+                            }, 500);
+                            return;
+                        }
+                    }
+                }
+            }
+            backToLessonsList();
+        }
+
+        function navigateLesson(delta) {
+            const level = getLevel(currentTopicId, currentLevelIndex);
+            const newId = currentLessonIdInLevel + delta;
+            if(newId >= 0 && newId < level.lessons.length) {
+                openLesson(currentTopicId, currentLevelIndex, newId);
+            }
+        }
+
+        function backToLessonsList() {
+            document.getElementById("lesson-display-view").classList.add("hidden");
+            openLevelLessons(currentTopicId, currentLevelIndex);
+        }
+
+        function startLevelQuiz() {
+            const topic = getTopic(currentTopicId);
+            
+            if (topic.id === 0) {
+                currentQuizQuestions = generateAccumulatedQuiz("الحروف العربية");
+                if (currentQuizQuestions.length === 0 || (currentQuizQuestions.length === 1 && currentQuizQuestions[0].text === "قم بإكمال المستوى الأول أولاً")) {
+                    alert("⚠️ يجب إكمال المستوى الأول أولاً لتجميع الأسئلة");
+                    return;
+                }
+                document.getElementById("quizLevelNum").innerHTML = `📝 اختبار تحديد المستوى - ${topic.name}`;
+                isFinalColorQuiz = false;
+            } else if (topic.id === 1) {
+                currentQuizQuestions = generateAccumulatedQuiz("الأرقام");
+                if (currentQuizQuestions.length === 0 || (currentQuizQuestions.length === 1 && currentQuizQuestions[0].text === "قم بإكمال المستوى الأول أولاً")) {
+                    alert("⚠️ يجب إكمال المستوى الأول أولاً لتجميع الأسئلة");
+                    return;
+                }
+                document.getElementById("quizLevelNum").innerHTML = `📝 اختبار تحديد المستوى - ${topic.name}`;
+                isFinalColorQuiz = false;
+            } else if (topic.id === 3) {
+                const levelNum = currentLevelIndex + 1;
+                currentQuizQuestions = COLOR_LEVEL_QUIZZES[levelNum] || COLOR_LEVEL_QUIZZES[1];
+                document.getElementById("quizLevelNum").innerHTML = `🎨 اختبار المستوى ${levelNum} - الألوان`;
+                isFinalColorQuiz = false;
+            } else if (topic.id === 4) {
+                const levelNum = currentLevelIndex + 1;
+                currentQuizQuestions = FOOD_LEVEL_QUIZZES[levelNum] || FOOD_LEVEL_QUIZZES[1];
+                document.getElementById("quizLevelNum").innerHTML = `🍽️ اختبار المستوى ${levelNum} - الطعام`;
+                isFinalColorQuiz = false;
+            } else if (topic.id === 5) {
+                const levelNum = currentLevelIndex + 1;
+                currentQuizQuestions = ANIMALS_LEVEL_QUIZZES[levelNum] || ANIMALS_LEVEL_QUIZZES[1];
+                document.getElementById("quizLevelNum").innerHTML = `🐾 اختبار المستوى ${levelNum} - الحيوانات`;
+                isFinalColorQuiz = false;
+            } else if (topic.id === 7) {
+                const levelNum = currentLevelIndex + 1;
+                if (levelNum === 2) {
+                    // اختبار شامل للمستوى 1 و 2
+                    currentQuizQuestions = SOCIAL_MEDIA_COMBINED_QUIZ;
+                    document.getElementById("quizLevelNum").innerHTML = `📱 اختبار شامل - المستويين 1 و 2 (السوشيال ميديا)`;
+                } else {
+                    currentQuizQuestions = SOCIAL_MEDIA_LEVEL_QUIZZES[levelNum] || SOCIAL_MEDIA_LEVEL_QUIZZES[1];
+                    document.getElementById("quizLevelNum").innerHTML = `📱 اختبار المستوى ${levelNum} - السوشيال ميديا`;
+                }
+                isFinalColorQuiz = false;
+            } else if (topic.id === 8) {
+                const levelNum = currentLevelIndex + 1;
+                currentQuizQuestions = SOCIAL_LEVEL_QUIZZES[levelNum] || SOCIAL_LEVEL_QUIZZES[1];
+                document.getElementById("quizLevelNum").innerHTML = `🤝 اختبار المستوى ${levelNum} - التحيات والردود`;
+                isFinalColorQuiz = false;
+            } else if (topic.id === 9) {
+                const levelNum = currentLevelIndex + 1;
+                currentQuizQuestions = EMERGENCY_LEVEL_QUIZZES[levelNum] || EMERGENCY_LEVEL_QUIZZES[1];
+                document.getElementById("quizLevelNum").innerHTML = `🚨 اختبار المستوى ${levelNum} - الطوارئ والمساعدات`;
+                isFinalColorQuiz = false;
+            } else if (topic.id === 10) {
+                const levelNum = currentLevelIndex + 1;
+                currentQuizQuestions = PLACES_LEVEL_QUIZZES[levelNum] || PLACES_LEVEL_QUIZZES[1];
+                document.getElementById("quizLevelNum").innerHTML = `📍 اختبار المستوى ${levelNum} - الأماكن`;
+                isFinalColorQuiz = false;
+            } else {
+                alert("⚠️ لا يوجد اختبار لهذا الموضوع");
+                return;
+            }
+            
+            const container = document.getElementById("levelQuizQuestions");
+            container.innerHTML = "";
+            currentQuizQuestions.forEach((q, idx) => {
+                const div = document.createElement("div");
+                div.className = "quiz-question";
+                div.innerHTML = `<p><strong>${idx+1}. ${q.text}</strong></p>`;
+                q.options.forEach((opt, optIdx) => {
+                    div.innerHTML += `<label class="quiz-option"><input type="radio" name="q${idx}" value="${optIdx}"> ${opt}</label>`;
+                });
+                container.appendChild(div);
+            });
+            document.getElementById("lessons-view").classList.add("hidden");
+            document.getElementById("level-quiz-view").classList.remove("hidden");
+        }
+
+        function submitLevelQuizFinal() {
+            let score = 0;
+            for(let i=0; i<currentQuizQuestions.length; i++) {
+                const selected = document.querySelector(`#levelQuizQuestions input[name="q${i}"]:checked`);
+                if(selected && parseInt(selected.value) === currentQuizQuestions[i].correct) score++;
+            }
+            const percent = Math.floor((score/currentQuizQuestions.length)*100);
+            document.getElementById("resultScorePercent").innerHTML = `${percent}%`;
+            const passed = percent >= 70;
+            const msg = passed ? `🎉 نجحت! حصلتِ على ${score}/${currentQuizQuestions.length} (${percent}%)` : `📖 لم تنجح، حصلتِ على ${score}/${currentQuizQuestions.length} (${percent}%). أعد المحاولة بعد المراجعة.`;
+            document.getElementById("resultMessage").innerHTML = msg;
+            
+            if (isFinalColorQuiz && passed) {
+                document.getElementById("continueAfterQuizBtn").innerHTML = "🏆 إكمال الموضوع";
+            } else {
+                document.getElementById("continueAfterQuizBtn").innerHTML = "المتابعة";
+            }
+            
+            document.getElementById("level-quiz-view").classList.add("hidden");
+            document.getElementById("quiz-result-view").classList.remove("hidden");
+        }
+
+        function afterQuizSuccess() {
+            document.getElementById("quiz-result-view").classList.add("hidden");
+            if (isFinalColorQuiz) {
+                const topic = getTopic(currentTopicId);
+                document.getElementById("topicCompleteMsg").innerHTML = `🎨🎉 لقد أتممت جميع مستويات ${topic.name} واجتزت الامتحان النهائي بنجاح! 🎉🎨`;
+                document.getElementById("topic-complete-view").classList.remove("hidden");
+                document.getElementById("levels-view").classList.add("hidden");
+                document.getElementById("lessons-view").classList.add("hidden");
+            } else {
+                backToLevels();
+            }
+        }
+
+        function retryLevelQuiz() {
+            cancelQuiz();
+            startLevelQuiz();
+        }
+
+        function cancelQuiz() {
+            document.getElementById("level-quiz-view").classList.add("hidden");
+            backToLevels();
+        }
+
+        function backToLevels() {
+            document.getElementById("lessons-view").classList.add("hidden");
+            document.getElementById("quiz-result-view").classList.add("hidden");
+            document.getElementById("level-quiz-view").classList.add("hidden");
+            openTopicLevels(currentTopicId);
+        }
+
+        function backToTopics() {
+            document.getElementById("levels-view").classList.add("hidden");
+            document.getElementById("topic-complete-view").classList.add("hidden");
+            document.getElementById("topics-view").classList.remove("hidden");
+            renderTopics();
+        }
+
+        function updateOverallProgressBar() {
+            let totalLessons = 0;
+            let completedLessons = 0;
+            TOPICS.forEach(topic => {
+                initProgressForTopic(topic.id);
+                topic.levels.forEach((level, lIdx) => {
+                    level.lessons.forEach((_, lessonIdx) => {
+                        totalLessons++;
+                        if(progress.topics[topic.id]?.lessonsCompletion[`${lIdx}_${lessonIdx}`]) completedLessons++;
+                    });
+                });
+            });
+            const percent = totalLessons === 0 ? 0 : Math.floor((completedLessons/totalLessons)*100);
+            document.getElementById("overall-progress-text").innerHTML = `التقدم الإجمالي: <strong>${percent}%</strong>`;
+            document.getElementById("mini-progress-fill").style.width = `${percent}%`;
+        }
+
+        // إضافة الاختبارات الناقصة
+        const ANIMALS_LEVEL_QUIZZES = {
+            1: [
+                { text: "كيف تشير إلى 'دجاجة'؟", options: ["السبابة والإبهام عند الفم كمنقار", "هز اليد", "رفع الإصبع"], correct: 0 },
+                { text: "ما هي حركة 'كلب'؟", options: ["تقريب الأصابع وهز اليد للأسفل", "وضع اليد على الرأس", "التصفيق"], correct: 0 },
+                { text: "كيف تمثل 'قطة'؟", options: ["تحريك الأصابع بجانب الفم", "رفع اليد", "لمس الأنف"], correct: 0 }
+            ],
+            2: [
+                { text: "ما هي إشارة 'حمامة'؟", options: ["تشبيك الإبهامين وتحريك الكفين", "هز اليد", "رفع السبابة"], correct: 0 },
+                { text: "كيف تشير إلى 'خنزير'؟", options: ["قبضة اليد عند الأنف وتدويرها", "لمس الجبهة", "هز اليد"], correct: 0 },
+                { text: "ما هي حركة 'سلحفاة'؟", options: ["كف فوق الأخرى وتحريك الإبهام", "هز اليد", "رفع الأصابع"], correct: 0 }
+            ],
+            3: [
+                { text: "كيف تمثل 'ثعبان'؟", options: ["حركة متعرجة للأمام", "هز اليد", "قبضة اليد"], correct: 0 },
+                { text: "ما هي إشارة 'جمل'؟", options: ["تحريك قبضة اليد ببطء للأمام", "رفع اليد", "لمس الأنف"], correct: 0 },
+                { text: "كيف تشير إلى 'تمساح'؟", options: ["الكفين فوق بعض وفتح وإغلاق", "هز اليد", "التصفيق"], correct: 0 }
+            ]
+        };
+
+        const EMERGENCY_LEVEL_QUIZZES = {
+            1: [
+                { text: "كيف يتم الإشارة إلى 'الشرطة'؟", options: ["وضع كف اليد فوق الجبهة", "هز اليد", "التصفيق"], correct: 0 },
+                { text: "ما هي حركة 'المطافي'؟", options: ["حركة كأنك تمسك خرطوم مياه", "رفع اليد للأعلى", "وضع اليد على الفم"], correct: 0 },
+                { text: "كيف يتم تمثيل 'الإسعاف'؟", options: ["وضع اليد فوق الرأس مع تدوير السبابة", "لمس الأنف", "قبضة اليد"], correct: 0 },
+                { text: "ماذا تعني إشارة 'توقف'؟", options: ["فرد كف اليد للأمام", "رفع السبابة", "قبضة اليد"], correct: 0 }
+            ],
+            2: [
+                { text: "كيف تشير إلى 'خطر'؟", options: ["هز قبضة اليد بتعبير حذر", "التلويح", "وضع اليد على العين"], correct: 0 },
+                { text: "ما هي حركة 'اتصل بالطبيب'؟", options: ["حركة الهاتف ثم قياس النبض", "لمس الرأس", "رفع اليدين"], correct: 0 },
+                { text: "كيف تسأل 'أين أنا؟'", options: ["الإشارة للصدر ثم فرد الكفين للأعلى", "هز الكتفين فقط", "وضع اليد على الجبهة"], correct: 0 },
+                { text: "ما هي إشارة 'عاوز مساعدة؟'", options: ["كف تحت مرفق اليد الأخرى ورفعها", "هز اليد", "لمس الأنف"], correct: 0 }
+            ]
+        };
+
+        const SOCIAL_LEVEL_QUIZZES = {
+            1: [
+                { text: "كيف تُشير إلى 'صباح الخير'؟", options: ["لمس الجبهة ثم فتح الكفين للأمام", "التلويح", "وضع اليد على الفم"], correct: 0 },
+                { text: "ما هي حركة 'مساء الخير'؟", options: ["وضع اليد أمام الوجه ثم إنزالها", "رفع اليد للأعلى", "هز الرأس"], correct: 0 },
+                { text: "كيف تقول 'تصبح على خير'؟", options: ["كفين تحت الخد ثم إشارة مساء الخير", "التصفيق", "لمس العين"], correct: 0 },
+                { text: "كيف تسأل 'عامل إيه؟'", options: ["تحريك الكفين المفتوحين بشكل دائري", "رفع السبابة", "وضع اليد على الصدر"], correct: 0 }
+            ],
+            2: [
+                { text: "كيف تقول 'أنا كويس الحمد لله'؟", options: ["إشارة للصدر ثم لايك ثم رفع السبابة", "هز اليد", "لمس الأنف"], correct: 0 },
+                { text: "ما هي إشارة 'مرحباً'؟", options: ["تحريك اليد من الجبهة للخارج", "قبضة اليد", "التصفيق"], correct: 0 },
+                { text: "ما هي إشارة 'مع السلامة'؟", options: ["التلويح باليد يميناً ويساراً", "رفع السبابة", "وضع اليد على الفم"], correct: 0 }
+            ]
+        };
+
+        const style = document.createElement('style');
+        style.innerHTML = `
+            .lessons-list { display: flex; flex-direction: column; gap: 12px; margin-bottom: 20px; }
+            .lesson-item { background: #f8fafc; border-radius: 1rem; padding: 0.8rem 1.2rem; display: flex; justify-content: space-between; align-items: center; border: 1px solid #e2e8f0; cursor: pointer; }
+            .lesson-item:hover { background: #eef2ff; border-color: #818cf8; }
+            .lesson-status { font-size: 1.2rem; }
+            .lesson-status.completed { color: #10b981; }
+        `;
+        document.head.appendChild(style);
+
+        renderTopics();
+    </script>
+</body>
+</html>
