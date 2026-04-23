@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SOS - الطوارئ</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #f0f4ff 0%, #fef3c7 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .sos-container {
+            background: #fff;
+            border-radius: 22px;
+            box-shadow: 0 8px 32px rgba(99,102,241,0.13), 0 1.5px 8px rgba(124,60,237,0.08);
+            max-width: 850px;
+            width: 100%;
+            overflow: hidden;
+            animation: slideUp 0.5s ease;
+            border: 1.5px solid #e0e7ff;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .sos-header {
+            background: linear-gradient(135deg, #7C3AED 0%, #2563EB 100%);
+            color: #fff;
+            padding: 2.2rem 2rem 1.5rem 2rem;
+            text-align: center;
+            box-shadow: 0 2px 12px rgba(99,102,241,0.09);
+            border-bottom: 2px solid #e0e7ff;
+        }
+
+        .sos-header h1 {
+            font-size: 2.7rem;
+            margin-bottom: 0.5rem;
+            letter-spacing: 1px;
+            font-weight: 900;
+            text-shadow: 0 2px 12px rgba(124,60,237,0.10);
+        }
+
+        .sos-header p {
+            font-size: 1.13rem;
+            opacity: 0.97;
+            font-weight: 500;
+            letter-spacing: 0.2px;
+        }
+
+        .sos-content {
+            padding: 2.2rem 2.2rem 1.5rem 2.2rem;
+        }
+
+        .emergency-numbers {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2.2rem;
+        }
+
+        /* تنسيق عام لبطاقات الطوارئ */
+        .emergency-card {
+            background: linear-gradient(135deg, #f0f9ff 0%, #fff 100%);
+            border: 1.5px solid #e0e7ff;
+            border-radius: 15px;
+            padding: 1.5rem 1.2rem;
+            text-align: center;
+            transition: all 0.22s cubic-bezier(.4,0,.2,1);
+            cursor: pointer;
+            box-shadow: 0 2px 8px rgba(99,102,241,0.07);
+        }
+
+        .emergency-card:hover {
+            transform: translateY(-7px) scale(1.03);
+            box-shadow: 0 8px 24px rgba(99,102,241,0.13);
+            border-color: #7C3AED;
+        }
+
+        /* ألوان مختلفة حسب نوع الخدمة */
+        .emergency-card.ambulance {
+            border-top: 4px solid #EF4444;
+            background: linear-gradient(135deg, #fef2f2 0%, #fff 100%);
+        }
+        .emergency-card.police {
+            border-top: 4px solid #2563EB;
+            background: linear-gradient(135deg, #e0e7ff 0%, #fff 100%);
+        }
+        .emergency-card.fire {
+            border-top: 4px solid #F59E0B;
+            background: linear-gradient(135deg, #fef3c7 0%, #fff 100%);
+        }
+        .emergency-card.helpline {
+            border-top: 4px solid #10B981;
+            background: linear-gradient(135deg, #ecfdf5 0%, #fff 100%);
+        }
+        /* تنسيقات البطاقات الإضافية */
+        .emergency-card.tourism {
+            border-top: 4px solid #8B5CF6;
+            background: linear-gradient(135deg, #ede9fe 0%, #fff 100%);
+        }
+        .emergency-card.traffic {
+            border-top: 4px solid #F97316;
+            background: linear-gradient(135deg, #fff7ed 0%, #fff 100%);
+        }
+
+        /* تنسيق الأيقونات داخل البطاقات */
+        .emergency-icon, .card-icon {
+            font-size: 2.7rem;
+            margin-bottom: 1rem;
+            filter: drop-shadow(0 2px 8px rgba(124,60,237,0.07));
+        }
+
+        /* تنسيق اسم الخدمة */
+        .emergency-name, .card-title {
+            font-size: 1.13rem;
+            font-weight: 700;
+            color: #1e293b;
+            margin-bottom: 0.5rem;
+            letter-spacing: 0.2px;
+        }
+
+        /* تنسيق رقم الطوارئ */
+        .emergency-number, .number-display {
+            font-size: 1.7rem;
+            font-weight: bold;
+            color: #7C3AED;
+            margin-bottom: 1rem;
+            font-family: 'Tajawal', 'Segoe UI', Arial, sans-serif;
+            letter-spacing: 1.5px;
+        }
+
+        /* تنسيق وصف الخدمة */
+        .card-description {
+            font-size: 0.85rem;
+            color: #64748b;
+            margin-bottom: 1rem;
+            line-height: 1.4;
+        }
+
+        /* تنسيق زر الاتصال */
+        .call-btn {
+            background: linear-gradient(135deg, #7C3AED 0%, #2563EB 100%);
+            color: #fff;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 9px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.22s cubic-bezier(.4,0,.2,1);
+            text-decoration: none;
+            display: inline-block;
+            font-weight: 700;
+            box-shadow: 0 2px 8px rgba(99,102,241,0.09);
+        }
+
+        .call-btn:hover {
+            transform: scale(1.07);
+            box-shadow: 0 6px 18px rgba(99,102,241,0.16);
+            background: linear-gradient(135deg, #2563EB 0%, #7C3AED 100%);
+        }
+
+        /* تنسيق أقسام المعلومات */
+        .info-section {
+            background: linear-gradient(135deg, #f0f9ff 0%, #f3f4f6 100%);
+            border-radius: 13px;
+            padding: 1.3rem 1.2rem 1.1rem 1.2rem;
+            margin-top: 1.5rem;
+            box-shadow: 0 1.5px 8px rgba(124,60,237,0.04);
+            border: 1.2px solid #e0e7ff;
+        }
+
+        .info-section h3 {
+            color: #7C3AED;
+            margin-bottom: 1rem;
+            font-size: 1.15rem;
+            font-weight: 800;
+        }
+
+        .info-section ul {
+            list-style: none;
+            padding-right: 1rem;
+        }
+
+        .info-section li {
+            padding: 0.5rem 0;
+            color: #475569;
+            border-bottom: 1px solid #e0e7ff;
+            font-size: 1.01rem;
+        }
+
+        .info-section li:last-child {
+            border-bottom: none;
+        }
+
+        /* تنسيق زر الرجوع */
+        .back-btn {
+            display: inline-block;
+            background: linear-gradient(135deg, #7C3AED 0%, #2563EB 100%);
+            color: #fff;
+            padding: 0.75rem 1.5rem;
+            border-radius: 9px;
+            text-decoration: none;
+            margin-top: 1.5rem;
+            transition: all 0.22s cubic-bezier(.4,0,.2,1);
+            font-weight: 700;
+            box-shadow: 0 2px 8px rgba(99,102,241,0.09);
+        }
+
+        .back-btn:hover {
+            background: linear-gradient(135deg, #2563EB 0%, #7C3AED 100%);
+            transform: translateX(-3px) scale(1.04);
+            box-shadow: 0 6px 18px rgba(99,102,241,0.16);
+        }
+
+        /* تنسيق الشاشات الصغيرة */
+        @media (max-width: 600px) {
+            .sos-header h1 {
+                font-size: 2rem;
+            }
+
+            .sos-header, .sos-content {
+                padding: 1.5rem;
+            }
+
+            .emergency-numbers {
+                grid-template-columns: 1fr;
+            }
+
+            .emergency-number, .number-display {
+                font-size: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="sos-container">
+        <div class="sos-header">
+            <h1>🚨 SOS</h1>
+            <p>أرقام الطوارئ المهمة - اضغط للاتصال</p>
+        </div>
+
+        <div class="sos-content">
+            <div class="emergency-numbers">
+                <!-- بطاقة الإسعاف -->
+                <div class="emergency-card ambulance">
+                    <div class="emergency-icon">🚑</div>
+                    <div class="emergency-name">الإسعاف</div>
+                    <div class="emergency-number">123</div>
+                    <a href="tel:123" class="call-btn">📞 اتصل الآن</a>
+                </div>
+
+                <!-- بطاقة الشرطة -->
+                <div class="emergency-card police">
+                    <div class="emergency-icon">🚓</div>
+                    <div class="emergency-name">الشرطة</div>
+                    <div class="emergency-number">122</div>
+                    <a href="tel:122" class="call-btn">📞 اتصل الآن</a>
+                </div>
+
+                <!-- بطاقة الحماية المدنية -->
+                <div class="emergency-card fire">
+                    <div class="emergency-icon">🔥</div>
+                    <div class="emergency-name">الحماية المدنية</div>
+                    <div class="emergency-number">180</div>
+                    <a href="tel:180" class="call-btn">📞 اتصل الآن</a>
+                </div>
+
+                <!-- بطاقة الدعم النفسي -->
+                <div class="emergency-card helpline">
+                    <div class="emergency-icon">🧠</div>
+                    <div class="emergency-name">الدعم النفسي</div>
+                    <div class="emergency-number">16328</div>
+                    <a href="tel:16328" class="call-btn">📞 اتصل الآن</a>
+                </div>
+
+                <!-- المطافئ (الحماية المدنية) -->
+                <div class="emergency-card fire">
+                    <div class="card-icon">🔥</div>
+                    <div class="card-title">المطافئ (الحماية المدنية)</div>
+                    <div class="card-description">لحالات الحريق والإنقاذ</div>
+                    <div class="number-display">180</div>
+                    <button class="call-btn" onclick="callNumber('180')">☎️ اتصل الآن</button>
+                </div>
+
+                <!-- النجدة العامة -->
+                <div class="emergency-card police">
+                    <div class="card-icon">🚨</div>
+                    <div class="card-title">النجدة العامة</div>
+                    <div class="card-description">للبلاغات العامة والطوارئ</div>
+                    <div class="number-display">122</div>
+                    <button class="call-btn" onclick="callNumber('122')">☎️ اتصل الآن</button>
+                </div>
+
+                <!-- شرطة السياحة -->
+                <div class="emergency-card tourism">
+                    <div class="card-icon">🎫</div>
+                    <div class="card-title">شرطة السياحة</div>
+                    <div class="card-description">للمشاكل المتعلقة بالسياحة والسائحين</div>
+                    <div class="number-display">126</div>
+                    <button class="call-btn" onclick="callNumber('126')">☎️ اتصل الآن</button>
+                </div>
+
+                <!-- المرور -->
+                <div class="emergency-card traffic">
+                    <div class="card-icon">🚗</div>
+                    <div class="card-title">المرور</div>
+                    <div class="card-description">لحوادث الطرق والمخالفات المرورية</div>
+                    <div class="number-display">128</div>
+                    <button class="call-btn" onclick="callNumber('128')">☎️ اتصل الآن</button>
+                </div>
+
+                <!-- وزارة الصحة -->
+                <div class="emergency-card ambulance">
+                    <div class="card-icon">👩‍⚕️</div>
+                    <div class="card-title">خط وزارة الصحة</div>
+                    <div class="card-description">الاستشارات الطبية والمعلومات الصحية</div>
+                    <div class="number-display">105</div>
+                    <button class="call-btn" onclick="callNumber('105')">☎️ اتصل الآن</button>
+                </div>
+            </div>
+
+            <div class="info-section">
+                <h3>📋 تعليمات مهمة:</h3>
+                <ul>
+                    <li>✅ اختر الخدمة المناسبة وابدأ الاتصال</li>
+                    <li>✅ اهدأ وصف الموقف بوضوح</li>
+                    <li>✅ أخبرهم عن موقعك الدقيق</li>
+                    <li>✅ انتظر الطاقم الطبي أو الشرطة</li>
+                    <li>✅ اطلب جهاز ترجمة لغة إشارة إذا احتجت</li>
+                </ul>
+            </div>
+
+            <div class="info-section">
+                <h3>⚠️ حالات الطوارئ الحمراء:</h3>
+                <ul>
+                    <li>🔴 فقدان الوعي أو الإغماء</li>
+                    <li>🔴 حادثة أو إصابة شديدة</li>
+                    <li>🔴 اختناق أو صعوبة تنفس</li>
+                    <li>🔴 نزيف حاد أو جروح عميقة</li>
+                    <li>🔴 آلام صدرية شديدة</li>
+                    <li>🔴 سموم أو جرعات زائدة</li>
+                </ul>
+            </div>
+
+            <a href="index.html" class="back-btn">← رجوع للصفحة الرئيسية</a>
+        </div>
+    </div>
+
+    <script>
+        // دالة الاتصال برقم الطوارئ
+        function callNumber(number) {
+            window.location.href = 'tel:' + number;
+        }
+    </script>
+</body>
+</html>

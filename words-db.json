@@ -1,0 +1,26 @@
+{
+  "words": {
+    "مرحبا": {
+      "word": "مرحبا",
+      "img": "images/مرحبا.png",
+      "category": "تحيات",
+      "addedBy": "admin",
+      "date": "2026-04-19"
+    },
+    "شكرا": {
+      "word": "شكرا",
+      "img": "images/شكرا.png",
+      "category": "تحيات",
+      "addedBy": "admin",
+      "date": "2026-04-19"
+    },
+    "حب": {
+      "word": "حب",
+      "img": "images/حب.png",
+      "category": "مشاعر",
+      "addedBy": "admin",
+      "date": "2026-04-19"
+    }
+  },
+  "lastUpdated": "2026-04-19"
+}

@@ -1,0 +1,650 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>قاموس لغة الإشارة المصور - Sign It</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    body {
+        background-color: #f0f2f5;
+        font-family: 'Segoe UI', 'Cairo', sans-serif;
+    }
+
+    /* header */
+    .header {
+        background: linear-gradient(135deg, #7C3AED, #2563EB);
+        color: white;
+        padding: 1.5rem 5%;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 1rem;
+        position: sticky;
+        top: 0;
+        z-index: 100;
+    }
+
+    .header h1 {
+        font-size: 1.8rem;
+        margin: 0;
+    }
+
+    .header h1 i {
+        margin-left: 0.5rem;
+    }
+
+    .menu-toggle {
+        background: rgba(255,255,255,0.2);
+        border: none;
+        width: 44px;
+        height: 44px;
+        border-radius: 50%;
+        font-size: 1.3rem;
+        cursor: pointer;
+        color: white;
+        transition: background 0.2s;
+    }
+
+    .menu-toggle:hover {
+        background: rgba(255,255,255,0.3);
+    }
+
+    /* side navigation */
+    .side-nav {
+        position: fixed;
+        top: 0;
+        right: -320px;
+        width: 300px;
+        height: 100vh;
+        background: white;
+        box-shadow: -4px 0 20px rgba(0,0,0,0.1);
+        z-index: 1000;
+        padding: 2rem 1.5rem;
+        transition: right 0.3s ease;
+        overflow-y: auto;
+    }
+
+    .side-nav.open {
+        right: 0;
+    }
+
+    .close-nav {
+        background: #f1f5f9;
+        border: none;
+        width: 44px;
+        height: 44px;
+        border-radius: 50%;
+        font-size: 1.3rem;
+        cursor: pointer;
+        float: left;
+        margin-bottom: 1.5rem;
+        color: #2563EB;
+        transition: background 0.2s;
+    }
+
+    .close-nav:hover {
+        background: #e2e8f0;
+    }
+
+    .side-nav a {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        padding: 0.75rem 1rem;
+        color: #1e293b;
+        text-decoration: none;
+        border-radius: 12px;
+        margin-bottom: 0.25rem;
+        clear: both;
+        transition: background 0.2s;
+    }
+
+    .side-nav a:hover {
+        background: #f1f5f9;
+    }
+
+    /* search section */
+    .search-section {
+        padding: 2rem 5%;
+        max-width: 800px;
+        margin: 0 auto;
+    }
+
+    .search-box {
+        display: flex;
+        gap: 1rem;
+        margin-bottom: 1.5rem;
+    }
+
+    .search-box input {
+        flex: 1;
+        padding: 1rem 1.5rem;
+        border: 2px solid #e2e8f0;
+        border-radius: 60px;
+        font-size: 1rem;
+        outline: none;
+        transition: all 0.2s;
+    }
+
+    .search-box input:focus {
+        border-color: #7C3AED;
+        box-shadow: 0 0 0 3px rgba(124,60,237,0.1);
+    }
+
+    .search-box button {
+        background: linear-gradient(135deg, #7C3AED, #2563EB);
+        border: none;
+        padding: 0 1.8rem;
+        border-radius: 60px;
+        color: white;
+        font-size: 1rem;
+        cursor: pointer;
+        transition: transform 0.2s;
+    }
+
+    .search-box button:hover {
+        transform: scale(1.02);
+    }
+
+    /* filter row */
+    .filter-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 1rem;
+        margin-bottom: 1rem;
+    }
+
+    .result-info {
+        color: #64748b;
+        font-size: 0.9rem;
+    }
+
+    /* alphabet index */
+    .alphabet-index {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 0.5rem;
+        margin-bottom: 1.5rem;
+        padding: 0.8rem;
+        background: white;
+        border-radius: 60px;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    }
+
+    .alphabet-index a {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-width: 40px;
+        height: 40px;
+        padding: 0 0.3rem;
+        background: #f1f5f9;
+        border-radius: 40px;
+        text-decoration: none;
+        color: #2563EB;
+        font-weight: bold;
+        font-size: 1rem;
+        transition: all 0.2s;
+    }
+
+    .alphabet-index a:hover,
+    .alphabet-index a.active {
+        background: linear-gradient(135deg, #7C3AED, #2563EB);
+        color: white;
+    }
+
+    /* gallery grid */
+    .gallery-container {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+        gap: 20px;
+        max-width: 1400px;
+        margin: 0 auto;
+        padding: 1rem 5% 3rem;
+    }
+
+    .img-card {
+        background: white;
+        border-radius: 16px;
+        overflow: hidden;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+        transition: all 0.3s ease;
+        cursor: pointer;
+    }
+
+    .img-card:hover {
+        transform: translateY(-6px);
+        box-shadow: 0 20px 30px -12px rgba(0,0,0,0.2);
+    }
+
+    .img-card img {
+        width: 100%;
+        height: 200px;
+        object-fit: cover;
+        display: block;
+        background: #f8fafc;
+    }
+
+    .card-info {
+        padding: 12px;
+        text-align: center;
+        background: white;
+    }
+
+    .page-number {
+        font-size: 14px;
+        font-weight: bold;
+        color: #7C3AED;
+    }
+
+    .page-title {
+        font-size: 12px;
+        color: #64748b;
+        margin-top: 5px;
+    }
+
+    .keywords-tags {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 5px;
+        margin-top: 8px;
+    }
+
+    .keyword-tag {
+        font-size: 9px;
+        background: #f1f5f9;
+        padding: 3px 8px;
+        border-radius: 20px;
+        color: #2563EB;
+    }
+
+    .no-results {
+        text-align: center;
+        padding: 4rem;
+        color: #94a3b8;
+        grid-column: 1 / -1;
+    }
+
+    .no-results i {
+        font-size: 4rem;
+        margin-bottom: 1rem;
+        opacity: 0.5;
+    }
+
+    footer {
+        text-align: center;
+        padding: 1.5rem;
+        background: #1e293b;
+        color: #94a3b8;
+        margin-top: 2rem;
+    }
+
+    /* ========== Modal (نافذة تكبير الصورة) ========== */
+    .modal {
+        display: none;
+        position: fixed;
+        z-index: 2000;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.95);
+        backdrop-filter: blur(5px);
+        cursor: pointer;
+        animation: fadeIn 0.3s ease;
+    }
+
+    @keyframes fadeIn {
+        from { opacity: 0; }
+        to { opacity: 1; }
+    }
+
+    .modal-content {
+        position: relative;
+        margin: auto;
+        padding: 20px;
+        width: 90%;
+        max-width: 900px;
+        top: 50%;
+        transform: translateY(-50%);
+        animation: zoomIn 0.3s ease;
+    }
+
+    @keyframes zoomIn {
+        from { transform: translateY(-50%) scale(0.8); opacity: 0; }
+        to { transform: translateY(-50%) scale(1); opacity: 1; }
+    }
+
+    .modal-content img {
+        width: 100%;
+        height: auto;
+        border-radius: 12px;
+        box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+    }
+
+    .modal-info {
+        text-align: center;
+        margin-top: 20px;
+        color: white;
+    }
+
+    .modal-info h3 {
+        font-size: 1.5rem;
+        margin-bottom: 8px;
+    }
+
+    .modal-info p {
+        color: #cbd5e1;
+    }
+
+    .close-modal {
+        position: absolute;
+        top: -40px;
+        right: 0;
+        color: white;
+        font-size: 2rem;
+        font-weight: bold;
+        cursor: pointer;
+        transition: 0.2s;
+        width: 44px;
+        height: 44px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 50%;
+        background: rgba(255,255,255,0.1);
+    }
+
+    .close-modal:hover {
+        background: rgba(255,255,255,0.2);
+        transform: scale(1.1);
+    }
+
+    @media (max-width: 600px) {
+        .gallery-container {
+            grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+            gap: 12px;
+        }
+        .img-card img {
+            height: 150px;
+        }
+        .alphabet-index a {
+            min-width: 34px;
+            height: 34px;
+            font-size: 0.85rem;
+        }
+        .modal-content {
+            width: 95%;
+        }
+        .close-modal {
+            top: -50px;
+            right: 0;
+        }
+    }
+</style>
+</head>
+
+<body>
+
+<!-- header -->
+<div class="header">
+    <h1><i class="fas fa-hands"></i> قاموس الإشارة المصور</h1>
+    <button class="menu-toggle" id="menuToggle"><i class="fas fa-bars"></i></button>
+</div>
+
+<!-- side navigation -->
+<nav class="side-nav" id="sideNav">
+    <button class="close-nav" id="closeNav"><i class="fas fa-times"></i></button>
+    <a href="index.html"><i class="fas fa-home"></i> الرئيسية</a>
+    <a href="learning-lab.html"><i class="fas fa-book"></i> الدروس</a>
+    <a href="dictionary.html" class="active"><i class="fas fa-book-open"></i> القاموس</a>
+    <a href="test-system.html"><i class="fas fa-graduation-cap"></i> الاختبارات</a>
+    <a href="psy-support.html"><i class="fas fa-heart"></i> الدعم النفسي</a>
+    <a href="ai-assistant.html"><i class="fas fa-robot"></i> المساعد الذكي</a>
+    <a href="sos-emergency.html"><i class="fas fa-siren"></i> SOS</a>
+    <a href="login.html"><i class="fas fa-sign-in-alt"></i> دخول</a>
+</nav>
+
+<!-- search section -->
+<div class="search-section">
+    <div class="search-box">
+        <input type="text" id="searchInput" placeholder="🔍 ابحث عن كلمة... مثلاً: حب, سلام, ماء, يد, وجه..." autocomplete="off">
+        <button id="searchBtn"><i class="fas fa-search"></i> بحث</button>
+    </div>
+    
+    <div class="filter-row">
+        <div class="result-info" id="resultInfo">📖 عرض جميع الصور</div>
+    </div>
+
+    <!-- فهرس الحروف الأبجدي -->
+    <div class="alphabet-index" id="alphabetIndex"></div>
+</div>
+
+<!-- gallery container -->
+<div class="gallery-container" id="gallery"></div>
+
+<!-- Modal (نافذة تكبير الصورة) -->
+<div id="imageModal" class="modal" onclick="closeModal()">
+    <div class="modal-content" onclick="event.stopPropagation()">
+        <span class="close-modal" onclick="closeModal()">&times;</span>
+        <img id="modalImage" src="" alt="صورة مكبرة">
+        <div class="modal-info" id="modalInfo">
+            <h3 id="modalTitle"></h3>
+            <p id="modalDetails"></p>
+        </div>
+    </div>
+</div>
+
+<footer>
+    <p>© 2024 Sign It - قاموس لغة الإشارة المصور | جميع الحقوق محفوظة</p>
+</footer>
+
+<script>
+// ========== بيانات الصور وارتباطها بالكلمات ==========
+const imageData = [
+    { page: 1, keywords: ["مرحباً", "ترحيب", "سلام", "تحية"], letter: "م", title: "تحية الترحيب" },
+    { page: 2, keywords: ["شكراً", "امتنان", "شكر"], letter: "ش", title: "التعبير عن الشكر" },
+    { page: 3, keywords: ["حب", "عاطفة", "مودة"], letter: "ح", title: "إشارة الحب" },
+    { page: 4, keywords: ["سلام", "أمان", "طمأنينة"], letter: "س", title: "السلام والأمان" },
+    { page: 5, keywords: ["أم", "والدة", "أمومة"], letter: "أ", title: "إشارة الأم" },
+    { page: 6, keywords: ["أب", "والد", "أبوة"], letter: "أ", title: "إشارة الأب" },
+    { page: 7, keywords: ["طفل", "صغير", "أطفال"], letter: "ط", title: "إشارة الطفل" },
+    { page: 8, keywords: ["ماء", "شرب", "عطش"], letter: "م", title: "إشارة الماء" },
+    { page: 9, keywords: ["طعام", "أكل", "جوع"], letter: "ط", title: "إشارة الطعام" },
+    { page: 10, keywords: ["بيت", "منزل", "سكن"], letter: "ب", title: "إشارة البيت" },
+    { page: 11, keywords: ["مدرسة", "تعليم", "دراسة"], letter: "م", title: "إشارة المدرسة" },
+    { page: 12, keywords: ["طبيب", "دكتور", "علاج"], letter: "ط", title: "إشارة الطبيب" },
+    { page: 13, keywords: ["صديق", "رفيق", "صديقة"], letter: "ص", title: "إشارة الصديق" },
+    { page: 14, keywords: ["سعيد", "فرح", "سرور"], letter: "س", title: "إشارة السعادة" },
+    { page: 15, keywords: ["حزين", "بكاء", "أسى"], letter: "ح", title: "إشارة الحزن" },
+    { page: 16, keywords: ["جميل", "جمال", "حسن"], letter: "ج", title: "إشارة الجمال" },
+    { page: 17, keywords: ["كبير", "ضخم", "عظيم"], letter: "ك", title: "إشارة الكبير" },
+    { page: 18, keywords: ["صغير", "صغر", "ضئيل"], letter: "ص", title: "إشارة الصغير" },
+    { page: 19, keywords: ["سريع", "سرعة", "خفة"], letter: "س", title: "إشارة السريع" },
+    { page: 20, keywords: ["بطيء", "ببطء", "تمهل"], letter: "ب", title: "إشارة البطيء" },
+    { page: 21, keywords: ["أسد", "حيوان", "غابة"], letter: "أ", title: "إشارة الأسد" },
+    { page: 22, keywords: ["قطة", "قط", "هرة"], letter: "ق", title: "إشارة القطة" },
+    { page: 23, keywords: ["كلب", "عجل", "وفاء"], letter: "ك", title: "إشارة الكلب" },
+    { page: 24, keywords: ["ورد", "زهرة", "وردي"], letter: "و", title: "إشارة الورد" },
+    { page: 25, keywords: ["شمس", "نهار", "ضوء"], letter: "ش", title: "إشارة الشمس" },
+    { page: 26, keywords: ["قمر", "ليل", "نجم"], letter: "ق", title: "إشارة القمر" },
+    { page: 27, keywords: ["نجمة", "نجوم", "سماء"], letter: "ن", title: "إشارة النجمة" },
+    { page: 28, keywords: ["سماء", "جو", "طقس"], letter: "س", title: "إشارة السماء" },
+    { page: 29, keywords: ["أرض", "تراب", "طبيعة"], letter: "أ", title: "إشارة الأرض" },
+    { page: 30, keywords: ["بحر", "محيط", "موج"], letter: "ب", title: "إشارة البحر" },
+    { page: 31, keywords: ["طائر", "عصفور", "طيران"], letter: "ط", title: "إشارة الطائر" },
+    { page: 32, keywords: ["سمكة", "بحر", "ماء"], letter: "س", title: "إشارة السمكة" },
+    { page: 33, keywords: ["فرح", "سعادة", "ابتسامة"], letter: "ف", title: "إشارة الفرح" },
+    { page: 34, keywords: ["حلم", "أمنية", "مستقبل"], letter: "ح", title: "إشارة الحلم" },
+    { page: 35, keywords: ["قلم", "كتابة", "رسم"], letter: "ق", title: "إشارة القلم" }
+];
+
+// اسم الملفات الأساسي
+const prefix = "قاموس_لغة_الإشارة_للأطفال_pages-to-jpg-";
+
+// الحروف للفهرس (من البيانات)
+const letters = [...new Set(imageData.map(item => item.letter))].sort();
+
+// بناء الفهرس الأبجدي
+function buildAlphabetIndex() {
+    const container = document.getElementById('alphabetIndex');
+    container.innerHTML = '<a href="#" data-letter="all" class="active">الكل</a>';
+    
+    letters.forEach(letter => {
+        const link = document.createElement('a');
+        link.href = '#';
+        link.textContent = letter;
+        link.dataset.letter = letter;
+        link.addEventListener('click', (e) => {
+            e.preventDefault();
+            document.querySelectorAll('.alphabet-index a').forEach(a => a.classList.remove('active'));
+            link.classList.add('active');
+            document.getElementById('searchInput').value = '';
+            filterByLetter(letter);
+        });
+        container.appendChild(link);
+    });
+}
+
+// تصفية حسب الحرف
+function filterByLetter(letter) {
+    let filtered = imageData;
+    if (letter !== 'all') {
+        filtered = imageData.filter(item => item.letter === letter);
+    }
+    displayResults(filtered);
+}
+
+// البحث الحقيقي في الكلمات المفتاحية والعناوين
+function searchWords(query) {
+    if (!query.trim()) {
+        displayResults(imageData);
+        document.querySelectorAll('.alphabet-index a').forEach(a => a.classList.remove('active'));
+        document.querySelector('.alphabet-index a[data-letter="all"]')?.classList.add('active');
+        return;
+    }
+    
+    const lowerQuery = query.trim().toLowerCase();
+    const filtered = imageData.filter(item => {
+        const keywordMatch = item.keywords.some(kw => kw.toLowerCase().includes(lowerQuery));
+        const titleMatch = item.title.toLowerCase().includes(lowerQuery);
+        return keywordMatch || titleMatch;
+    });
+    
+    displayResults(filtered);
+}
+
+// عرض النتائج مع الصور
+function displayResults(results) {
+    const gallery = document.getElementById('gallery');
+    const resultInfo = document.getElementById('resultInfo');
+    
+    if (results.length === 0) {
+        gallery.innerHTML = `<div class="no-results"><i class="fas fa-search"></i><p>لا توجد نتائج مطابقة للبحث<br>جرب كلمة أخرى مثل: حب، سلام، ماء</p></div>`;
+        resultInfo.innerHTML = `🔍 لا توجد نتائج`;
+        return;
+    }
+    
+    resultInfo.innerHTML = `📖 عرض ${results.length} صورة من أصل ${imageData.length}`;
+    
+    gallery.innerHTML = results.map(item => {
+        let num = String(item.page).padStart(4, '0');
+        let fileName = `${prefix}${num}.jpg`;
+        let keywordsHtml = item.keywords.slice(0, 3).map(kw => `<span class="keyword-tag">#${kw}</span>`).join('');
+        
+        return `
+            <div class="img-card" onclick="openModal(${item.page}, '${item.title}', '${item.keywords.join('، ')}')">
+                <img src="${fileName}" alt="صفحة ${item.page}" loading="lazy" onerror="this.src='https://via.placeholder.com/300x200?text=صورة+${item.page}'">
+                <div class="card-info">
+                    <div class="page-number">📄 صفحة ${item.page}</div>
+                    <div class="page-title">${item.title}</div>
+                    <div class="keywords-tags">${keywordsHtml}</div>
+                </div>
+            </div>
+        `;
+    }).join('');
+}
+
+// ========== وظائف تكبير الصورة (Modal) ==========
+function openModal(page, title, keywords) {
+    const modal = document.getElementById('imageModal');
+    const modalImage = document.getElementById('modalImage');
+    const modalTitle = document.getElementById('modalTitle');
+    const modalDetails = document.getElementById('modalDetails');
+    
+    let num = String(page).padStart(4, '0');
+    let fileName = `${prefix}${num}.jpg`;
+    
+    modalImage.src = fileName;
+    modalTitle.textContent = title;
+    modalDetails.innerHTML = `📄 صفحة رقم ${page}<br>🔑 الكلمات المفتاحية: ${keywords}<br><br>✨ اضغط في أي مكان خارج الصورة للإغلاق`;
+    
+    modal.style.display = 'block';
+    document.body.style.overflow = 'hidden';
+}
+
+function closeModal() {
+    const modal = document.getElementById('imageModal');
+    modal.style.display = 'none';
+    document.body.style.overflow = '';
+}
+
+// إغلاق المودال بالضغط على ESC
+document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') {
+        closeModal();
+    }
+});
+
+// ========== القائمة الجانبية ==========
+function initSideMenu() {
+    const menuToggle = document.getElementById('menuToggle');
+    const sideNav = document.getElementById('sideNav');
+    const closeNav = document.getElementById('closeNav');
+    
+    if (menuToggle && sideNav && closeNav) {
+        menuToggle.addEventListener('click', () => {
+            sideNav.classList.add('open');
+            document.body.style.overflow = 'hidden';
+        });
+        closeNav.addEventListener('click', () => {
+            sideNav.classList.remove('open');
+            document.body.style.overflow = '';
+        });
+    }
+}
+
+// ========== تهيئة الصفحة ==========
+document.addEventListener('DOMContentLoaded', () => {
+    buildAlphabetIndex();
+    displayResults(imageData);
+    initSideMenu();
+    
+    const searchBtn = document.getElementById('searchBtn');
+    const searchInput = document.getElementById('searchInput');
+    
+    searchBtn.addEventListener('click', () => {
+        searchWords(searchInput.value);
+    });
+    
+    searchInput.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') {
+            searchWords(searchInput.value);
+        }
+    });
+});
+</script>
+</body>
+</html>

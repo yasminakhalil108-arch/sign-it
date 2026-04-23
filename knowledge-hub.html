@@ -1,0 +1,954 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>مركز المعرفة - Sign It</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            direction: rtl;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .header {
+            background: rgba(0,0,0,0.3);
+            padding: 2rem;
+            text-align: center;
+            color: white;
+            border-bottom: 3px solid #ffd700;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .header p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        .nav-buttons {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            padding: 2rem;
+            max-width: 1200px;
+            margin: -2rem auto 2rem;
+            position: relative;
+            z-index: 10;
+        }
+
+        .nav-btn {
+            background: white;
+            border: 2px solid #667eea;
+            padding: 1rem;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 1rem;
+            transition: all 0.3s;
+            color: #667eea;
+        }
+
+        .nav-btn:hover {
+            background: #667eea;
+            color: white;
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        .nav-btn.active {
+            background: #667eea;
+            color: white;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .section {
+            display: none;
+            animation: fadeIn 0.5s;
+        }
+
+        .section.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .section-content {
+            background: white;
+            padding: 2rem;
+            border-radius: 10px;
+            margin-bottom: 2rem;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .section h2 {
+            color: #667eea;
+            margin: 2rem 0 1rem;
+            font-size: 1.8rem;
+            border-bottom: 2px solid #667eea;
+            padding-bottom: 0.5rem;
+        }
+
+        .section h3 {
+            color: #764ba2;
+            margin: 1.5rem 0 0.8rem;
+            font-size: 1.3rem;
+        }
+
+        .section ul {
+            margin-right: 2rem;
+            margin-bottom: 1rem;
+        }
+
+        .section li {
+            margin-bottom: 0.8rem;
+            color: #555;
+            font-size: 1rem;
+        }
+
+        .section li strong {
+            color: #667eea;
+        }
+
+        hr {
+            border: none;
+            border-top: 2px solid #e0e0e0;
+            margin: 2rem 0;
+        }
+
+        .alert {
+            background: #fff3cd;
+            border-right: 4px solid #ffc107;
+            padding: 1rem;
+            border-radius: 6px;
+            margin: 1rem 0;
+            color: #856404;
+        }
+
+        .alert strong {
+            color: #663c00;
+        }
+
+        .success-box {
+            background: #d4edda;
+            border-right: 4px solid #28a745;
+            padding: 1rem;
+            border-radius: 6px;
+            margin: 1rem 0;
+            color: #155724;
+        }
+
+        .info-card {
+            background: #e7f3ff;
+            border-right: 4px solid #0066cc;
+            padding: 1rem;
+            border-radius: 6px;
+            margin: 1rem 0;
+            color: #004085;
+        }
+
+        .quick-links {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 1rem;
+            margin: 1.5rem 0;
+        }
+
+        .quick-link {
+            background: #f8f9fa;
+            padding: 1rem;
+            border-radius: 8px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            border: 2px solid #667eea;
+        }
+
+        .quick-link:hover {
+            background: #667eea;
+            color: white;
+            transform: scale(1.05);
+        }
+
+        .quick-link-icon {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .action-buttons {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin: 2rem 0;
+        }
+
+        .action-btn {
+            padding: 1rem 1.5rem;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-decoration: none;
+            display: inline-block;
+            text-align: center;
+        }
+
+        .btn-primary {
+            background: #667eea;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #764ba2;
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn-emergency {
+            background: #dc3545;
+            color: white;
+        }
+
+        .btn-emergency:hover {
+            background: #c82333;
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(220, 53, 69, 0.4);
+        }
+
+        .btn-success {
+            background: #28a745;
+            color: white;
+        }
+
+        .btn-success:hover {
+            background: #218838;
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(40, 167, 69, 0.4);
+        }
+
+        .law-item {
+            background: #f8f9fa;
+            padding: 1rem;
+            border-radius: 8px;
+            margin: 1rem 0;
+            border-right: 4px solid #667eea;
+        }
+
+        .footer {
+            background: rgba(0,0,0,0.5);
+            color: white;
+            text-align: center;
+            padding: 2rem;
+            margin-top: 3rem;
+        }
+
+        .breadcrumb {
+            background: white;
+            padding: 1rem;
+            border-radius: 6px;
+            margin-bottom: 1rem;
+            font-size: 0.9rem;
+            color: #667eea;
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 1.8rem;
+            }
+
+            .section-content {
+                padding: 1rem;
+            }
+
+            .nav-buttons {
+                grid-template-columns: repeat(2, 1fr);
+                padding: 1rem;
+            }
+
+            .section h2 {
+                font-size: 1.4rem;
+            }
+
+            .section h3 {
+                font-size: 1.1rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .nav-buttons {
+                grid-template-columns: 1fr;
+            }
+
+            .header h1 {
+                font-size: 1.5rem;
+            }
+
+            .header {
+                padding: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>📚 مركز المعرفة - Sign It</h1>
+        <p>تعلم حقوقك • افهم الأعراض • استخدم المقاييس بشكل صحيح</p>
+    </div>
+
+    <div class="nav-buttons">
+        <button class="nav-btn active" onclick="showSection('rights')">⚖️ الحقوق والقوانين</button>
+        <button class="nav-btn" onclick="showSection('detection')">🔍 الكشف المبكر</button>
+        <button class="nav-btn" onclick="showSection('diagnosis')">🧪 دليل التشخيص</button>
+        <button class="nav-btn" onclick="showSection('resources')">💡 الموارد والدعم</button>
+    </div>
+
+    <div class="container">
+
+        <!-- ========== قسم الحقوق والقوانين ========== -->
+        <div id="rights" class="section active">
+            <div class="section-content">
+                <h2>⚖️ الحقوق والقوانين</h2>
+                <p>توعية شاملة بحقوق ذوي الإعاقة في المجتمع والقوانين التي تحميها</p>
+
+                <hr>
+
+                <h3>📌 الحقوق الأساسية لذوي الإعاقة</h3>
+
+                <div class="law-item">
+                    <strong>🏫 الحق في التعليم</strong>
+                    <ul>
+                        <li>الحق في التعليم المجاني والمتكافئ</li>
+                        <li>توفير مدارس دامجة مع دعم خاص</li>
+                        <li>توفير مترجمي لغة إشارة في الفصول</li>
+                        <li>توفير مواد ومناهج مناسبة</li>
+                        <li>عدم التمييز بناءً على نوع الإعاقة</li>
+                    </ul>
+                </div>
+
+                <div class="law-item">
+                    <strong>💼 حق العمل</strong>
+                    <ul>
+                        <li>نسبة 5% من الوظائف لذوي الإعاقة (في القطاع العام)</li>
+                        <li>عدم التمييز في التوظيف والترقيات</li>
+                        <li>توفير بيئة عمل آمنة ومناسبة</li>
+                        <li>توفير تدريب مهني</li>
+                        <li>الحق في إجازات خاصة عند الحاجة</li>
+                    </ul>
+                </div>
+
+                <div class="law-item">
+                    <strong>🏥 الحق في الرعاية الصحية</strong>
+                    <ul>
+                        <li>علاج مجاني أو مدعوم من الدولة</li>
+                        <li>خدمات التأهيل النفسي والجسدي</li>
+                        <li>توفير الأجهزة والأدوات التعويضية</li>
+                        <li>الفحوصات الدورية المجانية</li>
+                        <li>الأدوية المدعومة</li>
+                    </ul>
+                </div>
+
+                <div class="law-item">
+                    <strong>🏠 الحق في الحياة الكريمة</strong>
+                    <ul>
+                        <li>دعم مادي (معاش تكافل وكرامة)</li>
+                        <li>تسهيلات في السكن والمواصلات</li>
+                        <li>إعفاءات من الرسوم الجمركية للأجهزة التعويضية</li>
+                        <li>مساعدة مالية للدراسة والتطوير</li>
+                    </ul>
+                </div>
+
+                <div class="law-item">
+                    <strong>🗣️ حق التواصل والإعلام</strong>
+                    <ul>
+                        <li>توفير مترجمين لغة إشارة في الفعاليات الحكومية</li>
+                        <li>محتوى إعلامي مهيأ (ترجمة، كتابة، وصف صوتي)</li>
+                        <li>تسهيل الوصول للمعلومات الحكومية</li>
+                        <li>حقوق خصوصية محمية</li>
+                    </ul>
+                </div>
+
+                <hr>
+
+                <h3>📜 القوانين المصرية الحامية</h3>
+
+                <div class="info-card">
+                    <strong>📌 قانون رقم 10 لسنة 2018 - قانون حقوق الأشخاص ذوي الإعاقة</strong>
+                    <ul>
+                        <li><strong>المادة 4:</strong> الحق في التعليم الشامل والدامج</li>
+                        <li><strong>المادة 6:</strong> الحق في العمل واللائحة التنفيذية</li>
+                        <li><strong>المادة 8:</strong> الحق في الرعاية الصحية المتكاملة</li>
+                        <li><strong>المادة 10:</strong> الحماية من التمييز والاستغلال</li>
+                        <li><strong>المادة 12:</strong> الحق في التأهيل والتدريب</li>
+                        <li><strong>المادة 14:</strong> إنشاء المجلس القومي لشؤون الإعاقة</li>
+                    </ul>
+                </div>
+
+                <div class="info-card">
+                    <strong>📌 الجهات المسؤولة:</strong>
+                    <ul>
+                        <li>🏛️ <strong>المجلس القومي لشؤون الإعاقة:</strong> المسؤول الأول عن حقوق ذوي الإعاقة</li>
+                        <li>🏥 <strong>وزارة الصحة:</strong> تقديم الرعاية الصحية والتأهيل</li>
+                        <li>📚 <strong>وزارة التربية والتعليم:</strong> التعليم الدامج والمتكافئ</li>
+                        <li>💼 <strong>وزارة القوى العاملة:</strong> التوظيف والتدريب المهني</li>
+                        <li>⚖️ <strong>وزارة العدل:</strong> الحماية القانونية والمساعدة القضائية</li>
+                    </ul>
+                </div>
+
+                <hr>
+
+                <h3>⚠️ عند انتهاك حقك:</h3>
+
+                <div class="alert">
+                    <strong>📋 خطوات التصرف الصحيحة:</strong>
+                    <ul>
+                        <li>✓ توثيق الحالة بالتفاصيل والأدلة</li>
+                        <li>✓ التوجه لأقرب قسم شرطة لرفع بلاغ</li>
+                        <li>✓ التواصل مع المجلس القومي لشؤون الإعاقة</li>
+                        <li>✓ الاستعانة بمنظمات حقوق الإنسان</li>
+                        <li>✓ طلب دعم قانوني من المحامين</li>
+                        <li>✓ الاتصال بخط الشكاوى الحكومي: 16328</li>
+                    </ul>
+                </div>
+
+                <div class="action-buttons">
+                    <a href="psy-support.html" class="action-btn btn-primary">🧠 ابدأ التقييم النفسي</a>
+                    <a href="sos-emergency.html" class="action-btn btn-emergency">☎️ أرقام الطوارئ</a>
+                    <button class="action-btn btn-success" onclick="contactSupport()">📞 احصل على مساعدة</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- ========== قسم الكشف المبكر ========== -->
+        <div id="detection" class="section">
+            <div class="section-content">
+                <h2>🔍 دليل الكشف المبكر</h2>
+                <p>تعرف على العلامات الأولية التي قد تشير إلى وجود اضطراب نفسي أو سلوكي</p>
+
+                <hr>
+
+                <h3>👶 العلامات عند الأطفال (3-12 سنة)</h3>
+
+                <div class="law-item">
+                    <strong>⚠️ علامات التطور والتعلم:</strong>
+                    <ul>
+                        <li>تأخر في الكلام أو عدم وضوح الكلام</li>
+                        <li>صعوبة في فهم التعليمات البسيطة</li>
+                        <li>عدم التفاعل مع الآخرين أو العزلة</li>
+                        <li>ضعف التواصل البصري (عدم النظر في العيون)</li>
+                        <li>تأخر في المهارات الحركية (المشي، الركض)</li>
+                        <li>صعوبة في التركيز واللعب</li>
+                    </ul>
+                </div>
+
+                <div class="law-item">
+                    <strong>⚠️ علامات سلوكية:</strong>
+                    <ul>
+                        <li>حركات متكررة (رفرفة اليدين، دوران الأشياء)</li>
+                        <li>الخوف الشديد من الأشياء العادية</li>
+                        <li>العدوانية أو إيذاء النفس</li>
+                        <li>نوبات غضب متكررة</li>
+                        <li>عدم الاستجابة للاسم</li>
+                        <li>الحساسية الشديدة للأصوات أو الضوء</li>
+                    </ul>
+                </div>
+
+                <div class="law-item">
+                    <strong>⚠️ علامات عاطفية:</strong>
+                    <ul>
+                        <li>الحزن المستمر بدون سبب واضح</li>
+                        <li>البكاء المفرط</li>
+                        <li>الانطواء والخجل الشديد</li>
+                        <li>عدم الاستمتاع باللعب والأنشطة</li>
+                        <li>الخوف من المدرسة أو الأشخاص الجدد</li>
+                    </ul>
+                </div>
+
+                <hr>
+
+                <h3>👦 العلامات عند المراهقين (13-18 سنة)</h3>
+
+                <div class="law-item">
+                    <strong>⚠️ علامات نفسية:</strong>
+                    <ul>
+                        <li>حزن مستمر ولا يمكن تجاوزه</li>
+                        <li>قلق زائد وتوتر دائم</li>
+                        <li>عزلة اجتماعية واختيار البقاء وحيداً</li>
+                        <li>فقدان الشغف والاهتمام بالهوايات</li>
+                        <li>تقدير منخفض لذاتهم</li>
+                        <li>أفكار سلبية متكررة</li>
+                    </ul>
+                </div>
+
+                <div class="law-item">
+                    <strong>⚠️ علامات جسدية:</strong>
+                    <ul>
+                        <li>اضطراب النوم (الأرق أو النوم الزائد)</li>
+                        <li>تغيرات في الشهية وفقدان الوزن</li>
+                        <li>إرهاق مستمر وضعف عام</li>
+                        <li>صداع متكرر أو آلام جسدية بدون سبب</li>
+                        <li>إهمال النظافة الشخصية</li>
+                    </ul>
+                </div>
+
+                <div class="law-item">
+                    <strong>⚠️ علامات سلوكية خطيرة:</strong>
+                    <ul>
+                        <li>السلوك الاندفاعي غير المسؤول</li>
+                        <li>الانحراف أو الهروب من المنزل</li>
+                        <li>تعاطي المواد أو الكحول</li>
+                        <li>الإيذاء الذاتي أو محاولات الانتحار</li>
+                        <li>التفكير المتكرر في الموت</li>
+                        <li>العنف تجاه الآخرين</li>
+                    </ul>
+                </div>
+
+                <hr>
+
+                <h3>👨 العلامات عند البالغين (18+)</h3>
+
+                <div class="law-item">
+                    <strong>⚠️ علامات الاكتئاب:</strong>
+                    <ul>
+                        <li>حزن عميق مستمر لأسابيع أو أشهر</li>
+                        <li>فقدان الاهتمام بالعمل والحياة</li>
+                        <li>الشعور بالذنب والفشل</li>
+                        <li>صعوبة في التركيز والقرارات</li>
+                        <li>أفكار عن الموت أو الانتحار</li>
+                    </ul>
+                </div>
+
+                <div class="law-item">
+                    <strong>⚠️ علامات القلق:</strong>
+                    <ul>
+                        <li>قلق مفرط حول أشياء يومية</li>
+                        <li>توتر عضلي مستمر</li>
+                        <li>الأرق واضطراب النوم</li>
+                        <li>نوبات هلع وضيق التنفس</li>
+                        <li>تجنب أنشطة بسبب الخوف</li>
+                    </ul>
+                </div>
+
+                <hr>
+
+                <h3>🧠 مؤشرات تحتاج تدخل فوري:</h3>
+
+                <div class="alert">
+                    <strong>⛔ اتصل بالطوارئ فوراً إذا لاحظت:</strong>
+                    <ul>
+                        <li>🚨 محاولات انتحار أو إيذاء الذات</li>
+                        <li>🚨 أفكار متكررة عن الموت</li>
+                        <li>🚨 عنف موجه للآخرين</li>
+                        <li>🚨 فقدان الوعي أو الارتباك الشديد</li>
+                        <li>🚨 أعراض جسدية حادة مع نفسية</li>
+                    </ul>
+                </div>
+
+                <h3>📌 ماذا تفعل عند ملاحظة الأعراض؟</h3>
+
+                <div class="success-box">
+                    <strong>✓ الخطوات الصحيحة:</strong>
+                    <ul>
+                        <li>1️⃣ الاستماع والدعم العاطفي دون حكم</li>
+                        <li>2️⃣ عدم تجاهل الأعراض أو تصغيرها</li>
+                        <li>3️⃣ استشارة متخصص نفسي أو طبيب</li>
+                        <li>4️⃣ إجراء تقييم شامل ودقيق</li>
+                        <li>5️⃣ المتابعة المنتظمة والدعم المستمر</li>
+                        <li>6️⃣ عدم الخجل من طلب المساعدة</li>
+                    </ul>
+                </div>
+
+                <div class="action-buttons">
+                    <a href="psy-support.html" class="action-btn btn-primary">🧠 اختبر نفسك الآن</a>
+                    <button class="action-btn btn-success" onclick="contactSupport()">📞 عن تقييم</button>
+                    <a href="sos-emergency.html" class="action-btn btn-emergency">🆘 أرقام الطوارئ</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- ========== قسم التشخيص ========== -->
+        <div id="diagnosis" class="section">
+            <div class="section-content">
+                <h2>🧪 دليل التشخيص والمقاييس</h2>
+                <p>فهم كيفية عمل المقاييس النفسية واستخدامها بشكل صحيح</p>
+
+                <hr>
+
+                <h3>✅ ما هي المقاييس النفسية؟</h3>
+
+                <div class="info-card">
+                    المقاييس النفسية هي أدوات علمية موثوقة تساعد في:
+                    <ul>
+                        <li>قياس مستوى الأعراض النفسية</li>
+                        <li>تحديد شدة الاضطراب (خفيف، متوسط، شديد)</li>
+                        <li>تتبع التحسن أو التطور</li>
+                        <li>التوصية بنوع العلاج المناسب</li>
+                    </ul>
+                </div>
+
+                <hr>
+
+                <h3>📊 خطوات استخدام المقاييس بشكل صحيح</h3>
+
+                <div class="law-item">
+                    <strong>الخطوة 1️⃣: الاستعداد</strong>
+                    <ul>
+                        <li>اختر وقتاً هادئاً بدون ضغوط</li>
+                        <li>تأكد من أنك مستريح وغير مشتت</li>
+                        <li>اقرأ التعليمات بعناية</li>
+                        <li>اطرح الأسئلة على نفسك بصدق</li>
+                    </ul>
+                </div>
+
+                <div class="law-item">
+                    <strong>الخطوة 2️⃣: الإجابة</strong>
+                    <ul>
+                        <li>أجب عن جميع الأسئلة بصراحة تامة</li>
+                        <li>لا تحاول إخفاء أعراضك</li>
+                        <li>اختر الخيار الذي يعكس واقعك</li>
+                        <li>استغرق الوقت الكافي لكل سؤال</li>
+                    </ul>
+                </div>
+
+                <div class="law-item">
+                    <strong>الخطوة 3️⃣: الحساب</strong>
+                    <ul>
+                        <li>اجمع النقاط من جميع الإجابات</li>
+                        <li>قارن الإجمالي بمقياس النتائج</li>
+                        <li>احسب النسبة المئوية</li>
+                        <li>قراءة التفسير بعناية</li>
+                    </ul>
+                </div>
+
+                <div class="law-item">
+                    <strong>الخطوة 4️⃣: التفسير</strong>
+                    <ul>
+                        <li>افهم معنى النتيجة الخاصة بك</li>
+                        <li>تعرف على مستوى الشدة</li>
+                        <li>اقرأ التوصيات المقترحة</li>
+                        <li>افكر في الخطوات التالية</li>
+                    </ul>
+                </div>
+
+                <hr>
+
+                <h3>📈 تفسير النتائج</h3>
+
+                <div class="law-item" style="background: #d4edda; border-right-color: #28a745;">
+                    <strong style="color: #155724;">✅ مستوى طبيعي (0-25%)</strong>
+                    <ul>
+                        <li>✓ أعراض قليلة جداً أو معدومة</li>
+                        <li>✓ لا يوجد قلق يستدعي التدخل</li>
+                        <li>✓ الحياة اليومية طبيعية</li>
+                        <li>⚠️ التوصية: الاستمرار في نمط حياة صحي</li>
+                    </ul>
+                </div>
+
+                <div class="law-item" style="background: #fff3cd; border-right-color: #ffc107;">
+                    <strong style="color: #856404;">⚠️ مستوى خفيف إلى متوسط (25-50%)</strong>
+                    <ul>
+                        <li>⚠️ أعراض قابلة للملاحظة</li>
+                        <li>⚠️ قد تؤثر على بعض جوانب الحياة</li>
+                        <li>⚠️ يحتاج متابعة ودعم</li>
+                        <li>📋 التوصية: استشارة متخصص قريباً</li>
+                    </ul>
+                </div>
+
+                <div class="law-item" style="background: #ffe0e0; border-right-color: #dc3545;">
+                    <strong style="color: #721c24;">⛔ مستوى متوسط إلى شديد (50-75%)</strong>
+                    <ul>
+                        <li>⛔ أعراض واضحة ومؤثرة</li>
+                        <li>⛔ تأثر كبير على الدراسة والعمل</li>
+                        <li>⛔ صعوبة في العلاقات الاجتماعية</li>
+                        <li>🔴 التوصية: استشارة متخصص فوراً</li>
+                    </ul>
+                </div>
+
+                <div class="law-item" style="background: #f8d7da; border-right-color: #722c2c;">
+                    <strong style="color: #5a1f1f;">🛑 مستوى شديد جداً (75-100%)</strong>
+                    <ul>
+                        <li>🛑 أعراض شديدة وخطيرة</li>
+                        <li>🛑 تأثير كبير على جميع جوانب الحياة</li>
+                        <li>🛑 قد يكون هناك خطر على النفس أو الآخرين</li>
+                        <li>🚨 التوصية: طلب الدعم الطبي الفوري</li>
+                    </ul>
+                </div>
+
+                <hr>
+
+                <h3>⚠️ تنبيهات مهمة جداً</h3>
+
+                <div class="alert">
+                    <strong>📌 تذكر دائماً:</strong>
+                    <ul>
+                        <li>❌ هذه المقاييس <strong>استرشادية فقط</strong></li>
+                        <li>❌ لا تُعتبر <strong>تشخيصاً طبياً نهائياً</strong></li>
+                        <li>✓ يجب استشارة <strong>متخصص نفسي مجاز</strong></li>
+                        <li>✓ التشخيص الفعلي يتطلب <strong>فحص شامل</strong></li>
+                        <li>✓ النتيجة العالية <strong>لا تعني اليأس</strong></li>
+                        <li>✓ التعافي ممكن مع <strong>العلاج المناسب</strong></li>
+                    </ul>
+                </div>
+
+                <h3>🎯 الخطوات بعد الحصول على النتيجة</h3>
+
+                <div class="success-box">
+                    <strong>✓ الإجراءات الموصى بها:</strong>
+                    <ul>
+                        <li>1️⃣ احفظ النتيجة والتاريخ</li>
+                        <li>2️⃣ شارك النتيجة مع متخصص نفسي</li>
+                        <li>3️⃣ اطلب استشارة متخصصة دون تأخير</li>
+                        <li>4️⃣ لا تحاول التشخيص بنفسك من الإنترنت</li>
+                        <li>5️⃣ التزم بـ العلاج الموصى به</li>
+                        <li>6️⃣ أعد المقياس كل 3-6 شهور</li>
+                    </ul>
+                </div>
+
+                <div class="action-buttons">
+                    <a href="psy-support.html" class="action-btn btn-primary">🧠 ابدأ التقييم الآن</a>
+                    <button class="action-btn btn-success" onclick="scheduleAppointment()">📅 احجز موعد متخصص</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- ========== قسم الموارد والدعم ========== -->
+        <div id="resources" class="section">
+            <div class="section-content">
+                <h2>💡 الموارد والدعم</h2>
+                <p>أدوات وموارد مفيدة للدعم والتطور الشخصي</p>
+
+                <hr>
+
+                <h3>🌟 الخدمات المتاحة على Sign It</h3>
+
+                <div class="quick-links">
+                    <div class="quick-link" onclick="goTo('learning-lab.html')">
+                        <div class="quick-link-icon">📚</div>
+                        <div>معمل التعلم</div>
+                        <small>3 مستويات تعليمية</small>
+                    </div>
+                    <div class="quick-link" onclick="goTo('psy-support.html')">
+                        <div class="quick-link-icon">🧠</div>
+                        <div>الدعم النفسي</div>
+                        <small>تقييم شامل</small>
+                    </div>
+                    <div class="quick-link" onclick="goTo('sos-emergency.html')">
+                        <div class="quick-link-icon">☎️</div>
+                        <div>أرقام الطوارئ</div>
+                        <small>اتصل فوراً</small>
+                    </div>
+                    <div class="quick-link" onclick="goTo('sign-assistant.html')">
+                        <div class="quick-link-icon">🤝</div>
+                        <div>الترجمة الفورية</div>
+                        <small>تحويل الإشارة</small>
+                    </div>
+                </div>
+
+                <hr>
+
+                <h3>🏥 جهات توفير الدعم النفسي المتخصص</h3>
+
+                <div class="law-item">
+                    <strong>🏛️ المستشفيات الحكومية</strong>
+                    <ul>
+                        <li>🏥 مستشفى الطب النفسي بالعباسية - القاهرة</li>
+                        <li>🏥 معهد ناصر - قسم الطب النفسي</li>
+                        <li>🏥 مستشفى الزهراء - الإسكندرية</li>
+                        <li>🏥 المستشفيات الجامعية - جميع المحافظات</li>
+                    </ul>
+                </div>
+
+                <div class="law-item">
+                    <strong>📱 خطوط الدعم الهاتفية</strong>
+                    <ul>
+                        <li>☎️ خط التفاهم: 16328 (المجلس القومي لشؤون الإعاقة)</li>
+                        <li>☎️ خط الطوارئ: 123 (الإسعاف)</li>
+                        <li>☎️ شرطة الطوارئ: 122</li>
+                        <li>☎️ الدفاع المدني: 125</li>
+                    </ul>
+                </div>
+
+                <div class="law-item">
+                    <strong>🌐 منظمات مجتمعية</strong>
+                    <ul>
+                        <li>🔗 المجلس القومي لشؤون الإعاقة</li>
+                        <li>🔗 جمعيات ذوي الاحتياجات الخاصة</li>
+                        <li>🔗 منظمات حقوق الإنسان</li>
+                        <li>🔗 الجمعيات الخيرية للصحة النفسية</li>
+                    </ul>
+                </div>
+
+                <hr>
+
+                <h3>📖 نصائح للعناية بالصحة النفسية</h3>
+
+                <div class="law-item">
+                    <strong>🛏️ عادات صحية يومية</strong>
+                    <ul>
+                        <li>😴 نوم منتظم 7-8 ساعات يومياً</li>
+                        <li>🏃 نشاط بدني 30 دقيقة يومياً</li>
+                        <li>🥗 تغذية صحية ومتوازنة</li>
+                        <li>💧 شرب الماء بكثرة</li>
+                        <li>☀️ التعرض للشمس والهواء الطلق</li>
+                    </ul>
+                </div>
+
+                <div class="law-item">
+                    <strong>🧘 تقنيات الاسترخاء</strong>
+                    <ul>
+                        <li>🧘 التأمل واليقظة الذهنية</li>
+                        <li>🌬️ تمارين التنفس العميق</li>
+                        <li>🎵 الاستماع للموسيقى الهادئة</li>
+                        <li>📖 قراءة الكتب المفضلة</li>
+                        <li>🎨 الأنشطة الإبداعية والفنية</li>
+                    </ul>
+                </div>
+
+                <div class="law-item">
+                    <strong>🤝 الدعم الاجتماعي</strong>
+                    <ul>
+                        <li>👨‍👩‍👧‍👦 قضاء وقت مع الأسرة والأصدقاء</li>
+                        <li>💬 التحدث عن المشاعر والمخاوف</li>
+                        <li>🤗 طلب الدعم عند الحاجة</li>
+                        <li>👂 الاستماع الفعال للآخرين</li>
+                        <li>💕 هل تشعر بوحدة؟ ابحث عن مجموعة دعم</li>
+                    </ul>
+                </div>
+
+                <div class="law-item">
+                    <strong>⚠️ أشياء يجب تجنبها</strong>
+                    <ul>
+                        <li>❌ الإفراط في استخدام وسائل التواصل</li>
+                        <li>❌ مقارنة نفسك بالآخرين</li>
+                        <li>❌ الكمالية وضغط القسوة على النفس</li>
+                        <li>❌ العزلة والانطواء الدائم</li>
+                        <li>❌ تجاهل المشاعر والأعراض</li>
+                        <li>❌ تعاطي المواد أو الكحول</li>
+                    </ul>
+                </div>
+
+                <hr>
+
+                <h3>📚 موارد تعليمية مفيدة</h3>
+
+                <div class="success-box">
+                    <strong>✓ استكمل معرفتك:</strong>
+                    <ul>
+                        <li>📖 الكتب: ابحث عن كتب عن الصحة النفسية</li>
+                        <li>🎥 الفيديوهات: قنوات متخصصة على YouTube</li>
+                        <li>🎙️ البودكاست: حلقات عن الصحة النفسية</li>
+                        <li>🌐 المقالات: مواقع علمية موثوقة</li>
+                        <li>👥 الندوات الحية: فعاليات تثقيفية</li>
+                    </ul>
+                </div>
+
+                <hr>
+
+                <h3>💪 رسالة تحفيزية</h3>
+
+                <div class="info-card" style="text-align: center; font-size: 1.1rem;">
+                    <p><strong>أنت لست وحدك ❤️</strong></p>
+                    <p>الملايين تواجه تحديات نفسية، والمساعدة متاحة دائماً.</p>
+                    <p>🌟 <strong>لا خجل من طلب الدعم</strong> 🌟</p>
+                    <p>⭐ الشفاء والتحسن ممكن مع الصبر والعلاج المناسب ⭐</p>
+                </div>
+
+                <div class="action-buttons">
+                    <a href="psy-support.html" class="action-btn btn-primary">🧠 احصل على الدعم</a>
+                    <a href="sos-emergency.html" class="action-btn btn-emergency">🆘 أرقام الطوارئ</a>
+                    <button class="action-btn btn-success" onclick="contactUs()">📧 اتصل بنا</button>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="footer">
+        <p>© 2026 Sign It - مركز المعرفة الشامل</p>
+        <p>تم إنشاء هذا المركز لتوعية وتثقيف المجتمع بحقوق وصحة ذوي الإعاقة</p>
+        <p>💙 نحن هنا لدعمك على كل خطواتك</p>
+    </div>
+
+    <script>
+        function showSection(sectionId) {
+            // إخفاء جميع الأقسام
+            const sections = document.querySelectorAll('.section');
+            sections.forEach(section => section.classList.remove('active'));
+
+            // إزالة فئة active من جميع الأزرار
+            const buttons = document.querySelectorAll('.nav-btn');
+            buttons.forEach(btn => btn.classList.remove('active'));
+
+            // إظهار القسم المطلوب
+            const activeSection = document.getElementById(sectionId);
+            if (activeSection) {
+                activeSection.classList.add('active');
+            }
+
+            // إضافة فئة active للزر المناسب
+            event.target.classList.add('active');
+
+            // Scroll إلى الأعلى
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+
+            // حفظ القسم المختار في localStorage
+            localStorage.setItem('selectedKnowledgeSection', sectionId);
+        }
+
+        function goTo(page) {
+            window.location.href = page;
+        }
+
+        function contactSupport() {
+            alert('اتصل بنا على:\n\n📞 16328 (المجلس القومي لشؤون الإعاقة)\n📧 البريد الإلكتروني: support@signit.com');
+        }
+
+        function scheduleAppointment() {
+            alert('يمكنك التواصل مع المتخصصين من خلال:\n\n🏥 المستشفيات الحكومية\n🔗 المجلس القومي لشؤون الإعاقة\n☎️ الخطوط الهاتفية المتاحة');
+        }
+
+        function contactUs() {
+            alert('طرق التواصل:\n\n📧 البريد: support@signit.com\n📱 الواتس: +20 XXX XXX XXXX\n☎️ الهاتف: 16328\n🌐 الموقع: www.signit.com');
+        }
+
+        // استعادة القسم المختار عند إعادة تحميل الصفحة
+        window.addEventListener('load', () => {
+            const savedSection = localStorage.getItem('selectedKnowledgeSection') || 'rights';
+            const savedSectionElement = document.getElementById(savedSection);
+            if (savedSectionElement) {
+                savedSectionElement.classList.add('active');
+                const buttons = document.querySelectorAll('.nav-btn');
+                buttons.forEach((btn, index) => {
+                    if (index === ['rights', 'detection', 'diagnosis', 'resources'].indexOf(savedSection)) {
+                        btn.classList.add('active');
+                    }
+                });
+            }
+        });
+
+        // إضافة رسالة في وحدة التحكم
+        console.log('%c✅ Knowledge Hub loaded successfully!', 'color: #667eea; font-size: 16px; font-weight: bold;');
+    </script>
+</body>
+</html>
