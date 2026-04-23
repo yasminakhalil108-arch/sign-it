@@ -1,0 +1,668 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <!-- modify this form HTML and place wherever you want your form -->
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes" />
+  <style>
+  .side-nav {
+    background: linear-gradient(135deg, #f0f9ff 0%, #e0e7ff 100%);
+    box-shadow: -2px 0 18px rgba(124,60,237,0.10);
+    border-radius: 18px 0 0 18px;
+    padding-top: 2.5rem !important;
+  }
+  .side-nav .nav-link {
+    display: flex;
+    align-items: center;
+    gap: 0.7rem;
+    font-size: 1.13rem;
+    color: #1e293b;
+    background: none;
+    border-radius: 10px;
+    padding: 0.7rem 1.1rem;
+    margin-bottom: 0.3rem;
+    font-weight: 500;
+    transition: background 0.18s, color 0.18s, box-shadow 0.18s;
+  }
+  .side-nav .nav-link.active, .side-nav .nav-link:hover {
+    background: linear-gradient(135deg, #7C3AED, #2563EB);
+    color: #fff !important;
+    box-shadow: 0 2px 8px rgba(124,60,237,0.09);
+  }
+  .side-nav .sos-link {
+    color: #EF4444 !important;
+    font-weight: bold;
+  }
+  .side-nav #closeNav {
+    color: #2563EB;
+    background: #f3f4f6;
+    border-radius: 50%;
+    width: 44px;
+    height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 1.5rem;
+    font-size: 2rem;
+    box-shadow: 0 2px 8px rgba(37,99,235,0.07);
+    transition: background 0.18s;
+  }
+  .side-nav #closeNav:hover {
+    background: #e0e7ff;
+  }
+  .menu-toggle {
+    color: #2563EB;
+    background: #f3f4f6;
+    border-radius: 50%;
+    width: 44px;
+    height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2rem;
+    box-shadow: 0 2px 8px rgba(37,99,235,0.07);
+    transition: background 0.18s;
+  }
+  .menu-toggle:hover {
+    background: #e0e7ff;
+  }
+
+  /* ========== الحاوية الرئيسية للشاتات في أسفل اليسار ========== */
+  .chats-container {
+    position: fixed;
+    left: 24px;
+    bottom: 24px;
+    z-index: 9999;
+    display: flex;
+    flex-direction: column-reverse;
+    align-items: flex-start;
+    gap: 12px;
+  }
+
+  /* ========== شات Minnit ========== */
+  .minnit-chat-btn {
+    width: 55px;
+    height: 55px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #7C3AED, #2563EB);
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 15px rgba(124, 60, 237, 0.3);
+    transition: transform 0.2s, box-shadow 0.2s;
+    color: white;
+    font-size: 1.8rem;
+  }
+  .minnit-chat-btn:hover {
+    transform: scale(1.05);
+    box-shadow: 0 6px 20px rgba(124, 60, 237, 0.4);
+  }
+
+  .minnit-chat-window {
+    position: fixed;
+    left: 24px;
+    bottom: 100px;
+    width: 400px;
+    max-width: calc(100vw - 48px);
+    height: 500px;
+    max-height: 60vh;
+    background: white;
+    border-radius: 20px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+    display: none;
+    flex-direction: column;
+    overflow: hidden;
+    z-index: 10001;
+    animation: slideUp 0.3s ease;
+  }
+  
+  @keyframes slideUp {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .minnit-chat-header {
+    background: linear-gradient(135deg, #7C3AED, #2563EB);
+    color: white;
+    padding: 12px 16px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .minnit-chat-header h3 {
+    margin: 0;
+    font-size: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .close-minnit-chat {
+    background: none;
+    border: none;
+    color: white;
+    font-size: 1.2rem;
+    cursor: pointer;
+    opacity: 0.8;
+    transition: opacity 0.2s;
+  }
+  .close-minnit-chat:hover {
+    opacity: 1;
+  }
+
+  .minnit-chat-iframe {
+    flex: 1;
+    width: 100%;
+    border: none;
+  }
+
+  /* ========== الشات الثاني (الدعم الفني) ========== */
+  .second-chat-btn {
+    width: 55px;
+    height: 55px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #6366F1, #8B5CF6);
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 15px rgba(99, 102, 241, 0.3);
+    transition: transform 0.2s, box-shadow 0.2s;
+    color: white;
+    font-size: 1.8rem;
+  }
+  .second-chat-btn:hover {
+    transform: scale(1.05);
+    box-shadow: 0 6px 20px rgba(99, 102, 241, 0.4);
+  }
+
+  .second-chat-window {
+    position: fixed;
+    left: 24px;
+    bottom: 100px;
+    width: 350px;
+    max-width: calc(100vw - 48px);
+    height: 450px;
+    max-height: 55vh;
+    background: white;
+    border-radius: 20px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+    display: none;
+    flex-direction: column;
+    overflow: hidden;
+    z-index: 10000;
+    animation: slideUp 0.3s ease;
+  }
+
+  .second-chat-header {
+    background: linear-gradient(135deg, #6366F1, #8B5CF6);
+    color: white;
+    padding: 12px 16px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .second-chat-header h3 {
+    margin: 0;
+    font-size: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .close-second-chat {
+    background: none;
+    border: none;
+    color: white;
+    font-size: 1.2rem;
+    cursor: pointer;
+    opacity: 0.8;
+    transition: opacity 0.2s;
+  }
+  .close-second-chat:hover {
+    opacity: 1;
+  }
+
+  .second-chat-messages {
+    flex: 1;
+    overflow-y: auto;
+    padding: 12px;
+    background: #f8fafc;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .second-message {
+    max-width: 85%;
+    padding: 8px 12px;
+    border-radius: 16px;
+    font-size: 0.85rem;
+    line-height: 1.4;
+  }
+  .second-message.user {
+    background: linear-gradient(135deg, #6366F1, #8B5CF6);
+    color: white;
+    align-self: flex-end;
+    border-bottom-right-radius: 4px;
+  }
+  .second-message.bot {
+    background: white;
+    color: #1e293b;
+    align-self: flex-start;
+    border-bottom-left-radius: 4px;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+    border-right: 3px solid #8B5CF6;
+  }
+  .second-typing {
+    background: #f1f5f9;
+    color: #64748b;
+    align-self: flex-start;
+    padding: 8px 12px;
+    border-radius: 16px;
+    font-size: 0.8rem;
+    border-bottom-left-radius: 4px;
+  }
+
+  .second-chat-input-area {
+    display: flex;
+    padding: 10px;
+    background: white;
+    border-top: 1px solid #e2e8f0;
+    gap: 6px;
+  }
+  .second-chat-input-area input {
+    flex: 1;
+    padding: 8px 12px;
+    border: 1px solid #e2e8f0;
+    border-radius: 20px;
+    outline: none;
+    font-size: 0.85rem;
+    transition: border-color 0.2s;
+  }
+  .second-chat-input-area input:focus {
+    border-color: #8B5CF6;
+  }
+  .second-chat-input-area button {
+    background: linear-gradient(135deg, #6366F1, #8B5CF6);
+    border: none;
+    color: white;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.2s;
+  }
+  .second-chat-input-area button:hover {
+    transform: scale(1.05);
+  }
+
+  /* Chatbase */
+  .chatbase-widget {
+    position: static !important;
+    margin-bottom: 0 !important;
+  }
+  .chatbase-bubble, 
+  #chatbase-bubble, 
+  .chatbase-widget-container, 
+  .chatbase-widget-launcher {
+    display: none !important;
+  }
+
+  @media (max-width: 600px) {
+    body {
+      -webkit-text-size-adjust: 100%;
+      text-size-adjust: 100%;
+    }
+    .side-nav { width: 85vw !important; min-width: 0 !important; max-width: 320px; }
+    .side-nav .nav-link { font-size: 1rem; padding: 0.7rem 0.7rem; }
+    
+    .chats-container {
+      left: 8px;
+      bottom: 8px;
+      gap: 8px;
+    }
+    .second-chat-btn, .minnit-chat-btn {
+      width: 48px;
+      height: 48px;
+      font-size: 1.5rem;
+    }
+    .second-chat-window, .minnit-chat-window {
+      left: 8px;
+      bottom: 80px;
+      width: calc(100vw - 16px);
+    }
+    .minnit-chat-window {
+      bottom: 140px;
+    }
+  }
+  
+  input, textarea, select, button {
+    font-size: 16px;
+  }
+  
+  </style>
+  <meta charset="UTF-8" />
+  <title>Sign It - Learn Sign Language</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  
+</head>
+<body class="landing-body">
+
+  <header class="landing-header">
+    <div class="brand">
+      <span class="brand-icon"><i class="fas fa-hands"></i></span>
+      <span class="brand-text" data-i18n="landingBrand">Sign It</span>
+    </div>
+
+    <div class="header-actions">
+      <button class="menu-toggle" id="menuToggle" aria-label="فتح القائمة" style="background:none;border:none;font-size:2rem;cursor:pointer;display:inline-block;margin-left:1rem;">
+        <i class="fas fa-bars"></i>
+      </button>
+      <nav class="main-nav side-nav" id="sideNav" style="position:fixed;top:0;right:-320px;width:300px;height:100vh;background:#fff;box-shadow:-2px 0 12px rgba(0,0,0,0.08);z-index:1000;display:flex;flex-direction:column;gap:0.5rem;padding:2rem 1.5rem 1.5rem 1.5rem;transition:right 0.3s;">
+        <button id="closeNav" aria-label="إغلاق القائمة" style="background:none;border:none;font-size:2rem;align-self:flex-end;cursor:pointer;margin-bottom:1.5rem;color:#2563EB;"><i class="fas fa-times"></i></button>
+        <a class="nav-link active" href="index.html" data-i18n="landingNavHome" style="font-weight:bold;font-size:1.1rem;">الرئيسية</a>
+        <a class="nav-link" href="about.html">عن المشروع</a>
+        <a class="nav-link" href="team.html" data-i18n="landingNavAbout">من نحن</a>
+        <a class="nav-link" href="learning-lab.html" data-i18n="landingNavLessons">الدروس</a>
+        <a class="nav-link" href="dictionary.html" data-i18n="landingNavDictionary">القاموس</a>
+        <a class="nav-link" href="other-services.html" style="background: linear-gradient(135deg, #7C3AED, #2563EB); color: #fff; border-radius: 8px; font-weight: bold; margin: 0.5rem 0; box-shadow: 0 2px 8px rgba(124,60,237,0.08);">خدمات أخرى</a>
+        <a class="nav-link" href="test-system.html" data-i18n="landingNavQuiz">اختبار</a>
+        <a class="nav-link" href="psy-support.html" data-i18n="landingNavPsych">الصحة النفسية</a>
+        <a class="nav-link" href="ai-assistant.html"><i class="fas fa-robot"></i> AI</a>
+        <a class="nav-link sos-link" href="sos-emergency.html" style="color:#EF4444;"><i class="fas fa-siren"></i> <span style="color: #EF4444;">SOS</span></a>
+        <a class="nav-link" href="login.html" style="background: linear-gradient(135deg, #7C3AED, #2563EB); color: #fff; border-radius: 8px; font-weight: bold; margin-top: 1rem; box-shadow: 0 2px 8px rgba(124,60,237,0.08);"><i class="fas fa-sign-in-alt"></i> تسجيل الدخول</a>
+       
+      <button id="langToggle" class="lang-btn" aria-label="تبديل اللغة">English</button>
+    </div>
+  </header>
+
+  <main class="landing-main">
+    <section class="hero">
+      <div class="hero-content">
+        <p class="hero-label" data-i18n="landingHeroLabel">تعلم لغة الإشارة اليوم</p>
+        <h1 class="hero-title"><span data-i18n="landingHeroTitle">Welcome to Sign It</span></h1>
+        <p class="hero-text" data-i18n="landingHeroText">ابدأ رحلتك في تعلم لغة الإشارة من خلال دروس سهلة وواضحة تناسب جميع الأعمار.</p>
+        <div class="hero-actions">
+          
+          <a class="cta-btn filled" href="learning-lab.html" data-i18n="landingStartLearning">ابدأ التعلم</a>
+          <a class="cta-btn light" href="dictionary.html" data-i18n="landingOpenDictionary">فتح القاموس</a>
+        </div>
+      </div>
+      <div class="hero-visual" aria-hidden="true">
+        <video class="hero-video" autoplay muted loop controls>
+          <source src="../videos/sign-intro.mp4" type="video/mp4">
+        </video>
+      </div>
+    </section>
+
+    <section class="features">
+      <article class="feature-card"><div class="feature-icon"><i class="fas fa-book-reader"></i></div><h3 data-i18n="landingFeature1Title">دروس منظمة</h3><p data-i18n="landingFeature1Desc">خطة تعلم خطوة بخطوة مناسبة للمبتدئين.</p></article>
+      <article class="feature-card"><div class="feature-icon"><i class="fas fa-home"></i></div><h3 data-i18n="landingFeature2Title">مناسب للعائلة</h3><p data-i18n="landingFeature2Desc">مثالي للآباء والأطفال للتعلم معًا.</p></article>
+      <article class="feature-card"><div class="feature-icon"><i class="fas fa-chart-line"></i></div><h3 data-i18n="landingFeature3Title">تتبع التقدم</h3><p data-i18n="landingFeature3Desc">تابع رحلتك التعليمية بإحصائيات سهلة.</p></article>
+      <article class="feature-card"><div class="feature-icon"><i class="fas fa-gamepad"></i></div><h3 data-i18n="landingFeature4Title">تفاعلي</h3><p data-i18n="landingFeature4Desc">فيديوهات وتمارين عملية ممتعة.</p></article>
+    </section>
+
+    <section id="about" class="about">
+      <div class="about-content">
+        <div class="about-text">
+          <h2 data-i18n="landingAboutTitle">عن Sign It</h2>
+          <p data-i18n="landingAboutDesc1">منصتنا مكرسة لتعليم لغة الإشارة للجميع، مع التركيز على تسهيل التواصل بين الصم وضعاف السمع والعالم الناطق.</p>
+          <p data-i18n="landingAboutDesc2">نوفر محتوى تعليمي عالي الجودة، بدءاً من الأساسيات وحتى المستويات المتقدمة، مع أدوات تفاعلية وداعمة.</p>
+          <div class="about-stats"><div class="stat"><span class="stat-number">50K+</span><span class="stat-label">متعلم</span></div><div class="stat"><span class="stat-number">200+</span><span class="stat-label">درس</span></div><div class="stat"><span class="stat-number">30+</span><span class="stat-label">ساعة محتوى</span></div></div>
+        </div>
+        <div class="about-image"><div class="about-visual"><i class="fas fa-globe"></i></div></div>
+      </div>
+    </section>
+
+    <!-- ========== خدماتنا والدروس المتاحة (جميع البطاقات من الكود الثاني) ========== -->
+    <section class="services-section" style="padding: 4rem 5%; background: linear-gradient(135deg, #f0f9ff, #ecfdf5); margin: 3rem 0;">
+      <h2 style="text-align: center; color: #7C3AED; font-size: 2.2rem; margin-bottom: 3rem;">
+        <i class="fas fa-star"></i> خدماتنا والدروس المتاحة
+      </h2>
+      
+      <div class="services-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 2rem; max-width: 1200px; margin: 0 auto;">
+        
+       
+        <!-- الكاميرا + الترجمة الفورية -->
+        <div class="service-card" style="background: white; padding: 2rem; border-radius: 15px; box-shadow: 0 4px 12px rgba(0,0,0,0.08); text-align: center; transition: all 0.3s ease;">
+          <div style="font-size: 3rem; margin-bottom: 1rem;"><i class="fas fa-camera" style="color: #5e35b1;"></i></div>
+          <h3 style="color: #7C3AED; margin-bottom: 0.5rem; font-size: 1.3rem;">الكاميرا + الترجمة الفورية</h3>
+          <p style="color: #4b5563; line-height: 1.6; margin-bottom: 1rem;">استخدم الكاميرا أو الميكروفون لترجمة الكلام أو الإشارة مباشرة.</p>
+          <a href="yasmin.html" style="display: inline-block; padding: 0.8rem 1.5rem; background: linear-gradient(135deg, #5e35b1, #3949ab); color: white; border-radius: 8px; text-decoration: none; font-weight: 600;">ابدأ الترجمة</a>
+        </div>
+
+        <!-- مختبر التعلم -->
+        <div class="service-card" style="background: white; padding: 2rem; border-radius: 15px; box-shadow: 0 4px 12px rgba(0,0,0,0.08); text-align: center; transition: all 0.3s ease;">
+          <div style="font-size: 3rem; margin-bottom: 1rem;"><i class="fas fa-book" style="color: #2563EB;"></i></div>
+          <h3 style="color: #7C3AED; margin-bottom: 0.5rem; font-size: 1.3rem;">مختبر التعلم</h3>
+          <p style="color: #4b5563; line-height: 1.6; margin-bottom: 1rem;">دروس تفاعلية من الصفر مع تمارين عملية واختبارات.</p>
+          <a href="learning-lab.html" style="display: inline-block; padding: 0.8rem 1.5rem; background: linear-gradient(135deg, #2563EB, #1D4ED8); color: white; border-radius: 8px; text-decoration: none; font-weight: 600;">اختبر الآن</a>
+        </div>
+
+        <!-- قاموس الإشارة -->
+        <div class="service-card" style="background: white; padding: 2rem; border-radius: 15px; box-shadow: 0 4px 12px rgba(0,0,0,0.08); text-align: center; transition: all 0.3s ease;">
+          <div style="font-size: 3rem; margin-bottom: 1rem;"><i class="fas fa-book-open" style="color: #7C3AED;"></i></div>
+          <h3 style="color: #7C3AED; margin-bottom: 0.5rem; font-size: 1.3rem;">قاموس الإشارة</h3>
+          <p style="color: #4b5563; line-height: 1.6; margin-bottom: 1rem;">معجم شامل بآلاف المفردات مع فيديوهات توضيحية.</p>
+          <a href="dictionary.html" style="display: inline-block; padding: 0.8rem 1.5rem; background: linear-gradient(135deg, #7C3AED, #6D28D9); color: white; border-radius: 8px; text-decoration: none; font-weight: 600;">افتح القاموس</a>
+        </div>
+
+        <!-- مساعد ذكي (AI) -->
+        <div class="service-card" style="background: white; padding: 2rem; border-radius: 15px; box-shadow: 0 4px 12px rgba(0,0,0,0.08); text-align: center; transition: all 0.3s ease;">
+          <div style="font-size: 3rem; margin-bottom: 1rem;"><i class="fas fa-robot" style="color: #F59E0B;"></i></div>
+          <h3 style="color: #7C3AED; margin-bottom: 0.5rem; font-size: 1.3rem;">مساعد ذكي (AI)</h3>
+          <p style="color: #4b5563; line-height: 1.6; margin-bottom: 1rem;">مساعد ذكي متاح 24/7 للإجابة على أسئلتك.</p>
+          <a href="ai-assistant.html" style="display: inline-block; padding: 0.8rem 1.5rem; background: linear-gradient(135deg, #F59E0B, #D97706); color: white; border-radius: 8px; text-decoration: none; font-weight: 600;">تحدث الآن</a>
+        </div>
+        
+        <!-- لوحه التحكم() -->
+        <div class="service-card" style="background: white; padding: 2rem; border-radius: 15px; box-shadow: 0 4px 12px rgba(0,0,0,0.08); text-align: center; transition: all 0.3s ease;">
+          <div style="font-size: 3rem; margin-bottom: 1rem;"><i class="fas fa-robot" style="color: #586991;"></i></div>
+          <h3 style="color: #7C3AED; margin-bottom: 0.5rem; font-size: 1.3rem;">لوحه التحكم</h3>
+          <p style="color: #4b5563; line-height: 1.6; margin-bottom: 1rem;">إدارة الخدمات والمستخدمين بسهولة.</p>
+          <a href="admin.html" style="display: inline-block; padding: 0.8rem 1.5rem; background: linear-gradient(135deg, #586991, #586991); color: white; border-radius: 8px; text-decoration: none; font-weight: 600;">ادخل إلى اللوحه</a>
+        </div>
+
+        <!-- الاختبارات -->
+        <div class="service-card" style="background: white; padding: 2rem; border-radius: 15px; box-shadow: 0 4px 12px rgba(0,0,0,0.08); text-align: center; transition: all 0.3s ease;">
+          <div style="font-size: 3rem; margin-bottom: 1rem;"><i class="fas fa-graduation-cap" style="color: #10B981;"></i></div>
+          <h3 style="color: #7C3AED; margin-bottom: 0.5rem; font-size: 1.3rem;">الاختبارات</h3>
+          <p style="color: #4b5563; line-height: 1.6; margin-bottom: 1rem;">اختبارات شاملة لقياس مستواك.</p>
+          <a href="test-system.html" style="display: inline-block; padding: 0.8rem 1.5rem; background: linear-gradient(135deg, #10B981, #059669); color: white; border-radius: 8px; text-decoration: none; font-weight: 600;">اختبر نفسك</a>
+        </div>
+
+        <!-- الدعم النفسي -->
+        <div class="service-card" style="background: white; padding: 2rem; border-radius: 15px; box-shadow: 0 4px 12px rgba(0,0,0,0.08); text-align: center; transition: all 0.3s ease;">
+          <div style="font-size: 3rem; margin-bottom: 1rem;"><i class="fas fa-heart" style="color: #EF4444;"></i></div>
+          <h3 style="color: #7C3AED; margin-bottom: 0.5rem; font-size: 1.3rem;">الدعم النفسي</h3>
+          <p style="color: #4b5563; line-height: 1.6; margin-bottom: 1rem;">موارد وأدوات مساعدة للصحة النفسية.</p>
+          <a href="psy-support.html" style="display: inline-block; padding: 0.8rem 1.5rem; background: linear-gradient(135deg, #EF4444, #DC2626); color: white; border-radius: 8px; text-decoration: none; font-weight: 600;">اطلب المساعدة</a>
+        </div>
+
+        <!-- خدمة SOS الطوارئ -->
+        <div class="service-card" style="background: linear-gradient(135deg, #EF4444, #B91C1C); padding: 2rem; border-radius: 15px; box-shadow: 0 4px 12px rgba(239,68,68,0.3); text-align: center; color: white; transition: all 0.3s ease;">
+          <div style="font-size: 3rem; margin-bottom: 1rem;"><i class="fas fa-siren"></i></div>
+          <h3 style="margin-bottom: 0.5rem; font-size: 1.3rem;">خدمة SOS الطوارئ</h3>
+          <p style="line-height: 1.6; margin-bottom: 1rem; opacity: 0.9;">للحالات الطارئة - تواصل معنا فوراً.</p>
+          <a href="sos-emergency.html" style="display: inline-block; padding: 0.8rem 1.5rem; background: rgba(255,255,255,0.2); color: white; border-radius: 8px; text-decoration: none; font-weight: 600; border: 2px solid white;">اطلب الطوارئ</a>
+        </div>
+      </div>
+    </section>
+
+    <section class="journey">
+      <h2 data-i18n="landingJourneyTitle">مستعد تبدأ رحلتك؟</h2>
+      <p data-i18n="landingJourneyText">انضم لآلاف المتعلمين وابدأ التواصل بلغة الإشارة اليوم.</p>
+      <div class="hero-actions centered">
+        <a class="cta-btn filled" href="login.html"><i class="fas fa-sign-in-alt"></i> تسجيل الدخول</a>
+        <a class="cta-btn light" href="signup.html"><i class="fas fa-user-plus"></i> إنشاء حساب جديد</a>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-content"><p>&copy; 2024 Sign It - Learn Sign Language | جميع الحقوق محفوظة</p></div>
+  </footer>
+
+  <!-- ========== حاوية جميع الشاتات في أسفل اليسار ========== -->
+  <div class="chats-container">
+    <!-- شات Minnit -->
+    <div class="minnit-chat-window" id="minnitChatWindow">
+      <div class="minnit-chat-header">
+        <h3><i class="fas fa-users"></i> شات Minnit - محادثة جماعية</h3>
+        <button class="close-minnit-chat" id="closeMinnitChatBtn">✕</button>
+      </div>
+      <iframe class="minnit-chat-iframe" id="minnitChatIframe" src="https://organizations.minnit.chat/849201447760115/c/Main?embed" title="Minnit Chat"></iframe>
+    </div>
+    <button class="minnit-chat-btn" id="minnitChatBtn">
+      <i class="fas fa-comments"></i>
+    </button>
+
+    <!-- الشات الثاني (الدعم الفني) -->
+    <div class="second-chat-window" id="secondChatWindow">
+      <div class="second-chat-header">
+        <h3><i class="fas fa-headset"></i> الدعم الفني</h3>
+        <button class="close-second-chat" id="closeSecondChatBtn">✕</button>
+      </div>
+      <div class="second-chat-messages" id="secondChatMessages">
+        <div class="second-message bot">مرحباً بك! 👋 كيف يمكنني مساعدتك اليوم؟</div>
+      </div>
+      <div class="second-chat-input-area">
+        <input type="text" id="secondChatInput" placeholder="اكتب رسالتك هنا...">
+        <button id="secondSendBtn"><i class="fas fa-paper-plane"></i></button>
+      </div>
+    </div>
+    <button class="second-chat-btn" id="secondChatBtn">
+      <i class="fas fa-comment-dots"></i>
+    </button>
+  </div>
+
+  <script src="script.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="supabase.js"></script>
+  <script src="app.js"></script>
+
+  <script>
+    // تحديث نص زر اللغة والاتجاه
+    document.addEventListener('DOMContentLoaded', function() {
+      var langBtn = document.getElementById('langToggle');
+      var savedLanguage = localStorage.getItem('preferredLanguage');
+      var savedDir = localStorage.getItem('htmlDir');
+      if (langBtn) {
+        if (savedLanguage === 'en') {
+          langBtn.textContent = 'العربية';
+          document.documentElement.lang = 'en';
+          document.documentElement.dir = savedDir || 'ltr';
+        } else {
+          langBtn.textContent = 'English';
+          document.documentElement.lang = 'ar';
+          document.documentElement.dir = savedDir || 'rtl';
+        }
+      }
+      
+      var loginLink = document.getElementById('loginNavLink');
+      var isAuth = localStorage.getItem('isAuthenticated') === 'true';
+      if (!isAuth) loginLink.style.display = 'inline-flex';
+      else loginLink.style.display = 'none';
+    });
+
+    // القائمة الجانبية
+    document.addEventListener('DOMContentLoaded', function() {
+      const menuToggle = document.getElementById('menuToggle');
+      const sideNav = document.getElementById('sideNav');
+      const closeNav = document.getElementById('closeNav');
+      if (menuToggle && sideNav && closeNav) {
+        menuToggle.addEventListener('click', function(e) {
+          e.preventDefault();
+          sideNav.style.right = '0';
+          document.body.style.overflow = 'hidden';
+        });
+        closeNav.addEventListener('click', function(e) {
+          e.preventDefault();
+          sideNav.style.right = '-320px';
+          document.body.style.overflow = '';
+        });
+      }
+    });
+
+    // شات Minnit
+    document.addEventListener('DOMContentLoaded', function() {
+      const minnitBtn = document.getElementById('minnitChatBtn');
+      const minnitWindow = document.getElementById('minnitChatWindow');
+      const closeMinnit = document.getElementById('closeMinnitChatBtn');
+      if (minnitBtn && minnitWindow && closeMinnit) {
+        minnitBtn.addEventListener('click', function() { minnitWindow.style.display = 'flex'; });
+        closeMinnit.addEventListener('click', function() { minnitWindow.style.display = 'none'; });
+      }
+    });
+
+    // الشات الثاني (الدعم الفني)
+    document.addEventListener('DOMContentLoaded', function() {
+      const chatBtn = document.getElementById('secondChatBtn');
+      const chatWindow = document.getElementById('secondChatWindow');
+      const closeBtn = document.getElementById('closeSecondChatBtn');
+      const sendBtn = document.getElementById('secondSendBtn');
+      const chatInput = document.getElementById('secondChatInput');
+      const chatMessages = document.getElementById('secondChatMessages');
+
+      if (chatBtn && chatWindow && closeBtn) {
+        chatBtn.addEventListener('click', function() { chatWindow.style.display = 'flex'; });
+        closeBtn.addEventListener('click', function() { chatWindow.style.display = 'none'; });
+      }
+
+      function sendMessage() {
+        if (!sendBtn || !chatInput || !chatMessages) return;
+        const message = chatInput.value.trim();
+        if (message === '') return;
+
+        const userMsgDiv = document.createElement('div');
+        userMsgDiv.className = 'second-message user';
+        userMsgDiv.textContent = message;
+        chatMessages.appendChild(userMsgDiv);
+        chatMessages.scrollTop = chatMessages.scrollHeight;
+        chatInput.value = '';
+
+        const typingDiv = document.createElement('div');
+        typingDiv.className = 'second-typing';
+        typingDiv.innerHTML = 'جاري الكتابة<span>.</span><span>.</span><span>.</span>';
+        chatMessages.appendChild(typingDiv);
+        chatMessages.scrollTop = chatMessages.scrollHeight;
+
+        setTimeout(function() {
+          chatMessages.removeChild(typingDiv);
+          let reply = 'شكراً لتواصلك معنا! 😊 فريق الدعم سيتواصل معك قريباً.';
+          const lowerMsg = message.toLowerCase();
+          if (lowerMsg.includes('مرحب') || lowerMsg.includes('السلام')) reply = 'وعليكم السلام ورحمة الله! 👋 كيف أقدر أساعدك؟';
+          else if (lowerMsg.includes('شكر')) reply = 'عفواً! هذا من دواعي سروري 😊';
+          else if (lowerMsg.includes('لغة اشارة') || lowerMsg.includes('تعلم')) reply = 'لدينا دروس ممتازة في مختبر التعلم! 🎓';
+          else if (lowerMsg.includes('ساعد')) reply = 'بالطبع! أخبرني بالمشكلة وسأحاول مساعدتك 💙';
+          
+          const botMsgDiv = document.createElement('div');
+          botMsgDiv.className = 'second-message bot';
+          botMsgDiv.textContent = reply;
+          chatMessages.appendChild(botMsgDiv);
+          chatMessages.scrollTop = chatMessages.scrollHeight;
+        }, 1500);
+      }
+
+      if (sendBtn) sendBtn.addEventListener('click', sendMessage);
+      if (chatInput) chatInput.addEventListener('keypress', function(e) { if (e.key === 'Enter') sendMessage(); });
+    });
+  </script>
+
+  <!-- Chatbase Script -->
+  <script>
+    (function(){if(!window.chatbase||window.chatbase("getState")!=="initialized"){window.chatbase=(...arguments)=>{if(!window.chatbase.q){window.chatbase.q=[]}window.chatbase.q.push(arguments)};window.chatbase=new Proxy(window.chatbase,{get(target,prop){if(prop==="q"){return target.q}return(...args)=>target(prop,...args)}})}const onLoad=function(){const script=document.createElement("script");script.src="https://www.chatbase.co/embed.min.js";script.id="41qfAmm_LuIhzoNDIoJCv";script.domain="www.chatbase.co";document.body.appendChild(script)};if(document.readyState==="complete"){onLoad()}else{window.addEventListener("load",onLoad)}})();
+  </script>
+</body>
+</html>
