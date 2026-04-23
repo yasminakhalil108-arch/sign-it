@@ -872,6 +872,13 @@
                     if (muteAlways) {
                         video.muted = true;
                         video.volume = 0;
+                        // اجبار الكتم حتى لو حاول المستخدم تغيير الصوت
+                        video.addEventListener('volumechange', function forceMute() {
+                            if (!video.muted || video.volume > 0) {
+                                video.muted = true;
+                                video.volume = 0;
+                            }
+                        });
                     }
                     video.currentTime = 0;
                     video.onended = () => { if(nextBtn) nextBtn.disabled = false; };
