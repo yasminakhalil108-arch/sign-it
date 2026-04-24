@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>كيبورد لغة الإشارة - حروف وأرقام</title>
+    <style>
+        /* ========== ROOT VARIABLES ========== */
+        :root {
+          --primary: #6366F1;
+          --primary-dark: #4F46E5;
+          --secondary: #8B5CF6;
+          --accent: #EC4899;
+          --success: #10B981;
+          --warning: #F59E0B;
+          --danger: #EF4444;
+          --white: #FFFFFF;
+          --light: #F8FAFC;
+          --light-grey: #F1F5F9;
+          --dark-grey: #64748B;
+          --text-dark: #0F172A;
+          --text-muted: #475569;
+          --border: #E2E8F0;
+          --bg-gradient-1: #F0F4FF;
+          --bg-gradient-2: #FEF3C7;
+          
+          --shadow-xs: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+          --shadow-sm: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+          --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+          --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+          --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, var(--bg-gradient-1) 0%, var(--bg-gradient-2) 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .keyboard-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: var(--white);
+            border-radius: 28px;
+            box-shadow: var(--shadow-xl);
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .keyboard-header {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            padding: 20px 25px;
+            color: var(--white);
+        }
+
+        .keyboard-header h1 {
+            font-size: 1.8rem;
+            margin: 0 0 5px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .keyboard-header p {
+            opacity: 0.9;
+            font-size: 0.9rem;
+            margin: 0;
+        }
+
+        .display-area {
+            padding: 20px 25px;
+            background: var(--light);
+            border-bottom: 1px solid var(--border);
+        }
+
+        .display {
+            width: 100%;
+            padding: 18px;
+            font-size: 28px;
+            border: 2px solid var(--border);
+            border-radius: 16px;
+            background: var(--white);
+            text-align: right;
+            direction: rtl;
+            font-family: 'Segoe UI', monospace;
+            resize: vertical;
+            transition: all 0.3s ease;
+        }
+
+        .display:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+        }
+
+        .button-group {
+            display: flex;
+            gap: 12px;
+            margin-top: 15px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .action-btn {
+            padding: 10px 24px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            border: none;
+            border-radius: 12px;
+            transition: all 0.3s ease;
+            background: var(--white);
+            color: var(--text-dark);
+            border: 1px solid var(--border);
+            box-shadow: var(--shadow-xs);
+        }
+
+        .action-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .action-btn.clear {
+            background: linear-gradient(135deg, var(--danger), #DC2626);
+            color: var(--white);
+            border: none;
+        }
+
+        .action-btn.space {
+            background: linear-gradient(135deg, var(--success), #059669);
+            color: var(--white);
+            border: none;
+        }
+
+        .action-btn.back {
+            background: linear-gradient(135deg, var(--warning), #D97706);
+            color: var(--white);
+            border: none;
+        }
+
+        /* ========== زر التبديل الجديد ========== */
+        .toggle-btn {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: var(--white);
+            padding: 12px 30px;
+            font-size: 18px;
+            font-weight: bold;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: var(--shadow-md);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin: 0 auto;
+        }
+
+        .toggle-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .toggle-btn:active {
+            transform: translateY(-1px);
+        }
+
+        .keyboard-zone {
+            padding: 25px;
+            min-height: 550px;
+            transition: all 0.3s ease;
+        }
+
+        .section-title {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: var(--text-dark);
+            margin: 0 0 20px;
+            padding-right: 15px;
+            border-right: 5px solid var(--primary);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .row {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-bottom: 15px;
+            gap: 12px;
+        }
+
+        /* ========== صور أكبر بكثير ========== */
+        .key {
+            background: var(--white);
+            border: 2px solid var(--border);
+            border-radius: 20px;
+            margin: 0;
+            padding: 15px 12px;
+            text-align: center;
+            cursor: pointer;
+            min-width: 110px;
+            transition: all 0.25s ease;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .key:hover {
+            transform: translateY(-5px) scale(1.02);
+            box-shadow: var(--shadow-xl);
+            border-color: var(--primary);
+        }
+
+        .key:active {
+            transform: scale(0.98);
+        }
+
+        .key img {
+            width: 85px;
+            height: 85px;
+            display: block;
+            margin: 0 auto;
+            object-fit: contain;
+        }
+
+        .key span {
+            display: block;
+            font-size: 16px;
+            font-weight: 600;
+            margin-top: 10px;
+            color: var(--text-muted);
+        }
+
+        .current-mode {
+            text-align: center;
+            margin: 10px 0 20px;
+            padding: 10px;
+            background: var(--light-grey);
+            border-radius: 50px;
+            display: inline-block;
+            width: auto;
+            font-weight: bold;
+            color: var(--primary);
+        }
+
+        .mode-indicator {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .note {
+            text-align: center;
+            font-size: 12px;
+            color: var(--dark-grey);
+            margin-top: 20px;
+            padding: 15px;
+            background: var(--light-grey);
+            border-radius: 12px;
+        }
+
+        /* ========== Responsive ========== */
+        @media (max-width: 768px) {
+            body {
+                padding: 10px;
+            }
+            
+            .key {
+                min-width: 85px;
+                padding: 12px 8px;
+            }
+            
+            .key img {
+                width: 65px;
+                height: 65px;
+            }
+            
+            .display {
+                font-size: 22px;
+            }
+            
+            .keyboard-header h1 {
+                font-size: 1.3rem;
+            }
+            
+            .section-title {
+                font-size: 1.2rem;
+            }
+            
+            .toggle-btn {
+                padding: 10px 22px;
+                font-size: 16px;
+            }
+        }
+
+        @media (max-width: 550px) {
+            .key {
+                min-width: 70px;
+                padding: 10px 6px;
+            }
+            
+            .key img {
+                width: 50px;
+                height: 50px;
+            }
+            
+            .action-btn {
+                padding: 8px 16px;
+                font-size: 14px;
+            }
+            
+            .toggle-btn {
+                padding: 8px 18px;
+                font-size: 14px;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="keyboard-container">
+    <div class="keyboard-header">
+        <h1>
+            👐 كيبورد لغة الإشارة
+        </h1>
+        <p>اضغط على أي صورة لإضافة الحرف أو الرقم | زر التبديل بين الحروف والأرقام</p>
+    </div>
+
+    <div class="display-area">
+        <textarea class="display" id="screen" rows="3" placeholder="اكتب هنا..."></textarea>
+        <div class="button-group">
+            <button class="action-btn clear" onclick="clearScreen()">🗑️ مسح الكل</button>
+            <button class="action-btn space" onclick="addSpace()">␣ مسافة</button>
+            <button class="action-btn back" onclick="backspace()">⌫ حذف آخر</button>
+        </div>
+    </div>
+
+    <!-- زر التبديل بين الحروف والأرقام -->
+    <div style="text-align: center; margin: 10px 0 0;">
+        <button class="toggle-btn" id="toggleModeBtn" onclick="toggleMode()">
+            🔄 الأرقام
+        </button>
+    </div>
+
+    <div class="keyboard-zone" id="keys"></div>
+
+    <div class="note">
+        📁 <strong>ملاحظة هامة:</strong> ضعي الصور في نفس مجلد ملف HTML<br>
+        <span id="noteText">حالياً: <strong style="color: var(--primary);">الحروف العربية</strong></span>
+    </div>
+</div>
+
+<script>
+    // ========== أسماء الصور حسب طلبك ==========
+    const letters = ['ا.png','ب.png','ج.png','ح.png','خ.png','د.png','ذ.png','ر.png','ز.png','س.png','ش.png','ص.png','ض.png',
+                     'ط.png','ظ.png','ع.png','غ.png','ف.png','ق.png','ك.png','ل.png','م.png','ن.png','ه.png','و.png','ي.png'];
+    
+    const numbers = ['0.png','1.png','2.png','3.png','4.png','5.png','6.png','7.png','8.png','9.png','10.png','11.png','12.png','13.png','14.png','15.png','16.png','17.png','18.png','19.png','20.png'];
+    
+    // استخراج الحرف الفعلي من اسم الملف
+    function getCharFromFileName(fileName) {
+        return fileName.replace('.png', '');
+    }
+    
+    let currentMode = 'letters'; // 'letters' or 'numbers'
+    const keyboardDiv = document.getElementById('keys');
+    const toggleBtn = document.getElementById('toggleModeBtn');
+    const noteText = document.getElementById('noteText');
+    
+    // دالة إنشاء زر بالصورة
+    function createKey(fileName, category) {
+        const keyDiv = document.createElement('div');
+        keyDiv.className = 'key';
+        
+        const actualChar = getCharFromFileName(fileName);
+        
+        keyDiv.onclick = () => addToScreen(actualChar);
+        
+        const img = document.createElement('img');
+        img.src = fileName;
+        img.alt = actualChar;
+        
+        img.onerror = () => {
+            img.style.display = 'none';
+            const fallbackSpan = document.createElement('span');
+            fallbackSpan.innerText = actualChar;
+            fallbackSpan.style.fontSize = '42px';
+            fallbackSpan.style.fontWeight = 'bold';
+            fallbackSpan.style.padding = '10px';
+            fallbackSpan.style.color = 'var(--primary)';
+            keyDiv.insertBefore(fallbackSpan, keyDiv.firstChild);
+        };
+        
+        keyDiv.appendChild(img);
+        
+        const label = document.createElement('span');
+        label.innerText = actualChar;
+        keyDiv.appendChild(label);
+        
+        return keyDiv;
+    }
+    
+    // دالة إضافة إلى الشاشة
+    function addToScreen(char) {
+        const screen = document.getElementById('screen');
+        screen.value += char;
+    }
+    
+    function addSpace() {
+        const screen = document.getElementById('screen');
+        screen.value += ' ';
+    }
+    
+    function backspace() {
+        const screen = document.getElementById('screen');
+        screen.value = screen.value.slice(0, -1);
+    }
+    
+    function clearScreen() {
+        document.getElementById('screen').value = '';
+    }
+    
+    // تبديل الوضع بين الحروف والأرقام
+    function toggleMode() {
+        if (currentMode === 'letters') {
+            currentMode = 'numbers';
+            toggleBtn.innerHTML = '🔤切换到 الحروف';
+            noteText.innerHTML = 'حالياً: <strong style="color: var(--secondary);">الأرقام (0-20)</strong>';
+            buildNumbersKeyboard();
+        } else {
+            currentMode = 'letters';
+            toggleBtn.innerHTML = '🔢切换到 الأرقام';
+            noteText.innerHTML = 'حالياً: <strong style="color: var(--primary);">الحروف العربية</strong>';
+            buildLettersKeyboard();
+        }
+    }
+    
+    // بناء لوحة الحروف فقط
+    function buildLettersKeyboard() {
+        keyboardDiv.innerHTML = '';
+        
+        const lettersTitle = document.createElement('div');
+        lettersTitle.className = 'section-title';
+        lettersTitle.innerHTML = '🔤 الحروف العربية';
+        keyboardDiv.appendChild(lettersTitle);
+        
+        let currentRow = null;
+        let itemsPerRow = 6; // عدد أقل عشان الصور كبيرة
+        
+        letters.forEach((letterFile, index) => {
+            if (index % itemsPerRow === 0) {
+                currentRow = document.createElement('div');
+                currentRow.className = 'row';
+                keyboardDiv.appendChild(currentRow);
+            }
+            const key = createKey(letterFile, 'letter');
+            currentRow.appendChild(key);
+        });
+    }
+    
+    // بناء لوحة الأرقام فقط
+    function buildNumbersKeyboard() {
+        keyboardDiv.innerHTML = '';
+        
+        const numbersTitle = document.createElement('div');
+        numbersTitle.className = 'section-title';
+        numbersTitle.innerHTML = '🔢 الأرقام (0 - 20)';
+        keyboardDiv.appendChild(numbersTitle);
+        
+        let currentRow = null;
+        let itemsPerRow = 6;
+        
+        numbers.forEach((numFile, index) => {
+            if (index % itemsPerRow === 0) {
+                currentRow = document.createElement('div');
+                currentRow.className = 'row';
+                keyboardDiv.appendChild(currentRow);
+            }
+            const key = createKey(numFile, 'number');
+            currentRow.appendChild(key);
+        });
+    }
+    
+    // بدء البناء بالحروف
+    buildLettersKeyboard();
+    
+    // دالة التبديل متاحة عالمياً
+    window.toggleMode = toggleMode;
+    window.addSpace = addSpace;
+    window.backspace = backspace;
+    window.clearScreen = clearScreen;
+</script>
+</body>
+</html>
