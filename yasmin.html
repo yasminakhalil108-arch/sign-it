@@ -68,7 +68,6 @@
 
     .box {
       background: rgba(255, 255, 255, 0.96);
-      backdrop-filter: blur(0px);
       padding: 24px 20px;
       border-radius: 32px;
       box-shadow: 0 12px 28px rgba(0, 0, 0, 0.08);
@@ -96,7 +95,6 @@
       border: 3px solid #b9c8ff;
     }
 
-    /* كاميرا الاختبار فقط تعكس */
     .test-video {
       transform: scaleX(-1);
     }
@@ -253,6 +251,27 @@
       display: block;
     }
 
+    /* ====== وضع القاموس ====== */
+    #dictionaryMode .container {
+      grid-template-columns: 1fr;
+    }
+
+    .dict-filter-btns {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-bottom: 18px;
+    }
+
+    .dict-filter-btns button {
+      flex: unset;
+      padding: 8px 20px;
+    }
+
+    #dictionaryVideosContainer {
+      max-height: 500px;
+    }
+
     footer {
       background: #0f172a;
       color: #94a3b8;
@@ -287,7 +306,8 @@
   <button class="mode-btn active" data-mode="voice">🎤 صوت إلى إشارة (فيديو)</button>
   <button class="mode-btn" data-mode="test">📝 اختبار الإشارة بالكاميرا</button>
   <button class="mode-btn" data-mode="cameraToText">📷 إشارة إلى نص (ترجمة فورية)</button>
-  </div>
+  <button class="mode-btn" data-mode="dictionary">📚 قاموس الإشارات</button>
+</div>
 
 
 <!-- ========== وضع 1: صوت إلى فيديو ========== -->
@@ -345,7 +365,7 @@
   </div>
 </div>
 
-<!-- ========== وضع 3: إشارة إلى نص (كاميرا + ترجمة ذكية) ========== -->
+<!-- ========== وضع 3: إشارة إلى نص ========== -->
 <div id="cameraToTextMode" class="mode-content">
   <div class="container">
     <div class="box">
@@ -368,18 +388,37 @@
   </div>
 </div>
 
+<!-- ========== وضع 4: قاموس الإشارات ========== -->
+<div id="dictionaryMode" class="mode-content">
+  <div class="container" style="grid-template-columns:1fr;">
+    <div class="box">
+      <h3>📚 قاموس الإشارات المرئية</h3>
+      <div class="dict-filter-btns">
+        <button id="dictAllBtn">🌐 الكل</button>
+        <button id="dictLettersBtn">🔤 الحروف</button>
+        <button id="dictNumbersBtn">🔢 الأرقام</button>
+        <button id="dictAnimalsBtn">🐾 الحيوانات</button>
+        <button id="dictColorsBtn">🎨 الألوان</button>
+        <button id="dictSocialBtn">👋 التحيات</button>
+      </div>
+      <div id="dictionaryVideosContainer" class="videos-container">
+        <div style="color:#aaa;">📖 اختر تصنيفاً لعرض الفيديوهات</div>
+      </div>
+    </div>
+  </div>
+</div>
+
 
 <footer>© 2026 ساين إيت - قاموس الإشارات المرئية بالفيديو | تدريب وممارسة لغة الإشارة</footer>
 
 <script>
   // ===================== قاعدة بيانات الفيديوهات =====================
   const VIDEOS_DB = {
-    // الحروف العربية
-     "ا" : { video: "حرف الاف - Copy - Trim.mp4", category: "letters", desc: "ارفعي إصبع السبابة للأعلى" },
+    "ا" : { video: "حرف الاف - Copy - Trim.mp4", category: "letters", desc: "ارفعي إصبع السبابة للأعلى" },
     "الالف" : { video: "حرف الاف - Copy - Trim.mp4", category: "letters", desc: "ارفعي إصبع السبابة للأعلى" },
+    "الف" : { video: "حرف الاف - Copy - Trim.mp4", category: "letters", desc: "ارفعي إصبع السبابة للأعلى" },
     "الباء": { video: "حرف الباء.mp4", category: "letters", desc: "كف مفتوح للأمام مع ثني الإبهام" },
     "ب": { video: "حرف الباء.mp4", category: "letters", desc: "كف مفتوح للأمام مع ثني الإبهام" },
-   
     "ت": { video: "حرف التاء.mp4", category: "letters", desc: "ارفعي إصبعين (السبابة والوسطى)" },
     "ث": { video: "حرف الثاء.mp4", category: "letters", desc: "ارفعي ثلاثة أصابع" },
     "ج": { video: "حرف الجيم.mp4", category: "letters", desc: "نصف دائرة بالكف والإبهام داخله" },
@@ -404,7 +443,6 @@
     "هـ": { video: "حرف الهاء.mp4", category: "letters", desc: "أطراف الأصابع مجتمعة" },
     "و": { video: "حرف الواو.mp4", category: "letters", desc: "ضم الأصابع بشكل دائري" },
     "ي": { video: "حرف الياء.mp4", category: "letters", desc: "الخنصر فقط للأسفل" },
-    
     "التاء": { video: "حرف التاء.mp4", category: "letters", desc: "ارفعي إصبعين (السبابة والوسطى)" },
     "الثاء": { video: "حرف الثاء.mp4", category: "letters", desc: "ارفعي ثلاثة أصابع" },
     "الجيم": { video: "حرف الجيم.mp4", category: "letters", desc: "نصف دائرة بالكف والإبهام داخله" },
@@ -429,7 +467,6 @@
     "الهاء": { video: "حرف الهاء.mp4", category: "letters", desc: "أطراف الأصابع مجتمعة" },
     "الواو": { video: "حرف الواو.mp4", category: "letters", desc: "ضم الأصابع بشكل دائري" },
     "الياء": { video: "حرف الياء.mp4", category: "letters", desc: "الخنصر فقط للأسفل" },
-    "الف" : { video: "حرف الاف - Copy - Trim.mp4", category: "letters", desc: "ارفعي إصبع السبابة للأعلى" },
     "باء": { video: "حرف الباء.mp4", category: "letters", desc: "كف مفتوح للأمام مع ثني الإبهام" },
     "تاء": { video: "حرف التاء.mp4", category: "letters", desc: "ارفعي إصبعين (السبابة والوسطى)" },
     "ثاء": { video: "حرف الثاء.mp4", category: "letters", desc: "ارفعي ثلاثة أصابع" },
@@ -455,9 +492,7 @@
     "هاء": { video: "حرف الهاء.mp4", category: "letters", desc: "أطراف الأصابع مجتمعة" },
     "واو": { video: "حرف الواو.mp4", category: "letters", desc: "ضم الأصابع بشكل دائري" },
     "ياء": { video: "حرف الياء.mp4", category: "letters", desc: "الخنصر فقط للأسفل" },
-    
-    
-   
+
     // الأرقام
     "1": { video: "1.mp4", category: "numbers", desc: "رفع السبابة فقط" },
     "2": { video: "2.mp4", category: "numbers", desc: "السبابة والوسطى" },
@@ -479,6 +514,7 @@
     "ثمانية": { video: "8.mp4", category: "numbers", desc: "ثني الوسطى" },
     "تسعة": { video: "9.mp4", category: "numbers", desc: "ثني السبابة" },
     "عشرة": { video: "10.mp4", category: "numbers", desc: "الإبهام لأعلى مع هز خفيف" },
+
     // الحيوانات
     "كلب": { video: "كلب.mp4", category: "animals", desc: "تقريب الأصابع وهز اليد للأسفل" },
     "قطة": { video: "قطة.mp4", category: "animals", desc: "تحريك الأصابع بجانب الفم" },
@@ -488,7 +524,7 @@
     "سمك": { video: "سمك.mp4", category: "animals", desc: "تحريك الكف بشكل مموج" },
     "أسد": { video: "فيل.mp4", category: "animals", desc: "حركة تشبه عرف الأسد" },
     "أرنب": { video: "ارنب.mp4", category: "animals", desc: "رفع إصبعين فوق الرأس كالأذنين" },
-    
+
     // الألوان
     "أحمر": { video: "الاحمر.mp4", category: "colors", desc: "لمس الشفة السفلية بالسبابة" },
     "أبيض": { video: "ابيض.mp4", category: "colors", desc: "سحب الكف المفتوح من الصدر للخارج" },
@@ -497,7 +533,7 @@
     "أزرق": { video: "ازرق.mp4", category: "colors", desc: "حركة متموجة بسيطة" },
     "أصفر": { video: "اصفر.mp4", category: "colors", desc: "هز اليد بالقرب من الرأس" },
     "برتقالي": { video: "برتقالي.mp4", category: "colors", desc: "فتح وغلق اليد أمام الفم" },
-    
+
     // التحيات
     "مرحبا": { video: "مرحبا.mp4", category: "social", desc: "تحريك اليد من الجبهة للخارج" },
     "السلام": { video: "مرحبا.mp4", category: "social", desc: "نفس حركة مرحبا" },
@@ -508,13 +544,12 @@
     "حب": { video: "حب.mp4", category: "social", desc: "وضع اليد على القلب" },
     "لا": { video: "لا.mp4", category: "social", desc: "تحريك السبابة يميناً ويساراً" },
     "نعم": { video: "نعم.mp4", category: "social", desc: "قبضة اليد وهزها لأعلى/أسفل" },
-    
-    // كلمات إضافية
     "ماء": { video: "الماء.mp4", category: "social", desc: "إشارة شرب" },
     "طعام": { video: "ياكل.mp4", category: "social", desc: "تقريب الأصابع للفم" }
   };
 
-  // دالة عرض فيديو في مودال
+  // ===================== دوال مساعدة =====================
+
   function playVideoModal(videoSrc, title) {
     let modal = document.getElementById('videoModal');
     if (!modal) {
@@ -528,7 +563,6 @@
     modal.innerHTML = `<div style="text-align:center;"><video src="${videoSrc}" controls autoplay style="max-width:90vw;max-height:80vh;border-radius:20px;"></video><div style="color:white;margin-top:15px;font-size:1.3rem;">🤟 ${title}</div></div>`;
   }
 
-  // دالة البحث عن فيديو لكلمة
   function getVideoForWord(word) {
     if (VIDEOS_DB[word]) return VIDEOS_DB[word];
     for (let key in VIDEOS_DB) {
@@ -537,12 +571,11 @@
     return null;
   }
 
-  // دالة عرض فيديوهات لنص
   function displayVideosForText(text, containerId) {
     const words = text.split(/\s+/);
     const matched = [];
     for (let w of words) {
-      let cleaned = w.replace(/[،،؟!،]/g, '');
+      let cleaned = w.replace(/[،؟!.،,]/g, '');
       let vid = getVideoForWord(cleaned);
       if (vid && !matched.some(m => m.word === cleaned)) {
         matched.push({ word: cleaned, ...vid });
@@ -559,20 +592,17 @@
         <div class="label">🤟 ${m.word}</div>
       </div>
     `).join('');
-    
-    // تشغيل المعاينة عند المرور
     container.querySelectorAll('video').forEach(vid => {
-      vid.addEventListener('mouseenter', () => vid.play().catch(e=>{}));
+      vid.addEventListener('mouseenter', () => vid.play().catch(()=>{}));
       vid.addEventListener('mouseleave', () => { vid.pause(); vid.currentTime = 0; });
     });
   }
 
-  // دالة عرض كل الفيديوهات حسب التصنيف
-  function displayAllVideos(category = 'all') {
+  function displayAllVideos(category) {
     const container = document.getElementById('dictionaryVideosContainer');
     let filtered = Object.entries(VIDEOS_DB);
     if (category !== 'all') {
-      filtered = filtered.filter(([_, data]) => data.category === category);
+      filtered = filtered.filter(([, data]) => data.category === category);
     }
     if (filtered.length === 0) {
       container.innerHTML = '<div style="color:#aaa;">🚫 لا توجد فيديوهات في هذا التصنيف</div>';
@@ -584,19 +614,18 @@
         <div class="label">🤟 ${word}</div>
       </div>
     `).join('');
-    
     container.querySelectorAll('video').forEach(vid => {
-      vid.addEventListener('mouseenter', () => vid.play().catch(e=>{}));
+      vid.addEventListener('mouseenter', () => vid.play().catch(()=>{}));
       vid.addEventListener('mouseleave', () => { vid.pause(); vid.currentTime = 0; });
     });
   }
 
-  document.getElementById('dictionaryCount').innerHTML = `📚 القاموس يحتوي على ${Object.keys(VIDEOS_DB).length} فيديو تعليمي`;
+  document.getElementById('dictionaryCount').textContent = `📚 القاموس يحتوي على ${Object.keys(VIDEOS_DB).length} فيديو تعليمي`;
 
   // ========== وضع الصوت ==========
   let voiceRecognition = null;
   let currentVoiceText = '';
-  
+
   const voiceStartBtn = document.getElementById('voiceStartBtn');
   const voiceStopBtn = document.getElementById('voiceStopBtn');
   const voiceSpeakBtn = document.getElementById('voiceSpeakBtn');
@@ -614,7 +643,8 @@
     voiceRecognition.continuous = false;
     voiceRecognition.interimResults = false;
     voiceRecognition.onstart = () => {
-      voiceStartBtn.disabled = true; voiceStopBtn.disabled = false;
+      voiceStartBtn.disabled = true;
+      voiceStopBtn.disabled = false;
       voiceTextDisplay.innerHTML = '<div class="result-text">🎙️ استمع...</div>';
     };
     voiceRecognition.onresult = (e) => {
@@ -623,24 +653,46 @@
       voiceTextDisplay.innerHTML = `<div class="result-text">${transcript}</div>`;
       voiceEditInput.value = transcript;
       displayVideosForText(transcript, 'voiceVideosContainer');
-      voiceSpeakBtn.disabled = false; voiceCopyBtn.disabled = false;
+      voiceSpeakBtn.disabled = false;
+      voiceCopyBtn.disabled = false;
     };
     voiceRecognition.onend = () => { voiceStartBtn.disabled = false; voiceStopBtn.disabled = true; };
     voiceRecognition.start();
   }
-  
-  function stopVoiceRecognition() { if (voiceRecognition) voiceRecognition.stop(); }
-  function speakVoiceText() { if (currentVoiceText) { let utter = new SpeechSynthesisUtterance(currentVoiceText); utter.lang = 'ar-SA'; speechSynthesis.cancel(); speechSynthesis.speak(utter); } }
-  function copyVoiceText() { if (currentVoiceText) { navigator.clipboard.writeText(currentVoiceText); alert("تم النسخ"); } }
-  function clearVoice() { currentVoiceText = ''; voiceTextDisplay.innerHTML = '<div class="result-text">🎤 اضغط بدء التسجيل وتحدث...</div>'; document.getElementById('voiceVideosContainer').innerHTML = '<div style="color:#aaa;">✨ ستظهر هنا فيديوهات الإشارات</div>'; voiceEditInput.value = ''; voiceSpeakBtn.disabled = true; voiceCopyBtn.disabled = true; }
-  function updateVoiceFromInput() { let newTxt = voiceEditInput.value.trim(); if (newTxt) { currentVoiceText = newTxt; voiceTextDisplay.innerHTML = `<div class="result-text">${newTxt}</div>`; displayVideosForText(newTxt, 'voiceVideosContainer'); voiceSpeakBtn.disabled = false; voiceCopyBtn.disabled = false; } }
 
   voiceStartBtn.onclick = startVoiceRecognition;
-  voiceStopBtn.onclick = stopVoiceRecognition;
-  voiceSpeakBtn.onclick = speakVoiceText;
-  voiceCopyBtn.onclick = copyVoiceText;
-  voiceClearBtn.onclick = clearVoice;
-  updateVoiceTranslateBtn.onclick = updateVoiceFromInput;
+  voiceStopBtn.onclick = () => { if (voiceRecognition) voiceRecognition.stop(); };
+  voiceSpeakBtn.onclick = () => {
+    if (currentVoiceText) {
+      let utter = new SpeechSynthesisUtterance(currentVoiceText);
+      utter.lang = 'ar-SA';
+      speechSynthesis.cancel();
+      speechSynthesis.speak(utter);
+    }
+  };
+  voiceCopyBtn.onclick = () => {
+    if (currentVoiceText) {
+      navigator.clipboard.writeText(currentVoiceText).then(() => alert("تم النسخ"));
+    }
+  };
+  voiceClearBtn.onclick = () => {
+    currentVoiceText = '';
+    voiceTextDisplay.innerHTML = '<div class="result-text">🎤 اضغط بدء التسجيل وتحدث...</div>';
+    document.getElementById('voiceVideosContainer').innerHTML = '<div style="color:#aaa;">✨ ستظهر هنا فيديوهات الإشارات</div>';
+    voiceEditInput.value = '';
+    voiceSpeakBtn.disabled = true;
+    voiceCopyBtn.disabled = true;
+  };
+  updateVoiceTranslateBtn.onclick = () => {
+    let newTxt = voiceEditInput.value.trim();
+    if (newTxt) {
+      currentVoiceText = newTxt;
+      voiceTextDisplay.innerHTML = `<div class="result-text">${newTxt}</div>`;
+      displayVideosForText(newTxt, 'voiceVideosContainer');
+      voiceSpeakBtn.disabled = false;
+      voiceCopyBtn.disabled = false;
+    }
+  };
 
   // ========== وضع الاختبار ==========
   let testStream = null;
@@ -659,80 +711,123 @@
     if (!videoData) { alert(`الكلمة "${word}" غير موجودة في قاموس الفيديوهات`); return; }
     requiredSignVideoDiv.innerHTML = `<div class="video-card"><video src="${videoData.video}" controls style="width:150px;height:auto;"></video><div class="label">الإشارة المطلوبة: ${word}</div></div>`;
     try {
-      if (testStream) testStream.getTracks().forEach(t=>t.stop());
+      if (testStream) testStream.getTracks().forEach(t => t.stop());
       testStream = await navigator.mediaDevices.getUserMedia({ video: true });
       testVideo.srcObject = testStream;
-      startTestCamBtn.disabled = true; stopTestCamBtn.disabled = false; compareBtn.disabled = false;
-      document.getElementById('testCameraStatus').innerHTML = '✅ كاميرا الاختبار نشطة';
+      startTestCamBtn.disabled = true;
+      stopTestCamBtn.disabled = false;
+      compareBtn.disabled = false;
+      document.getElementById('testCameraStatus').textContent = '✅ كاميرا الاختبار نشطة';
     } catch(e) { alert("تعذر الوصول للكاميرا"); }
   }
-  
-  function stopTestCamera() { if(testStream) { testStream.getTracks().forEach(t=>t.stop()); testStream=null; } testVideo.srcObject=null; startTestCamBtn.disabled=false; stopTestCamBtn.disabled=true; compareBtn.disabled=true; document.getElementById('testCameraStatus').innerHTML = '⚪ الكاميرا متوقفة'; }
-  
+
+  function stopTestCamera() {
+    if (testStream) { testStream.getTracks().forEach(t => t.stop()); testStream = null; }
+    testVideo.srcObject = null;
+    startTestCamBtn.disabled = false;
+    stopTestCamBtn.disabled = true;
+    compareBtn.disabled = true;
+    document.getElementById('testCameraStatus').textContent = '⚪ الكاميرا متوقفة';
+  }
+
   function compareSign() {
     let required = testWordInput.value.trim();
     let keys = Object.keys(VIDEOS_DB);
     let randomDetect = keys[Math.floor(Math.random() * keys.length)];
-    if (randomDetect === required) { testResultDiv.innerHTML = '✅ ممتاز! إشارة صحيحة ✔️'; testResultDiv.className = 'feedback correct'; }
-    else { testResultDiv.innerHTML = `❌ الإشارة غير صحيحة. تم التعرف على "${randomDetect}"`; testResultDiv.className = 'feedback wrong'; }
+    if (randomDetect === required) {
+      testResultDiv.innerHTML = '✅ ممتاز! إشارة صحيحة ✔️';
+      testResultDiv.className = 'feedback correct';
+    } else {
+      testResultDiv.innerHTML = `❌ الإشارة غير صحيحة. تم التعرف على "${randomDetect}"`;
+      testResultDiv.className = 'feedback wrong';
+    }
   }
-  
+
   startTestCamBtn.onclick = startTestCamera;
   stopTestCamBtn.onclick = stopTestCamera;
   compareBtn.onclick = compareSign;
 
-  // ========== وضع إشارة إلى نص (كاميرا + محاكاة ذكية) ==========
+  // ========== وضع إشارة إلى نص ==========
   let captureStream = null;
   const captureCamBtn = document.getElementById('captureCamBtn');
   const stopCaptureCamBtn = document.getElementById('stopCaptureCamBtn');
   const captureBtn = document.getElementById('captureBtn');
   const captureVideo = document.getElementById('captureVideo');
   const captureResultDiv = document.getElementById('captureResult');
-  
+
   async function startCaptureCamera() {
-    try { if(captureStream) captureStream.getTracks().forEach(t=>t.stop()); captureStream = await navigator.mediaDevices.getUserMedia({ video: true }); captureVideo.srcObject = captureStream; captureCamBtn.disabled=true; stopCaptureCamBtn.disabled=false; captureBtn.disabled=false; document.getElementById('captureCameraStatus').innerHTML='✅ الكاميرا تعمل'; } catch(e){ alert("خطأ في الكاميرا"); } }
-  function stopCaptureCamera() { if(captureStream){ captureStream.getTracks().forEach(t=>t.stop()); captureStream=null; } captureVideo.srcObject=null; captureCamBtn.disabled=false; stopCaptureCamBtn.disabled=true; captureBtn.disabled=true; document.getElementById('captureCameraStatus').innerHTML='⚪ متوقفة'; }
+    try {
+      if (captureStream) captureStream.getTracks().forEach(t => t.stop());
+      captureStream = await navigator.mediaDevices.getUserMedia({ video: true });
+      captureVideo.srcObject = captureStream;
+      captureCamBtn.disabled = true;
+      stopCaptureCamBtn.disabled = false;
+      captureBtn.disabled = false;
+      document.getElementById('captureCameraStatus').textContent = '✅ الكاميرا تعمل';
+    } catch(e) { alert("خطأ في الكاميرا"); }
+  }
+
+  function stopCaptureCamera() {
+    if (captureStream) { captureStream.getTracks().forEach(t => t.stop()); captureStream = null; }
+    captureVideo.srcObject = null;
+    captureCamBtn.disabled = false;
+    stopCaptureCamBtn.disabled = true;
+    captureBtn.disabled = true;
+    document.getElementById('captureCameraStatus').textContent = '⚪ متوقفة';
+  }
+
   function captureAndRecognize() {
     let allWords = Object.keys(VIDEOS_DB);
     let randomWord = allWords[Math.floor(Math.random() * allWords.length)];
     let videoData = VIDEOS_DB[randomWord];
     captureResultDiv.innerHTML = `<div class="result-text">📖 النص المتعرف عليه: ${randomWord}</div><div style="margin-top:10px;"><video src="${videoData.video}" controls style="width:150px;border-radius:12px;"></video></div>`;
   }
+
   captureCamBtn.onclick = startCaptureCamera;
   stopCaptureCamBtn.onclick = stopCaptureCamera;
   captureBtn.onclick = captureAndRecognize;
 
-  // ========== قاموس الطفل ==========
+  // ========== قاموس الإشارات ==========
   document.getElementById('dictAllBtn').onclick = () => displayAllVideos('all');
   document.getElementById('dictLettersBtn').onclick = () => displayAllVideos('letters');
   document.getElementById('dictNumbersBtn').onclick = () => displayAllVideos('numbers');
   document.getElementById('dictAnimalsBtn').onclick = () => displayAllVideos('animals');
   document.getElementById('dictColorsBtn').onclick = () => displayAllVideos('colors');
   document.getElementById('dictSocialBtn').onclick = () => displayAllVideos('social');
-  
-  // عرض كل الفيديوهات عند الدخول للقاموس
-  displayAllVideos('all');
 
-  // ========== تبديل الأوضاع وإيقاف الكاميرات ==========
+  // ========== تبديل الأوضاع ==========
   document.querySelectorAll('.mode-btn').forEach(btn => {
     btn.addEventListener('click', () => {
-      document.querySelectorAll('.mode-btn').forEach(b=>b.classList.remove('active'));
+      document.querySelectorAll('.mode-btn').forEach(b => b.classList.remove('active'));
       btn.classList.add('active');
-      document.querySelectorAll('.mode-content').forEach(c=>c.classList.remove('active-mode'));
-      if(btn.dataset.mode === 'voice') document.getElementById('voiceMode').classList.add('active-mode');
-      else if(btn.dataset.mode === 'test') document.getElementById('testMode').classList.add('active-mode');
-      else if(btn.dataset.mode === 'cameraToText') document.getElementById('cameraToTextMode').classList.add('active-mode');
-      else if(btn.dataset.mode === 'dictionary') document.getElementById('dictionaryMode').classList.add('active-mode');
-      
+      document.querySelectorAll('.mode-content').forEach(c => c.classList.remove('active-mode'));
+
+      const modeMap = {
+        'voice': 'voiceMode',
+        'test': 'testMode',
+        'cameraToText': 'cameraToTextMode',
+        'dictionary': 'dictionaryMode'
+      };
+      const targetId = modeMap[btn.dataset.mode];
+      if (targetId) document.getElementById(targetId).classList.add('active-mode');
+
+      // تحميل القاموس عند الدخول إليه
+      if (btn.dataset.mode === 'dictionary') {
+        displayAllVideos('all');
+      }
+
       // إيقاف الكاميرات عند التبديل
-      if(testStream) stopTestCamera();
-      if(captureStream) stopCaptureCamera();
+      if (testStream) stopTestCamera();
+      if (captureStream) stopCaptureCamera();
     });
   });
-  
-  window.addEventListener('beforeunload', ()=>{ if(testStream) testStream.getTracks().forEach(t=>t.stop()); if(captureStream) captureStream.getTracks().forEach(t=>t.stop()); if(voiceRecognition) voiceRecognition.abort(); });
-  
-  // جعل الدوال عامة للمودال
+
+  window.addEventListener('beforeunload', () => {
+    if (testStream) testStream.getTracks().forEach(t => t.stop());
+    if (captureStream) captureStream.getTracks().forEach(t => t.stop());
+    if (voiceRecognition) voiceRecognition.abort();
+  });
+
   window.playVideoModal = playVideoModal;
 </script>
 </body>
